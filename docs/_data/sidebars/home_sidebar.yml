@@ -7,24 +7,12 @@ entries:
 - folders:
   - folderitems:
     - output: web,pdf
-      title: Export to modules
-      url: /export.html
+      title: Overview
+      url: /
     - output: web,pdf
-      title: Convert to html
-      url: /export2html.html
-    - output: web,pdf
-      title: Show doc
-      url: /showdoc.html
-    - output: web,pdf
-      title: Test functions
-      url: /test.html
-    - output: web,pdf
-      title: Core functions
-      url: /core.html
-    - output: web,pdf
-      title: Command line functions
-      url: /cli.html
+      title: '**Bootstrap Your Own Latent A New Approach to Self-Supervised Learning** '
+      url: 10-byol.html
     output: web
-    title: Notebook
+    title: self_supervised
   output: web
   title: Sidebar
