@@ -9,15 +9,19 @@ import kornia
 import copy
 
 # Cell
-def get_aug_pipe(size, stats=imagenet_stats, s=.6, xtra_tfms=[]):
+def get_aug_pipe(size, stats=imagenet_stats, s=.6, color=True, xtra_tfms=[]):
     "SimCLR augmentations"
-    rrc = kornia.augmentation.RandomResizedCrop((size, size), scale=(0.2, 1.0), ratio=(3/4, 4/3))
-    rhf = kornia.augmentation.RandomHorizontalFlip()
-    rcj = kornia.augmentation.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)
-    rgs = kornia.augmentation.RandomGrayscale(p=0.2)
+    tfms = []
+    tfms += [kornia.augmentation.RandomResizedCrop((size, size), scale=(0.2, 1.0), ratio=(3/4, 4/3))]
+    tfms += [kornia.augmentation.RandomHorizontalFlip()]
 
-    tfms = [rrc, rhf, rcj, rgs, Normalize.from_stats(*stats)]
-    pipe = Pipeline(tfms + xtra_tfms)
+    if color: tfms += [kornia.augmentation.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)]
+    if color: tfms += [kornia.augmentation.RandomGrayscale(p=0.2)]
+    if stats: tfms += [Normalize()]
+
+    tfms += xtra_tfms
+
+    pipe = Pipeline(tfms)
     pipe.split_idx = 0
     return pipe
 
@@ -57,7 +61,7 @@ class BYOLModel(Module):
 def create_byol_model(arch=resnet50, n_in=3, pretrained=True, cut=None, concat_pool=True,
                       hidden_size=4096, projection_size=256):
     encoder = create_encoder(arch, n_in, pretrained, cut, concat_pool)
-    with torch.no_grad(): representation = encoder(torch.randn((2,3,128,128)))
+    with torch.no_grad(): representation = encoder(torch.randn((2,n_in,128,128)))
     projector = MLP(representation.size(1), projection_size, hidden_size=hidden_size)
     predictor = MLP(projection_size, projection_size, hidden_size=hidden_size)
     apply_init(projector)
@@ -125,6 +129,6 @@ class BYOL(Callback):
 
     def show_one(self):
         b1 = self.aug1.decode(to_detach(self.learn.xb[0]))
-        b2 = self.aug1.decode(to_detach(self.learn.xb[1]))
+        b2 = self.aug2.decode(to_detach(self.learn.xb[1]))
         i = np.random.choice(len(b1))
         show_images([b1[i],b2[i]], nrows=1, ncols=2)
