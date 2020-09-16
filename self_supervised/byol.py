@@ -17,7 +17,7 @@ def get_aug_pipe(size, stats=imagenet_stats, s=.6, color=True, xtra_tfms=[]):
 
     if color: tfms += [kornia.augmentation.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)]
     if color: tfms += [kornia.augmentation.RandomGrayscale(p=0.2)]
-    if stats: tfms += [Normalize()]
+    if stats is not None: tfms += [Normalize.from_stats(*stats)]
 
     tfms += xtra_tfms
 
