@@ -12,6 +12,9 @@ entries:
     - output: web,pdf
       title: BYOL
       url: 10-byol.html
+    - output: web,pdf
+      title: SimCLR
+      url: 20-simclr.html
     output: web
     title: self_supervised
   output: web
