@@ -10,7 +10,7 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: '**Bootstrap Your Own Latent A New Approach to Self-Supervised Learning** '
+      title: BYOL
       url: 10-byol.html
     output: web
     title: self_supervised

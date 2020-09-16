@@ -1,6 +1,6 @@
 {
   "self_supervised": {
     "Overview": "/",
-    "**Bootstrap Your Own Latent A New Approach to Self-Supervised Learning** ": "10-byol.html"
+    "BYOL": "10-byol.html"
   }
 }
