@@ -555,7 +555,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Example">Example<a class="anchor-link" href="#Example"> </a></h3>
+<h3 id="Example-Usage">Example Usage<a class="anchor-link" href="#Example-Usage"> </a></h3>
 </div>
 </div>
 </div>
@@ -620,24 +620,6 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_html rendered_html output_subarea ">
-
-    <div>
-        <style>
-            /* Turns off some styling */
-            progress {
-                /* gets rid of default border in Firefox and Opera. */
-                border: none;
-                /* Needs to be in here for Safari polyfill so background images work as expected. */
-                background-size: auto;
-            }
-            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-                background: #F44336;
-            }
-        </style>
-      <progress value='0' class='' max='1' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      0.00% [0/1 00:00<00:00]
-    </div>
-    
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: left;">
@@ -648,26 +630,12 @@ nb_path: "nbs/10-byol.ipynb"
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td>0</td>
+      <td>00:02</td>
+    </tr>
   </tbody>
-</table><p>
-
-    <div>
-        <style>
-            /* Turns off some styling */
-            progress {
-                /* gets rid of default border in Firefox and Opera. */
-                border: none;
-                /* Needs to be in here for Safari polyfill so background images work as expected. */
-                background-size: auto;
-            }
-            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
-                background: #F44336;
-            }
-        </style>
-      <progress value='0' class='' max='354' style='width:300px; height:20px; vertical-align: middle;'></progress>
-      0.00% [0/354 00:00<00:00]
-    </div>
-    
+</table>
 </div>
 
 </div>
@@ -692,6 +660,24 @@ nb_path: "nbs/10-byol.ipynb"
 </pre></div>
 
     </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
 </div>
 </div>
 
