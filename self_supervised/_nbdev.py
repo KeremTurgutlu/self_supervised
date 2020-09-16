@@ -2,17 +2,23 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"get_aug_pipe": "10-byol.ipynb",
-         "create_encoder": "10-byol.ipynb",
-         "MLP": "10-byol.ipynb",
+index = {"get_aug_pipe": "20-simclr.ipynb",
+         "create_encoder": "20-simclr.ipynb",
+         "MLP": "20-simclr.ipynb",
          "BYOLModel": "10-byol.ipynb",
          "create_byol_model": "10-byol.ipynb",
          "cosine_similarity": "10-byol.ipynb",
          "symmetric_mse_loss": "10-byol.ipynb",
          "byol_loss": "10-byol.ipynb",
-         "BYOL": "10-byol.ipynb"}
+         "BYOL": "10-byol.ipynb",
+         "SimCLRModel": "20-simclr.ipynb",
+         "create_simclr_model": "20-simclr.ipynb",
+         "remove_diag": "20-simclr.ipynb",
+         "SimCLRLoss": "20-simclr.ipynb",
+         "SimCLR": "20-simclr.ipynb"}
 
-modules = ["byol.py"]
+modules = ["byol.py",
+           "simclr.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
