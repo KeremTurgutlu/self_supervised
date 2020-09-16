@@ -1,13 +1,13 @@
 ---
 
-title: **Bootstrap Your Own Latent A New Approach to Self-Supervised Learning** 
+title: BYOL
 
 
 keywords: fastai
 sidebar: home_sidebar
 
-
-
+summary: "Bootstrap Your Own Latent A New Approach to Self-Supervised Learning"
+description: "Bootstrap Your Own Latent A New Approach to Self-Supervised Learning"
 nb_path: "nbs/10-byol.ipynb"
 ---
 <!--
@@ -60,7 +60,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_aug_pipe" class="doc_header"><code>get_aug_pipe</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_aug_pipe</code>(<strong><code>size</code></strong>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>color</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
+<h4 id="get_aug_pipe" class="doc_header"><code>get_aug_pipe</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L12" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_aug_pipe</code>(<strong><code>size</code></strong>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>color</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
 </blockquote>
 <p>SimCLR augmentations</p>
 
@@ -246,7 +246,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L29" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>)</p>
+<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L29" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>Create encoder from a given arch backbone</p>
 
@@ -321,7 +321,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MLP" class="doc_header"><code>class</code> <code>MLP</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLP</code>(<strong><code>dim</code></strong>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>, <strong><code>hidden_size</code></strong>=<em><code>2048</code></em>) :: <code>Module</code></p>
+<h2 id="MLP" class="doc_header"><code>class</code> <code>MLP</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L36" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLP</code>(<strong><code>dim</code></strong>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>, <strong><code>hidden_size</code></strong>=<em><code>2048</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>MLP module as described in paper</p>
 
@@ -353,7 +353,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BYOLModel" class="doc_header"><code>class</code> <code>BYOLModel</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L50" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOLModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>, <strong><code>predictor</code></strong>) :: <code>Module</code></p>
+<h2 id="BYOLModel" class="doc_header"><code>class</code> <code>BYOLModel</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L50" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOLModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>, <strong><code>predictor</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>Compute predictions of v1 and v2</p>
 
@@ -385,7 +385,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_byol_model" class="doc_header"><code>create_byol_model</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_byol_model</code>(<strong><code>arch</code></strong>=<em><code>resnet50</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>, <strong><code>hidden_size</code></strong>=<em><code>4096</code></em>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>)</p>
+<h4 id="create_byol_model" class="doc_header"><code>create_byol_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L61" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_byol_model</code>(<strong><code>arch</code></strong>=<em><code>resnet50</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>, <strong><code>hidden_size</code></strong>=<em><code>4096</code></em>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>)</p>
 </blockquote>
 
 </div>
@@ -437,7 +437,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="cosine_similarity" class="doc_header"><code>cosine_similarity</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cosine_similarity</code>(<strong><code>x1</code></strong>, <strong><code>x2</code></strong>=<em><code>None</code></em>, <strong><code>eps</code></strong>=<em><code>1e-08</code></em>)</p>
+<h4 id="cosine_similarity" class="doc_header"><code>cosine_similarity</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L72" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>cosine_similarity</code>(<strong><code>x1</code></strong>, <strong><code>x2</code></strong>=<em><code>None</code></em>, <strong><code>eps</code></strong>=<em><code>1e-08</code></em>)</p>
 </blockquote>
 
 </div>
@@ -502,7 +502,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="symmetric_mse_loss" class="doc_header"><code>symmetric_mse_loss</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L84" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>symmetric_mse_loss</code>(<strong><code>pred</code></strong>, <strong>*<code>yb</code></strong>)</p>
+<h4 id="symmetric_mse_loss" class="doc_header"><code>symmetric_mse_loss</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L84" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>symmetric_mse_loss</code>(<strong><code>pred</code></strong>, <strong>*<code>yb</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -539,7 +539,7 @@ nb_path: "nbs/10-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BYOL" class="doc_header"><code>class</code> <code>BYOL</code><a href="https://github.com/fastai/self_supervised/tree/master/self_supervised/byol.py#L90" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOL</code>(<strong><code>T</code></strong>=<em><code>0.99</code></em>, <strong><code>debug</code></strong>=<em><code>True</code></em>, <strong><code>size</code></strong>=<em><code>224</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
+<h2 id="BYOL" class="doc_header"><code>class</code> <code>BYOL</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L90" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOL</code>(<strong><code>T</code></strong>=<em><code>0.99</code></em>, <strong><code>debug</code></strong>=<em><code>True</code></em>, <strong><code>size</code></strong>=<em><code>224</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
 <p>Implementation of <a href="https://arxiv.org/pdf/2006.07733.pdf">https://arxiv.org/pdf/2006.07733.pdf</a></p>
 
