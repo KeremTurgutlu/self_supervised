@@ -2,6 +2,8 @@
 > Implementation of popular self-supervised learning algorithms as Fastai Callbacks.
 
 
+You may find documentation [here](https://keremturgutlu.github.io/self_supervised)
+
 ## Install
 
 `pip install <>`

@@ -14,8 +14,8 @@ index = {"get_aug_pipe": "10-byol.ipynb",
 
 modules = ["byol.py"]
 
-doc_url = "https://fastai.github.io/self_supervised/"
+doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
-git_url = "https://github.com/fastai/self_supervised/tree/master/"
+git_url = "https://github.com/keremturgutlu/self_supervised/tree/master/"
 
 def custom_doc_links(name): return None
