@@ -460,27 +460,7 @@ nb_path: "nbs/20-simclr.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="SimCLRLoss" class="doc_header"><code>class</code> <code>SimCLRLoss</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L69" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLRLoss</code>(<strong><code>temp</code></strong>=<em><code>0.5</code></em>) :: <code>Module</code></p>
 </blockquote>
-<p>Base class for all neural network modules.</p>
-<p>Your models should also subclass this class.</p>
-<p>Modules can also contain other Modules, allowing to nest them in
-a tree structure. You can assign the submodules as regular attributes::</p>
-
-<pre><code>import torch.nn as nn
-import torch.nn.functional as F
-
-class Model(nn.Module):
-    def __init__(self):
-        super(Model, self).__init__()
-        self.conv1 = nn.Conv2d(1, 20, 5)
-        self.conv2 = nn.Conv2d(20, 20, 5)
-
-    def forward(self, x):
-        x = F.relu(self.conv1(x))
-        return F.relu(self.conv2(x))
-
-</code></pre>
-<p>Submodules assigned in this way will be registered, and will have their
-parameters converted too when you call :meth:<code>to</code>, etc.</p>
+<p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
 </div>
 
@@ -510,7 +490,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L82" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>temp</code></strong>=<em><code>0.1</code></em>, <strong><code>size</code></strong>=<em><code>256</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
+<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L81" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>temp</code></strong>=<em><code>0.1</code></em>, <strong><code>size</code></strong>=<em><code>256</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
 <p>Basic class handling tweaks of the training loop by changing a <code>Learner</code> in various events</p>
 

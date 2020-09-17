@@ -2,6 +2,7 @@
   "self_supervised": {
     "Overview": "/",
     "BYOL": "10-byol.html",
-    "SimCLR": "20-simclr.html"
+    "SimCLR": "20-simclr.html",
+    "SwAV": "30-swav.html"
   }
 }

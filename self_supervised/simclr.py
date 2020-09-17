@@ -66,9 +66,8 @@ def remove_diag(x):
     return x[~torch.eye(bs).bool()].reshape(bs,bs-1)
 
 # Cell
-class SimCLRLoss(nn.Module):
+class SimCLRLoss(Module):
     def __init__(self, temp=0.5):
-        super().__init__()
         self.temp = temp
 
     def forward(self, input, labels):
