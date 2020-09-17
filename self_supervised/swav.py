@@ -79,7 +79,9 @@ def create_swav_model(arch=resnet50, n_in=3, pretrained=True, cut=None, concat_p
     projector = MLP(representation.size(1), projection_size, hidden_size=hidden_size)
     prototypes = nn.Linear(projection_size, n_protos, bias=False)
     apply_init(projector)
-    apply_init(prototypes)
+    with torch.no_grad():
+        w = prototypes.weight.data.clone()
+        prototypes.weight.copy_(F.normalize(w))
     return SwAVModel(encoder, projector, prototypes)
 
 # Cell
@@ -105,7 +107,7 @@ def sinkhorn_knopp(Q, nmb_iters):
 class SWAV(Callback):
     def __init__(self, crop_sizes=[224,96],
                        num_crops=[2,6],
-                       min_scales=[0.14,0.05],
+                       min_scales=[0.25,0.05],
                        max_scales=[1.,0.14],
                        crop_assgn_ids=[0,1],
                        eps=0.05,
@@ -116,7 +118,7 @@ class SWAV(Callback):
         store_attr('num_crops,crop_assgn_ids,temp,eps,n_sinkh_iter')
         self.augs = []
         for nc, size, mins, maxs in zip(num_crops, crop_sizes, min_scales, max_scales):
-            self.augs += [get_aug_pipe(size, mins, maxs, **aug_kwargs) ]*nc
+            self.augs += [get_aug_pipe(size, mins, maxs, **aug_kwargs) for i in range(nc)]
 
 
 #     def before_fit(self):
@@ -135,16 +137,17 @@ class SWAV(Callback):
     def after_pred(self):
         "Compute ps and qs"
         embedding, output = self.pred
-        qs = []
-        for i in self.crop_assgn_ids:
-            # TODO: Store previous batch embeddings
-            # to be used in Q calculation
-            # Store approx num_proto//bs batches
-            # output.size(1)//self.bs
-            target_b = output[self.bs*i:self.bs*(i+1)]
-            q = torch.exp(target_b/self.eps).t()
-            q = sinkhorn_knopp(q, self.n_sinkh_iter)
-            qs.append(q)
+        with torch.no_grad():
+            qs = []
+            for i in self.crop_assgn_ids:
+                # TODO: Store previous batch embeddings
+                # to be used in Q calculation
+                # Store approx num_proto//bs batches
+                # output.size(1)//self.bs
+                target_b = output[self.bs*i:self.bs*(i+1)]
+                q = torch.exp(target_b/self.eps).t()
+                q = sinkhorn_knopp(q, self.n_sinkh_iter)
+                qs.append(q)
 
         log_ps = []
         for v in np.arange(np.sum(self.num_crops)):
@@ -154,9 +157,11 @@ class SWAV(Callback):
         self.learn.pred, self.learn.yb = log_ps, (qs,)
 
 
-#     def after_fit(self):
-#         self.learn.loss_fun = self.old_lf
-#         self.learn.metrics = self.old_met
+    def after_batch(self):
+        with torch.no_grad():
+            w = learn.model.prototypes.weight.data.clone()
+            learn.model.prototypes.weight.data.copy_(F.normalize(w))
+
 
     def show_one(self):
         xb = self.learn.xb[0]
