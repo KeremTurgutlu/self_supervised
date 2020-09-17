@@ -18,8 +18,8 @@ index = {"get_aug_pipe": "30-swav.ipynb",
          "SimCLR": "20-simclr.ipynb",
          "SwAVModel": "30-swav.ipynb",
          "create_swav_model": "30-swav.ipynb",
-         "distributed_sinkhorn": "30-swav.ipynb",
-         "SwAV": "30-swav.ipynb"}
+         "sinkhorn_knopp": "30-swav.ipynb",
+         "SWAV": "30-swav.ipynb"}
 
 modules = ["byol.py",
            "simclr.py",
