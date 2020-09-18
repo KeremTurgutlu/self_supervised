@@ -29,3 +29,5 @@ It should be noted that during these experiments no hyperparameter selection/tun
 Contributions and or requests for new self-supervised algorithms are welcome. This repo will try to keep itself up-to-date with recent SOTA self-supervised algorithms.
 
 Before raising a PR please create a new branch with name `<self-supervised-algorithm>`. You may refer to previous notebooks before implementing your Callback.
+
+Please refer to [contributing in fastai](https://github.com/fastai/fastai#contributing), same rules apply. Also 
