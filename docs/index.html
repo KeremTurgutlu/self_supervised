@@ -6,8 +6,8 @@ title: Self Supervised Learning Fastai Extension
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Implementation of popular self-supervised learning algorithms as Fastai Callbacks."
-description: "Implementation of popular self-supervised learning algorithms as Fastai Callbacks."
+summary: "Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks."
+description: "Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks."
 nb_path: "nbs/index.ipynb"
 ---
 <!--
@@ -59,9 +59,40 @@ nb_path: "nbs/index.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Here are the list of implemented algorithms:</p>
 <ul>
-<li><a href="https://arxiv.org/pdf/2006.07733.pdf">BYOL</a></li>
 <li><a href="https://arxiv.org/pdf/2002.05709.pdf">SimCLR</a></li>
+<li><a href="https://arxiv.org/pdf/2006.07733.pdf">BYOL</a></li>
+<li><a href="https://arxiv.org/pdf/2006.09882.pdf">SwAV</a></li>
 </ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="ImageWang-Benchmarks">ImageWang Benchmarks<a class="anchor-link" href="#ImageWang-Benchmarks"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>All of the algorithms implemented in this library have been evaluated in <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a>.</p>
+<p>In overall superiority of the algorithms are as follows <code>SwAV &gt; BYOL &gt; SimCLR</code> in most of the benchmarks. For details you may inspect the history of <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a> through github.</p>
+<p>It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using <code>learn.lr_find()</code> or making sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Contributing">Contributing<a class="anchor-link" href="#Contributing"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Contributions and or requests for new self-supervised algorithms are welcome. This repo will try to keep itself up-to-date with recent SOTA self-supervised algorithms.</p>
+<p>Before raising a PR please create a new branch with name <code>&lt;self-supervised-algorithm&gt;</code>. You may refer to previous notebooks before implementing your Callback.</p>
+<p>Please refer to sections <code>Developers Guide, Abbreviations Guide, and Style Guide</code> from <a href="https://docs.fast.ai/dev-setup">https://docs.fast.ai/dev-setup</a> and note that same rules apply for this library.</p>
 
 </div>
 </div>
