@@ -30,4 +30,4 @@ Contributions and or requests for new self-supervised algorithms are welcome. Th
 
 Before raising a PR please create a new branch with name `<self-supervised-algorithm>`. You may refer to previous notebooks before implementing your Callback.
 
-Please refer to [contributing in fastai](https://github.com/fastai/fastai#contributing), same rules apply. Also 
+Please refer to sections `Developers Guide, Abbreviations Guide, and Style Guide` from https://docs.fast.ai/dev-setup and note that same rules apply for this library.
