@@ -166,5 +166,6 @@ class SWAV(Callback):
     def show_one(self):
         xb = self.learn.xb[0]
         i = np.random.choice(self.bs)
-        images = [b[i] for b in xb]
+        images = [aug.decode(b.to('cpu').clone()).clamp(0.1)[i]
+                      for b, aug in zip(xb, self.augs)]
         show_images(images)
