@@ -12,9 +12,15 @@ You may find documentation [here](https://keremturgutlu.github.io/self_supervise
 
 Here are the list of implemented algorithms:
 
-- [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SimCLR](https://arxiv.org/pdf/2002.05709.pdf)
+- [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
+
+### ImageWang Benchmarks
+
+All of the algorithms implemented in this library have been evaluated in [ImageWang Leaderboard](https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard). 
+
+In overall superiority of the algorithms are as follows `SwAV > BYOL > SimCLR` in most of the benchmarks. For details you may inspect the history of [ImageWang Leaderboard](https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard) through github. 
 
 ## Contributions
 
