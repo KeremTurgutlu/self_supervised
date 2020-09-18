@@ -16,15 +16,15 @@ Here are the list of implemented algorithms:
 - [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
 
-### ImageWang Benchmarks
+## ImageWang Benchmarks
 
 All of the algorithms implemented in this library have been evaluated in [ImageWang Leaderboard](https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard). 
 
 In overall superiority of the algorithms are as follows `SwAV > BYOL > SimCLR` in most of the benchmarks. For details you may inspect the history of [ImageWang Leaderboard](https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard) through github. 
 
-It should be noted that during none of the experiments no hyperparameter selection/tuning was made beyond using `learn.lr_find()` or manually visualizing batches for checking augmentations. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup.
+It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using `learn.lr_find()` or making sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.
 
-## Contributions
+## Contributing
 
 Contributions and or requests for new self-supervised algorithms are welcome. This repo will try to keep itself up-to-date with recent SOTA self-supervised algorithms.
 
