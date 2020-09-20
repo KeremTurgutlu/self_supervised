@@ -1,8 +1,11 @@
 {
-  "self_supervised": {
+  "Getting Started": {
     "Overview": "/",
-    "SimCLR": "10-simclr.html",
-    "BYOL": "20-byol.html",
-    "SwAV": "30-swav.html"
-  }
+    "Introduction": "/00-intro_tutorial.html"
+  },
+  "Algorithms": {
+    "SimCLR": "/10-simclr.html",
+    "BYOL": "/20-byol.html",
+    "SwAV": "/30-swav.html"
+    }
 }

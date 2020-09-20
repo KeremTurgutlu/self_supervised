@@ -10,15 +10,21 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
+      title: Introduction
+      url: /00-intro_tutorial.html
+    output: web
+    title: Getting Started
+  - folderitems:
+    - output: web,pdf
       title: SimCLR
-      url: 10-simclr.html
+      url: /10-simclr.html
     - output: web,pdf
       title: BYOL
-      url: 20-byol.html
+      url: /20-byol.html
     - output: web,pdf
       title: SwAV
-      url: 30-swav.html
+      url: /30-swav.html
     output: web
-    title: self_supervised
+    title: Algorithms
   output: web
   title: Sidebar

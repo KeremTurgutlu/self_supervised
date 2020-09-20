@@ -60,7 +60,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_aug_pipe" class="doc_header"><code>get_aug_pipe</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L10" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_aug_pipe</code>(<strong><code>size</code></strong>, <strong><code>min_scale</code></strong>=<em><code>0.2</code></em>, <strong><code>max_scale</code></strong>=<em><code>1.0</code></em>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>color</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
+<h4 id="get_aug_pipe" class="doc_header"><code>get_aug_pipe</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L11" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_aug_pipe</code>(<strong><code>size</code></strong>, <strong><code>min_scale</code></strong>=<em><code>0.2</code></em>, <strong><code>max_scale</code></strong>=<em><code>1.0</code></em>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>color</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
 </blockquote>
 <p>SimCLR augmentations</p>
 
@@ -253,7 +253,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L30" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>)</p>
+<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L31" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 <p>Create encoder from a given arch backbone</p>
 
@@ -321,7 +321,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MLP" class="doc_header"><code>class</code> <code>MLP</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L37" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLP</code>(<strong><code>dim</code></strong>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>, <strong><code>hidden_size</code></strong>=<em><code>2048</code></em>) :: <code>Module</code></p>
+<h2 id="MLP" class="doc_header"><code>class</code> <code>MLP</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L38" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLP</code>(<strong><code>dim</code></strong>, <strong><code>projection_size</code></strong>=<em><code>256</code></em>, <strong><code>hidden_size</code></strong>=<em><code>2048</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>MLP module as described in paper</p>
 
@@ -416,7 +416,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SwAVModel" class="doc_header"><code>class</code> <code>SwAVModel</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L51" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SwAVModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>, <strong><code>prototypes</code></strong>) :: <code>Module</code></p>
+<h2 id="SwAVModel" class="doc_header"><code>class</code> <code>SwAVModel</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L52" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SwAVModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>, <strong><code>prototypes</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -448,7 +448,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_swav_model" class="doc_header"><code>create_swav_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L74" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_swav_model</code>(<strong><code>arch</code></strong>=<em><code>resnet50</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>, <strong><code>hidden_size</code></strong>=<em><code>256</code></em>, <strong><code>projection_size</code></strong>=<em><code>128</code></em>, <strong><code>n_protos</code></strong>=<em><code>3000</code></em>)</p>
+<h4 id="create_swav_model" class="doc_header"><code>create_swav_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L75" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_swav_model</code>(<strong><code>arch</code></strong>=<em><code>resnet50</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>cut</code></strong>=<em><code>None</code></em>, <strong><code>concat_pool</code></strong>=<em><code>True</code></em>, <strong><code>hidden_size</code></strong>=<em><code>256</code></em>, <strong><code>projection_size</code></strong>=<em><code>128</code></em>, <strong><code>n_protos</code></strong>=<em><code>3000</code></em>)</p>
 </blockquote>
 <p>Create SwAV from a given arch</p>
 
@@ -576,7 +576,7 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="sinkhorn_knopp" class="doc_header"><code>sinkhorn_knopp</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L88" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sinkhorn_knopp</code>(<strong><code>Q</code></strong>, <strong><code>nmb_iters</code></strong>)</p>
+<h4 id="sinkhorn_knopp" class="doc_header"><code>sinkhorn_knopp</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L89" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sinkhorn_knopp</code>(<strong><code>Q</code></strong>, <strong><code>nmb_iters</code></strong>)</p>
 </blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem#Sinkhorn-Knopp_algorithm">https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem#Sinkhorn-Knopp_algorithm</a></p>
 
@@ -584,34 +584,6 @@ nb_path: "nbs/30-swav.ipynb"
 
 </div>
 
-</div>
-</div>
-
-</div>
-    {% endraw %}
-
-    {% raw %}
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">SWAVLoss</span><span class="p">(</span><span class="n">Module</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span>     
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">log_ps</span><span class="p">,</span><span class="n">qs</span><span class="p">):</span>
-        <span class="s2">&quot;Multi crop loss&quot;</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">qs</span><span class="p">)):</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">q</span> <span class="o">=</span> <span class="n">qs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="p">(</span><span class="n">log_ps</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">log_ps</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]):</span>
-                <span class="n">l</span> <span class="o">-=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">q</span><span class="o">*</span><span class="n">p</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">log_ps</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">loss</span> <span class="o">+=</span> <span class="n">l</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">loss</span>
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -636,7 +608,39 @@ nb_path: "nbs/30-swav.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SWAV" class="doc_header"><code>class</code> <code>SWAV</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L107" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SWAV</code>(<strong><code>crop_sizes</code></strong>=<em><code>[224, 96]</code></em>, <strong><code>num_crops</code></strong>=<em><code>[2, 6]</code></em>, <strong><code>min_scales</code></strong>=<em><code>[0.25, 0.05]</code></em>, <strong><code>max_scales</code></strong>=<em><code>[1.0, 0.14]</code></em>, <strong><code>crop_assgn_ids</code></strong>=<em><code>[0, 1]</code></em>, <strong><code>eps</code></strong>=<em><code>0.05</code></em>, <strong><code>n_sinkh_iter</code></strong>=<em><code>3</code></em>, <strong><code>temp</code></strong>=<em><code>0.1</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
+<h2 id="SWAVLoss" class="doc_header"><code>class</code> <code>SWAVLoss</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L108" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SWAVLoss</code>() :: <code>Module</code></p>
+</blockquote>
+<p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="SWAV" class="doc_header"><code>class</code> <code>SWAV</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/swav.py#L122" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SWAV</code>(<strong><code>crop_sizes</code></strong>=<em><code>[224, 96]</code></em>, <strong><code>num_crops</code></strong>=<em><code>[2, 6]</code></em>, <strong><code>min_scales</code></strong>=<em><code>[0.25, 0.05]</code></em>, <strong><code>max_scales</code></strong>=<em><code>[1.0, 0.14]</code></em>, <strong><code>crop_assgn_ids</code></strong>=<em><code>[0, 1]</code></em>, <strong><code>eps</code></strong>=<em><code>0.05</code></em>, <strong><code>n_sinkh_iter</code></strong>=<em><code>3</code></em>, <strong><code>temp</code></strong>=<em><code>0.1</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
 <p>Basic class handling tweaks of the training loop by changing a <code>Learner</code> in various events</p>
 
