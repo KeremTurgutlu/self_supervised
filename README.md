@@ -6,7 +6,7 @@ You may find documentation [here](https://keremturgutlu.github.io/self_supervise
 
 ## Install
 
-`pip install <>`
+`pip install self-supervised`
 
 ## Algorithms
 
@@ -15,6 +15,35 @@ Here are the list of implemented algorithms:
 - [SimCLR](https://arxiv.org/pdf/2002.05709.pdf)
 - [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
+
+## Simple Usage
+
+```python
+from self_supervised.simclr import *
+dls = get_dls(resize, bs)
+model = create_simclr_model(arch=xresnet34, pretrained=False)
+learn = Learner(dls, model, SimCLRLoss(temp=0.1), opt_func=opt_func, cbs=[SimCLR(size=size)])
+learn.fit_flat_cos(100, 1e-2)
+```
+
+```python
+from self_supervised.byol import *
+dls = get_dls(resize, bs)
+model = create_byol_model(arch=xresnet34, pretrained=False)
+learn = Learner(dls, model, byol_loss, opt_func=opt_func, cbs=[BYOL(size=size, T=0.99)])
+learn.fit_flat_cos(100, 1e-2)
+```
+
+```python
+from self_supervised.swav import *
+dls = get_dls(resize, bs)
+model = create_swav_model(arch=xresnet34, pretrained=False)
+learn = Learner(dls, model, SWAVLoss(), opt_func=opt_func, cbs=[SWAV(crop_sizes=[size,96], 
+                          num_crops=[2,6],
+                          min_scales=[0.25,0.2],
+                          max_scales=[1.0,0.35])])
+learn.fit_flat_cos(100, 1e-2)
+```
 
 ## ImageWang Benchmarks
 
