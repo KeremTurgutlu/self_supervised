@@ -80,7 +80,7 @@ byol_loss = symmetric_mse_loss
 
 # Cell
 class BYOL(Callback):
-    "Implementation of https://arxiv.org/pdf/2006.07733.pdf"
+    "BYOL callback"
     def __init__(self, T=0.99, size=224, **aug_kwargs):
         store_attr("T")
         self.aug1 = get_aug_pipe(size, **aug_kwargs)

@@ -222,7 +222,7 @@ nb_path: "nbs/20-byol.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This function creates an encoder which essentially outputs the embeddings/representations we learn through self-supervised training. It uses <code>create_body</code> function from fastai, you can pass any <code>arch</code> that is supported, specify number of input channels with <code>n_in</code>, optionally load <code>pretrained</code> weights if available and or use <code>concat_pool</code>. Instead of directly using this function you will most likely call <a href="/self_supervised/10-simclr.html#create_simclr_model"><code>create_simclr_model</code></a> when creating your model.</p>
+<p>This function creates an encoder which essentially outputs the embeddings/representations we learn through self-supervised training. It uses <code>create_body</code> function from fastai, you can pass any <code>arch</code> that is supported, specify number of input channels with <code>n_in</code>, optionally load <code>pretrained</code> weights if available and or use <code>concat_pool</code>. Instead of directly using this function you will most likely call <a href="/self_supervised/20-byol.html#create_byol_model"><code>create_byol_model</code></a> when creating your model.</p>
 
 </div>
 </div>
@@ -301,7 +301,7 @@ nb_path: "nbs/20-byol.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You may notice <a href="/self_supervised/30-swav.html#MLP"><code>MLP</code></a> module defined here is different than the one defined in <a href="/self_supervised/10-simclr.html#create_simclr_model"><code>create_simclr_model</code></a>, in the sense that it has a batchnorm layer. You can read this great <a href="https://untitled-ai.github.io/understanding-self-supervised-contrastive-learning.html">blog post</a> for a better intuition on the effect of the batchnorm layer in <a href="/self_supervised/20-byol.html#BYOL"><code>BYOL</code></a></p>
+<p>You may notice <a href="/self_supervised/30-swav.html#MLP"><code>MLP</code></a> module defined here is different than the one defined in SimCLR, in the sense that it has a batchnorm layer. You can read this great <a href="https://untitled-ai.github.io/understanding-self-supervised-contrastive-learning.html">blog post</a> for a better intuition on the effect of the batchnorm layer in <a href="/self_supervised/20-byol.html#BYOL"><code>BYOL</code></a></p>
 
 </div>
 </div>
@@ -378,7 +378,7 @@ nb_path: "nbs/20-byol.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="BYOLCallback">BYOLCallback<a class="anchor-link" href="#BYOLCallback"> </a></h2>
+<h2 id="BYOL-Callback">BYOL Callback<a class="anchor-link" href="#BYOL-Callback"> </a></h2>
 </div>
 </div>
 </div>
@@ -415,7 +415,7 @@ nb_path: "nbs/20-byol.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This loss function calculates symmetric mse loss between projections and targets of the different views of the same image</p>
+<p>This loss function calculates symmetric mse loss between predictions from predictor and targets from target model of the different views of the same image</p>
 
 </div>
 </div>
@@ -473,7 +473,7 @@ nb_path: "nbs/20-byol.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="BYOL" class="doc_header"><code>class</code> <code>BYOL</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L82" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOL</code>(<strong><code>T</code></strong>=<em><code>0.99</code></em>, <strong><code>size</code></strong>=<em><code>224</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
-<p>Implementation of <a href="https://arxiv.org/pdf/2006.07733.pdf">https://arxiv.org/pdf/2006.07733.pdf</a></p>
+<p>BYOL callback</p>
 
 </div>
 
