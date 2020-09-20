@@ -169,8 +169,8 @@ class SWAV(Callback):
 
     def after_batch(self):
         with torch.no_grad():
-            w = learn.model.prototypes.weight.data.clone()
-            learn.model.prototypes.weight.data.copy_(F.normalize(w))
+            w = self.learn.model.prototypes.weight.data.clone()
+            self.learn.model.prototypes.weight.data.copy_(F.normalize(w))
 
 
     def show_one(self):
