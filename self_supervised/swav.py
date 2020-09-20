@@ -136,13 +136,6 @@ class SWAV(Callback):
             self.augs += [get_aug_pipe(size, mins, maxs, **aug_kwargs) for i in range(nc)]
 
 
-#     def before_fit(self):
-#         self.old_lf = self.learn.loss_func
-#         self.old_met = self.learn.metrics
-#         self.learn.metrics = []
-#         self.learn.loss_func = SimCLRLoss(self.temp)
-
-
     def before_batch(self):
         "Compute multi crop inputs"
         self.bs = self.x.size(0)
