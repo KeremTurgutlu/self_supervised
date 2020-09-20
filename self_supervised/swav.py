@@ -50,6 +50,7 @@ class MLP(Module):
 
 # Cell
 class SwAVModel(Module):
+    "SwAV model"
     def __init__(self,encoder,projector,prototypes):
         self.encoder,self.projector,self.prototypes = encoder,projector,prototypes
 
@@ -106,9 +107,9 @@ def sinkhorn_knopp(Q, nmb_iters):
 
 # Cell
 class SWAVLoss(Module):
+    "Multi crop loss"
     def __init__(self): pass
     def forward(self,log_ps,qs):
-        "Multi crop loss"
         loss = 0
         for i in range(len(qs)):
             l = 0
@@ -120,6 +121,7 @@ class SWAVLoss(Module):
 
 # Cell
 class SWAV(Callback):
+    "SwAV callback"
     def __init__(self, crop_sizes=[224,96],
                        num_crops=[2,6],
                        min_scales=[0.25,0.05],
