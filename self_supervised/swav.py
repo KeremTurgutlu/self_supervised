@@ -87,14 +87,14 @@ def create_swav_model(arch=resnet50, n_in=3, pretrained=True, cut=None, concat_p
     return SwAVModel(encoder, projector, prototypes)
 
 # Cell
-def sinkhorn_knopp(Q, nmb_iters):
+def sinkhorn_knopp(Q, nmb_iters, device=default_device):
     "https://en.wikipedia.org/wiki/Sinkhorn%27s_theorem#Sinkhorn-Knopp_algorithm"
     with torch.no_grad():
         sum_Q = torch.sum(Q)
         Q /= sum_Q
 
-        r = torch.ones(Q.shape[0]) / Q.shape[0]
-        c = torch.ones(Q.shape[1]) / Q.shape[1]
+        r = (torch.ones(Q.shape[0]) / Q.shape[0]).to(device)
+        c = (torch.ones(Q.shape[1]) / Q.shape[1]).to(device)
 
         curr_sum = torch.sum(Q, dim=1)
 
