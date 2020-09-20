@@ -156,7 +156,7 @@ class SWAV(Callback):
                 # output.size(1)//self.bs
                 target_b = output[self.bs*i:self.bs*(i+1)]
                 q = torch.exp(target_b/self.eps).t()
-                q = sinkhorn_knopp(q, self.n_sinkh_iter)
+                q = sinkhorn_knopp(q, self.n_sinkh_iter, q.device)
                 qs.append(q)
 
         log_ps = []
