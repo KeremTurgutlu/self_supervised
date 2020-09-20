@@ -546,7 +546,7 @@ nb_path: "nbs/20-byol.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="BYOL" class="doc_header"><code>class</code> <code>BYOL</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L90" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOL</code>(<strong><code>T</code></strong>=<em><code>0.99</code></em>, <strong><code>debug</code></strong>=<em><code>True</code></em>, <strong><code>size</code></strong>=<em><code>224</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
+<h2 id="BYOL" class="doc_header"><code>class</code> <code>BYOL</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/byol.py#L90" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>BYOL</code>(<strong><code>T</code></strong>=<em><code>0.99</code></em>, <strong><code>size</code></strong>=<em><code>224</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
 <p>Implementation of <a href="https://arxiv.org/pdf/2006.07733.pdf">https://arxiv.org/pdf/2006.07733.pdf</a></p>
 
@@ -595,7 +595,7 @@ nb_path: "nbs/20-byol.ipynb"
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">create_byol_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">resnet18</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">byol_loss</span><span class="p">,</span>
-                <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">BYOL</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
+                <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">BYOL</span><span class="p">(</span><span class="n">T</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">stats</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span>
                      <span class="n">ShortEpochCallback</span><span class="p">(</span><span class="mf">0.001</span><span class="p">)])</span>
 </pre></div>
 

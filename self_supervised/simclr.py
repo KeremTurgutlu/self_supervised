@@ -79,16 +79,9 @@ class SimCLRLoss(Module):
 
 # Cell
 class SimCLR(Callback):
-    def __init__(self, temp=0.1, size=256, **aug_kwargs):
+    def __init__(self, size=256, **aug_kwargs):
         self.aug1 = get_aug_pipe(size, **aug_kwargs)
         self.aug2 = get_aug_pipe(size, **aug_kwargs)
-        self.temp = temp
-
-    def before_fit(self):
-        self.old_lf = self.learn.loss_func
-        self.old_met = self.learn.metrics
-        self.learn.metrics = []
-        self.learn.loss_func = SimCLRLoss(self.temp)
 
     def before_batch(self):
         xi,xj = self.aug1(self.x), self.aug2(self.x)
@@ -96,14 +89,10 @@ class SimCLR(Callback):
         bs = self.learn.xb[0].shape[0]
         self.learn.yb = (torch.arange(bs, device=self.dls.device).roll(bs//2),)
 
-    def after_fit(self):
-        self.learn.loss_fun = self.old_lf
-        self.learn.metrics = self.old_met
-
     def show_one(self):
-        xb = self.learn.xb[0]
+        xb = TensorImage(self.learn.xb[0]) # after torch.cat TensorImage becomes tensor
         bs = len(xb)//2
-        b1 = self.aug1.decode(to_detach(xb[:bs]))
-        b2 = self.aug2.decode(to_detach(xb[bs:]))
-        i = np.random.choice(len(b1))
-        show_images([b1[i], b2[i]], nrows=1, ncols=2)
+        i = np.random.choice(bs)
+        xb = self.aug1.decode(xb.to('cpu').clone()).clamp(0,1)
+        images = [xb[i], xb[bs+i]]
+        show_images(images)

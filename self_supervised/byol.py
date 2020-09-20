@@ -89,8 +89,8 @@ byol_loss = symmetric_mse_loss
 # Cell
 class BYOL(Callback):
     "Implementation of https://arxiv.org/pdf/2006.07733.pdf"
-    def __init__(self, T=0.99, debug=True, size=224, **aug_kwargs):
-        self.T, self.debug = T, debug
+    def __init__(self, T=0.99, size=224, **aug_kwargs):
+        store_attr("T")
         self.aug1 = get_aug_pipe(size, **aug_kwargs)
         self.aug2 = get_aug_pipe(size, **aug_kwargs)
 
@@ -103,15 +103,8 @@ class BYOL(Callback):
 
     def before_batch(self):
         "Generate 2 views of the same image and calculate target projections for these views"
-        if self.debug: print(f"self.x[0]: {self.x[0]}")
-
         v1,v2 = self.aug1(self.x), self.aug2(self.x.clone())
         self.learn.xb = (v1,v2)
-
-        if self.debug:
-            print(f"v1[0]: {v1[0]}\nv2[0]: {v2[0]}")
-            self.show_one()
-            assert not torch.equal(*self.learn.xb)
 
         with torch.no_grad():
             z1 = self.target_model.projector(self.target_model.encoder(v1))
@@ -131,4 +124,4 @@ class BYOL(Callback):
         b1 = self.aug1.decode(to_detach(self.learn.xb[0]))
         b2 = self.aug2.decode(to_detach(self.learn.xb[1]))
         i = np.random.choice(len(b1))
-        show_images([b1[i],b2[i]], nrows=1, ncols=2)
+        show_images([b1[i],b2[i]])
