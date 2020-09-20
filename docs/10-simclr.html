@@ -467,7 +467,7 @@ nb_path: "nbs/10-simclr.ipynb"
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="SimCLRLoss" class="doc_header"><code>class</code> <code>SimCLRLoss</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L69" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLRLoss</code>(<strong><code>temp</code></strong>=<em><code>0.1</code></em>) :: <code>Module</code></p>
 </blockquote>
-<p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
+<p>SimCLR loss function</p>
 
 </div>
 
@@ -540,9 +540,9 @@ nb_path: "nbs/10-simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L81" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>size</code></strong>=<em><code>256</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
+<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/simclr.py#L82" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>size</code></strong>=<em><code>256</code></em>, <strong>**<code>aug_kwargs</code></strong>) :: <code>Callback</code></p>
 </blockquote>
-<p>Basic class handling tweaks of the training loop by changing a <code>Learner</code> in various events</p>
+<p>SimCLR callback</p>
 
 </div>
 
@@ -556,7 +556,7 @@ nb_path: "nbs/10-simclr.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This is the implemented callback for SimCLR training. You can pass <code>size</code> to define the random resized crop size and other data augmentation arguments defined in <a href="/self_supervised/30-swav.html#get_aug_pipe"><code>get_aug_pipe</code></a> through <code>aug_kwargs</code>. With <code>show_one()</code> method you can inspect data augmentations as a sanity check</p>
+<p>You can pass <code>size</code> to define the random resized crop size and other data augmentation arguments defined in <a href="/self_supervised/30-swav.html#get_aug_pipe"><code>get_aug_pipe</code></a> through <code>aug_kwargs</code>. Also, with <code>show_one()</code> method you can inspect data augmentations as a sanity check</p>
 
 </div>
 </div>

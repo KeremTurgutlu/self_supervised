@@ -67,6 +67,7 @@ def remove_diag(x):
 
 # Cell
 class SimCLRLoss(Module):
+    "SimCLR loss function"
     def __init__(self, temp=0.1):
         self.temp = temp
 
@@ -79,6 +80,7 @@ class SimCLRLoss(Module):
 
 # Cell
 class SimCLR(Callback):
+    "SimCLR callback"
     def __init__(self, size=256, **aug_kwargs):
         self.aug1 = get_aug_pipe(size, **aug_kwargs)
         self.aug2 = get_aug_pipe(size, **aug_kwargs)
