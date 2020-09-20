@@ -67,15 +67,15 @@ def remove_diag(x):
 
 # Cell
 class SimCLRLoss(Module):
-    def __init__(self, temp=0.5):
+    def __init__(self, temp=0.1):
         self.temp = temp
 
-    def forward(self, input, labels):
-        bs,feat = input.shape
-        csim = F.cosine_similarity(input, input.unsqueeze(dim=1), dim=-1)/self.temp
+    def forward(self, inp, targ):
+        bs,feat = inp.shape
+        csim = F.cosine_similarity(inp, inp.unsqueeze(dim=1), dim=-1)/self.temp
         csim = remove_diag(csim)
-        labels =  remove_diag(torch.eye(labels.shape[0], device=input.device)[labels]).nonzero()[:,-1]
-        return F.cross_entropy(csim, labels)
+        targ = remove_diag(torch.eye(targ.shape[0], device=inp.device)[targ]).nonzero()[:,-1]
+        return F.cross_entropy(csim, targ)
 
 # Cell
 class SimCLR(Callback):
@@ -90,7 +90,7 @@ class SimCLR(Callback):
         self.learn.yb = (torch.arange(bs, device=self.dls.device).roll(bs//2),)
 
     def show_one(self):
-        xb = TensorImage(self.learn.xb[0]) # after torch.cat TensorImage becomes tensor
+        xb = TensorImage(self.learn.xb[0])
         bs = len(xb)//2
         i = np.random.choice(bs)
         xb = self.aug1.decode(xb.to('cpu').clone()).clamp(0,1)
