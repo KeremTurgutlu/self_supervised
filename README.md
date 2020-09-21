@@ -2,7 +2,7 @@
 > Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks.
 
 
-You may find documentation [here](https://keremturgutlu.github.io/self_supervised)
+You may find documentation [here](https://keremturgutlu.github.io/self_supervised) and github repo [here](https://github.com/keremturgutlu/self_supervised/tree/master/)
 
 ## Install
 
