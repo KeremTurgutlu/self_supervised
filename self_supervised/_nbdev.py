@@ -2,7 +2,8 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"get_aug_pipe": "30-swav.ipynb",
+index = {"transfer_weights": "00-utils.ipynb",
+         "get_aug_pipe": "30-swav.ipynb",
          "create_encoder": "30-swav.ipynb",
          "MLP": "30-swav.ipynb",
          "SimCLRModel": "10-simclr.ipynb",
@@ -21,7 +22,8 @@ index = {"get_aug_pipe": "30-swav.ipynb",
          "SWAVLoss": "30-swav.ipynb",
          "SWAV": "30-swav.ipynb"}
 
-modules = ["simclr.py",
+modules = ["utils.py",
+           "simclr.py",
            "byol.py",
            "swav.py"]
 
