@@ -2,7 +2,7 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"transfer_learn": "00-utils.ipynb",
+index = {"transfer_weights": "00-utils.ipynb",
          "get_aug_pipe": "30-swav.ipynb",
          "create_encoder": "30-swav.ipynb",
          "MLP": "30-swav.ipynb",
