@@ -6,6 +6,7 @@
   "Algorithms": {
     "SimCLR": "/10-simclr.html",
     "BYOL": "/20-byol.html",
-    "SwAV": "/30-swav.html"
-    }
+    "SwAV": "/30-swav.html",
+    "Utilities": "/00-utils.html"
+   } 
 }

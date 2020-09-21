@@ -24,6 +24,9 @@ entries:
     - output: web,pdf
       title: SwAV
       url: /30-swav.html
+    - output: web,pdf
+      title: Utilities
+      url: /00-utils.html
     output: web
     title: Algorithms
   output: web
