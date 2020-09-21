@@ -13,15 +13,18 @@ def transfer_weights(learn:Learner, weights_path:Path, device:torch.device=None)
     if 'model' in new_state_dict.keys(): new_state_dict = new_state_dict['model']
     #allow for simply exporting the raw PyTorch model
     learn_state_dict = learn.model.state_dict()
+    matched_layers = 0
     for name, param in learn_state_dict.items():
         name = 'encoder.'+name[2:]
         if name in new_state_dict:
+            matched_layers += 1
             input_param = new_state_dict[name]
             if input_param.shape == param.shape:
                 param.copy_(input_param)
             else:
-                print('Shape mismatch at:', name, 'skipping')
+                raise ValueError(f'Shape mismatch at {name}, please ensure you have the same backbone')
         else: pass # these are weights that weren't in the original model, such as a new head
+    if matched_layers == 0: raise Exception("No shared weight names were found between the models")
     learn.model.load_state_dict(learn_state_dict)
     learn.freeze()
     print("Weights successfully transferred!")
