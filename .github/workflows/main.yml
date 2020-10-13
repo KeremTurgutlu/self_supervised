@@ -13,7 +13,7 @@ jobs:
       run: |
         pip install nbdev jupyter
         pip install -e .
-]    - name: Read all notebooks
+    - name: Read all notebooks
       run: |
         nbdev_read_nbs
     - name: Check if all notebooks are cleaned
