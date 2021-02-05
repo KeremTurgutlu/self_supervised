@@ -13,7 +13,6 @@ jobs:
       run: |
         pip install nbdev jupyter
         pip install -e .
-        pip install fastcore==1.0.9
     - name: Read all notebooks
       run: |
         nbdev_read_nbs

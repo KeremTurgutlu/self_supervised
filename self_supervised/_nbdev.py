@@ -3,14 +3,23 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"transfer_weights": "00-utils.ipynb",
+         "GaussBlur2D": "01-augmentations.ipynb",
+         "get_kornia_batch_augs": "01-augmentations.ipynb",
+         "get_torchvision_batch_augs": "01-augmentations.ipynb",
+         "get_batch_augs": "01-augmentations.ipynb",
          "get_aug_pipe": "30-swav.ipynb",
          "create_encoder": "30-swav.ipynb",
          "MLP": "30-swav.ipynb",
          "SimCLRModel": "10-simclr.ipynb",
          "create_simclr_model": "10-simclr.ipynb",
-         "remove_diag": "10-simclr.ipynb",
+         "remove_diag": "10b-simclr_v2.ipynb",
          "SimCLRLoss": "10-simclr.ipynb",
          "SimCLR": "10-simclr.ipynb",
+         "create_projection_head": "10b-simclr_v2.ipynb",
+         "SimCLRv2Model": "10b-simclr_v2.ipynb",
+         "create_simclrv2_model": "10b-simclr_v2.ipynb",
+         "SimCLRv2Loss": "10b-simclr_v2.ipynb",
+         "SimCLRv2": "10b-simclr_v2.ipynb",
          "BYOLModel": "20-byol.ipynb",
          "create_byol_model": "20-byol.ipynb",
          "symmetric_mse_loss": "20-byol.ipynb",
@@ -23,7 +32,9 @@ index = {"transfer_weights": "00-utils.ipynb",
          "SWAV": "30-swav.ipynb"}
 
 modules = ["utils.py",
+           "augmentations.py",
            "simclr.py",
+           "simclr_v2.py",
            "byol.py",
            "swav.py"]
 
