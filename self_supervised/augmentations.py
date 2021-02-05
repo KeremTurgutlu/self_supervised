@@ -36,7 +36,8 @@ def get_kornia_batch_augs(size,
                         blur_s=(4,32),
                         same_on_batch=False,
                         flip_p=0.5, jitter_p=0.3, bw_p=0.3, blur_p=0.3,
-                        stats_args=imagenet_stats,
+                        stats=imagenet_stats,
+                        cuda=default_device().type == 'cuda',
                         xtra_tfms=[]):
     "Input batch augmentations implemented in kornia"
     tfms = []
@@ -47,7 +48,7 @@ def get_kornia_batch_augs(size,
     if bw:     tfms += [korniatfm.RandomGrayscale(p=bw_p, same_on_batch=same_on_batch)]
     if blur:   tfms += [RandomGaussianBlur(p=blur_p, s=blur_s, same_on_batch=same_on_batch)]
 
-    if stats_args is not None: tfms += [Normalize.from_stats(*stats_args)]
+    if stats is not None: tfms += [Normalize.from_stats(*stats, cuda=cuda)]
 
     tfms += xtra_tfms
     pipe = Pipeline(tfms, split_idx = 0)
@@ -63,7 +64,8 @@ def get_torchvision_batch_augs(size,
                             s=.6,
                             blur_s=(4,32),
                             flip_p=0.5, bw_p=0.3, blur_p=0.3,
-                            stats_args=imagenet_stats,
+                            stats=imagenet_stats,
+                            cuda=default_device().type == 'cuda',
                             xtra_tfms=[]):
     "Input batch augmentations implemented in torchvision"
     tfms = []
@@ -75,7 +77,7 @@ def get_torchvision_batch_augs(size,
     if blur:   tfms += [RandomGaussianBlur(p=blur_p, s=blur_s)]
 
     tfms += xtra_tfms
-    if stats_args is not None: tfms += [Normalize.from_stats(*stats_args)]
+    if stats is not None: tfms += [Normalize.from_stats(*stats, cuda=cuda)]
 
     pipe = Pipeline(tfms, split_idx = 0)
     return pipe
@@ -91,7 +93,8 @@ def get_batch_augs(size,
                     blur_s=(4,32),
                     same_on_batch=False,
                     flip_p=0.5, jitter_p=0.3, bw_p=0.3, blur_p=0.3,
-                    stats_args=imagenet_stats,
+                    stats=imagenet_stats,
+                    cuda=default_device().type == 'cuda',
                     xtra_tfms=[]):
     "Input batch augmentations implemented in kornia"
     tfms = []
@@ -102,7 +105,7 @@ def get_batch_augs(size,
     if bw:     tfms += [korniatfm.RandomGrayscale(p=bw_p, same_on_batch=same_on_batch)]
     if blur:   tfms += [RandomGaussianBlur(p=blur_p, s=blur_s, same_on_batch=same_on_batch)]
 
-    if stats_args is not None: tfms += [Normalize.from_stats(*stats_args)]
+    if stats is not None: tfms += [Normalize.from_stats(*stats, cuda=cuda)]
 
     tfms += xtra_tfms
     pipe = Pipeline(tfms, split_idx = 0)
@@ -120,7 +123,8 @@ def get_fastai_batch_augs(size,
                         blur_s=(8,32),
                         same_on_batch=False,
                         flip_p=0.5, jitter_p=0.3, bw_p=0.3, blur_p=0.3,
-                        stats_args=imagenet_stats,
+                        stats=imagenet_stats,
+                        cuda=default_device().type == 'cuda',
                         xtra_tfms=[]):
     "Input batch augmentations implemented in kornia"
     tfms = []
@@ -136,7 +140,7 @@ def get_fastai_batch_augs(size,
     if blur:   tfms += [RandomGaussianBlur(p=blur_p, s=blur_s, same_on_batch=same_on_batch)]
 
 
-    if stats_args is not None: tfms += [Normalize.from_stats(*stats_args)]
+    if stats is not None: tfms += [Normalize.from_stats(*stats, cuda=cuda)]
 
     tfms += xtra_tfms
     tfms = setup_aug_tfms(tfms)
