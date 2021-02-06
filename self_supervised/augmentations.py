@@ -27,11 +27,13 @@ class RandomGaussianBlur(RandTransform):
 
 # Cell
 def get_kornia_batch_augs(size,
+                        rotate=True,
                         jitter=True,
                         bw=True,
                         blur=True,
                         resize_scale=(0.2, 1.0),
                         resize_ratio=(3/4, 4/3),
+                        rotate_deg=30,
                         s=.6,
                         blur_s=(4,32),
                         same_on_batch=False,
@@ -44,9 +46,12 @@ def get_kornia_batch_augs(size,
     tfms += [korniatfm.RandomResizedCrop((size, size), scale=resize_scale, ratio=resize_ratio, same_on_batch=same_on_batch)]
     tfms += [korniatfm.RandomHorizontalFlip(p=flip_p)]
 
+    if rotate: tfms += [korniatfm.RandomRotation(rotate_deg, same_on_batch=same_on_batch)]
+
     if jitter: tfms += [korniatfm.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s, p=jitter_p, same_on_batch=same_on_batch)]
     if bw:     tfms += [korniatfm.RandomGrayscale(p=bw_p, same_on_batch=same_on_batch)]
     if blur:   tfms += [RandomGaussianBlur(p=blur_p, s=blur_s, same_on_batch=same_on_batch)]
+
 
     if stats is not None: tfms += [Normalize.from_stats(*stats, cuda=cuda)]
 
@@ -56,11 +61,13 @@ def get_kornia_batch_augs(size,
 
 # Cell
 def get_torchvision_batch_augs(size,
+                            rotate=True,
                             jitter=True,
                             bw=True,
                             blur=True,
                             resize_scale=(0.2, 1.0),
                             resize_ratio=(3/4, 4/3),
+                            rotate_deg=30,
                             s=.6,
                             blur_s=(4,32),
                             flip_p=0.5, bw_p=0.3, blur_p=0.3,
@@ -71,6 +78,8 @@ def get_torchvision_batch_augs(size,
     tfms = []
     tfms += [tvtfm.RandomResizedCrop((size, size), scale=resize_scale, ratio=resize_ratio)]
     tfms += [tvtfm.RandomHorizontalFlip(p=flip_p)]
+
+    if rotate: tfms += [tvtfm.RandomRotation(rotate_deg)]
 
     if jitter: tfms += [tvtfm.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s)]
     if bw:     tfms += [tvtfm.RandomGrayscale(p=bw_p)]
@@ -84,11 +93,13 @@ def get_torchvision_batch_augs(size,
 
 # Cell
 def get_batch_augs(size,
+                    rotate=True,
                     jitter=True,
                     bw=True,
                     blur=True,
                     resize_scale=(0.2, 1.0),
                     resize_ratio=(3/4, 4/3),
+                    rotate_deg=30,
                     s=.6,
                     blur_s=(4,32),
                     same_on_batch=False,
@@ -100,6 +111,8 @@ def get_batch_augs(size,
     tfms = []
     tfms += [tvtfm.RandomResizedCrop((size, size), scale=resize_scale, ratio=resize_ratio)]
     tfms += [korniatfm.RandomHorizontalFlip(p=flip_p)]
+
+    if rotate: tfms += [Rotate(rotate_deg, batch=same_on_batch)]
 
     if jitter: tfms += [korniatfm.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s, p=jitter_p, same_on_batch=same_on_batch)]
     if bw:     tfms += [korniatfm.RandomGrayscale(p=bw_p, same_on_batch=same_on_batch)]
@@ -113,12 +126,14 @@ def get_batch_augs(size,
 
 # Cell
 def get_fastai_batch_augs(size,
+                        rotate=True,
                         jitter=True,
                         bw=True,
                         blur=True,
                         min_scale=0.2,
                         resize_ratio=(3/4, 4/3),
                         max_lighting=0.2,
+                        rotate_deg=30,
                         s=.6,
                         blur_s=(8,32),
                         same_on_batch=False,
@@ -130,6 +145,8 @@ def get_fastai_batch_augs(size,
     tfms = []
     tfms += [RandomResizedCropGPU((size, size), min_scale=min_scale, ratio=resize_ratio)]
     tfms += [Flip(p=flip_p)]
+
+    if rotate: tfms += [Rotate(rotate_deg, batch=same_on_batch)]
 
     if jitter:
         tfms += [Brightness(max_lighting=max_lighting, p=jitter_p, batch=same_on_batch)]
