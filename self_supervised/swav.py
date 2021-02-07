@@ -64,16 +64,10 @@ def sinkhorn_knopp(Q, nmb_iters, device=default_device):
 
 # Cell
 class SWAVLoss(Module):
-    "Multi crop loss"
-    def __init__(self): pass
     def forward(self,log_ps,qs):
         loss = 0
-        for i in range(len(qs)):
-            l = 0
-            q = qs[i]
-            for p in (log_ps[:i] + log_ps[i+1:]):
-                l -= torch.mean(torch.sum(q*p, dim=1))/(len(log_ps)-1)
-            loss += l/len(qs)
+        t = (qs.unsqueeze(1)*log_ps.unsqueeze(0)).sum(-1).mean(-1)
+        for i, ti in enumerate(t): loss-=(ti.sum() - ti[i])/(len(ti)-1)/len(t)
         return loss
 
 # Cell
@@ -122,6 +116,8 @@ class SWAV(Callback):
             log_p = F.log_softmax(output[self.bs*v:self.bs*(v+1)] / self.temp, dim=1)
             log_ps.append(log_p)
 
+        log_ps = torch.stack(log_ps)
+        qs = torch.stack(qs)
         self.learn.pred, self.learn.yb = log_ps, (qs,)
 
 

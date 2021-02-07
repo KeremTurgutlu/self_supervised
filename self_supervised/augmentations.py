@@ -143,7 +143,7 @@ def get_batch_augs(size,
                     s=.6,
                     blur_s=(4,32),
                     same_on_batch=False,
-                    flip_p=0.5, jitter_p=0.3, bw_p=0.3, blur_p=0.3,
+                    flip_p=0.5, rotate_p=0.3, jitter_p=0.3, bw_p=0.3, blur_p=0.3,
                     stats=imagenet_stats,
                     cuda=default_device().type == 'cuda',
                     xtra_tfms=[]):
@@ -152,7 +152,7 @@ def get_batch_augs(size,
     tfms += [tvtfm.RandomResizedCrop((size, size), scale=resize_scale, ratio=resize_ratio)]
     tfms += [korniatfm.RandomHorizontalFlip(p=flip_p)]
 
-    if rotate: tfms += [Rotate(rotate_deg, batch=same_on_batch)]
+    if rotate: tfms += [Rotate(max_deg=rotate_deg, p=rotate_p, batch=same_on_batch)]
 
     if jitter: tfms += [korniatfm.ColorJitter(0.8*s, 0.8*s, 0.8*s, 0.2*s, p=jitter_p, same_on_batch=same_on_batch)]
     if bw:     tfms += [korniatfm.RandomGrayscale(p=bw_p, same_on_batch=same_on_batch)]
