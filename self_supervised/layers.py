@@ -4,7 +4,6 @@ __all__ = ['create_fastai_encoder', 'create_timm_encoder']
 
 # Cell
 from fastai.vision.all import *
-from fastai.vision.learner import _update_first_layer
 import timm
 
 # Cell
