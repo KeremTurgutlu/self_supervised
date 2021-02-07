@@ -29,8 +29,10 @@ def create_timm_encoder(arch:str, pretrained=True, cut=None, n_in=3, pool_type=N
 # Cell
 def create_mlp_module(dim,hidden_size,projection_size,bn=False,nlayers=2):
     "MLP module as described in papers, used as projection layer"
-    l = [nn.Linear(dim, hidden_size)]
-    if bn: l += [nn.BatchNorm1d(hidden_size)]
-    l += [nn.ReLU(inplace=True)]
-    ls = l*(nlayers-1) + [nn.Linear(hidden_size, projection_size)]
+    l = []
+    for i in range(nlayers-1):
+        l += [nn.Linear(dim, hidden_size) if i == 0 else nn.Linear(hidden_size, hidden_size)]
+        if bn: l += [nn.BatchNorm1d(hidden_size)]
+        l += [nn.ReLU(inplace=True)]
+    ls = l + [nn.Linear(hidden_size, projection_size)]
     return nn.Sequential(*ls)

@@ -41,7 +41,7 @@ class SimCLRLoss(Module):
 # Cell
 class SimCLR(Callback):
     order,run_valid = 9,True
-    def __init__(self, size, aug_func, **aug_kwargs):
+    def __init__(self, size, aug_func=get_batch_augs, **aug_kwargs):
         self.aug1 = aug_func(size, **aug_kwargs)
         self.aug2 = aug_func(size, **aug_kwargs)
         print(self.aug1); print(self.aug2)
