@@ -9,7 +9,7 @@ import timm
 # Cell
 # https://github.com/rwightman/pytorch-image-models/blob/3a7aa95f7e5fc90a6a2683c756e854e26201d82e/timm/models/layers/adaptive_avgmax_pool.py#L79
 mk_class('PoolType', **{o:o.lower() for o in ['Fast', 'Avg', 'AvgMax', 'CatAvgMax', 'Max']},
-         doc="All possible resize method as attributes to get tab-completion and typo-proofing")
+         doc="All possible pooling types as attributes to get tab-completion and typo-proofing")
 
 # Cell
 def create_fastai_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolType.CatAvgMax):
