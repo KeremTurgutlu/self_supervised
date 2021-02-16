@@ -3,6 +3,7 @@
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
 index = {"transfer_weights": "00-utils.ipynb",
+         "GaussianBlur": "01-augmentations.ipynb",
          "RandomGaussianBlur": "01-augmentations.ipynb",
          "get_kornia_batch_augs": "01-augmentations.ipynb",
          "get_torchvision_batch_augs": "01-augmentations.ipynb",
