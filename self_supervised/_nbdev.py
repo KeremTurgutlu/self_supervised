@@ -2,8 +2,7 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"transfer_weights": "00-utils.ipynb",
-         "GaussianBlur": "01-augmentations.ipynb",
+index = {"GaussianBlur": "01-augmentations.ipynb",
          "RandomGaussianBlur": "01-augmentations.ipynb",
          "get_kornia_batch_augs": "01-augmentations.ipynb",
          "get_torchvision_batch_augs": "01-augmentations.ipynb",
@@ -33,8 +32,7 @@ index = {"transfer_weights": "00-utils.ipynb",
          "SWAVLoss": "30-swav.ipynb",
          "SWAV": "30-swav.ipynb"}
 
-modules = ["utils.py",
-           "augmentations.py",
+modules = ["augmentations.py",
            "layers.py",
            "simclr.py",
            "simclr_v2.py",
