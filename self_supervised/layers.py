@@ -16,13 +16,13 @@ mk_class('PoolingType', **{o:o.lower() for o in ['Fast', 'Avg', 'AvgMax', 'CatAv
 #nbdev_comment _all_ = ['PoolingType']
 
 # Cell
-def create_fastai_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolType.CatAvgMax):
+def create_fastai_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolingType.CatAvgMax):
     "Create timm encoder from a given arch backbone"
     encoder = create_body(arch, n_in, pretrained, cut=None)
     pool = AdaptiveConcatPool2d() if pool_type == "catavgmax" else nn.AdaptiveAvgPool2d(1)
     return nn.Sequential(*encoder, pool, Flatten())
 
-def create_timm_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolType.CatAvgMax):
+def create_timm_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolingType.CatAvgMax):
     "Creates a body from any model in the `timm` library. If pool_type is None then it uses timm default"
     if ('vit' in arch) or (pool_type is None):
         model = timm.create_model(arch, pretrained=pretrained, in_chans=n_in, num_classes=0)
@@ -30,7 +30,7 @@ def create_timm_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolType.Ca
         model = timm.create_model(arch, pretrained=pretrained, in_chans=n_in, num_classes=0, global_pool=pool_type)
     return model
 
-def create_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolType.CatAvgMax):
+def create_encoder(arch:str, pretrained=True, n_in=3, pool_type=PoolingType.CatAvgMax):
     "A utility for creating encoder without specifying the package"
     if arch in globals(): return create_fastai_encoder(globals()[arch], pretrained, n_in, pool_type)
     else:                 return create_timm_encoder(arch, pretrained, n_in, pool_type)
