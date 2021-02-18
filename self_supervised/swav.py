@@ -73,7 +73,7 @@ class SWAVLoss(Module):
 # Cell
 class SWAV(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_func=get_batch_augs,
+    def __init__(self, aug_func=get_batch_augs, print_augs=False,
                        crop_sizes=[224,96],
                        num_crops=[2,6],
                        min_scales=[0.25,0.05],
@@ -88,7 +88,8 @@ class SWAV(Callback):
         self.augs = []
         for nc, size, mins, maxs in zip(num_crops, crop_sizes, min_scales, max_scales):
             self.augs += [aug_func(size, resize_scale=(mins, maxs), **aug_kwargs) for i in range(nc)]
-        for aug in self.augs:print(aug)
+        if print_augs:
+            for aug in self.augs: print(aug)
 
     def before_batch(self):
         "Compute multi crop inputs"

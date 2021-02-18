@@ -44,11 +44,11 @@ import copy
 
 class BYOL(Callback):
     order,run_valid = 9,True
-    def __init__(self, T=0.99, size=224, aug_func=get_batch_augs, **aug_kwargs):
+    def __init__(self, T=0.99, size=224, aug_func=get_batch_augs, print_augs=False, **aug_kwargs):
         store_attr("T")
         self.aug1 = aug_func(size, **aug_kwargs)
         self.aug2 = aug_func(size, **aug_kwargs)
-        print(self.aug1); print(self.aug2)
+        if print_augs: print(self.aug1), print(self.aug2)
 
     def before_fit(self):
         "Create target model"
