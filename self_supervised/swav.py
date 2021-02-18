@@ -87,7 +87,7 @@ class SWAV(Callback):
         store_attr('num_crops,crop_assgn_ids,temp,eps,n_sinkh_iter')
         self.augs = []
         for nc, size, mins, maxs in zip(num_crops, crop_sizes, min_scales, max_scales):
-            self.augs += [get_batch_augs(size, resize_scale=(mins, maxs), **aug_kwargs) for i in range(nc)]
+            self.augs += [aug_func(size, resize_scale=(mins, maxs), **aug_kwargs) for i in range(nc)]
         for aug in self.augs:print(aug)
 
     def before_batch(self):
