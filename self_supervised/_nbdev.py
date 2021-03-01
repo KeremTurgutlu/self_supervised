@@ -31,14 +31,18 @@ index = {"GaussianBlur": "01-augmentations.ipynb",
          "create_swav_model": "30-swav.ipynb",
          "sinkhorn_knopp": "30-swav.ipynb",
          "SWAVLoss": "30-swav.ipynb",
-         "SWAV": "30-swav.ipynb"}
+         "SWAV": "30-swav.ipynb",
+         "MoCoModel": "40-moco.ipynb",
+         "create_moco_model": "40-moco.ipynb",
+         "MOCO": "40-moco.ipynb"}
 
 modules = ["augmentations.py",
            "layers.py",
            "simclr.py",
            "simclr_v2.py",
            "byol.py",
-           "swav.py"]
+           "swav.py",
+           "moco.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
