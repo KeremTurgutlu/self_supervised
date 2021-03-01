@@ -9,9 +9,13 @@ from .layers import *
 
 # Cell
 class MoCoModel(Module):
+    # TODO: Add queue as buffer to torch module, is it needed for distrib??
     "MoCo model"
-    def __init__(self,encoder,projector): self.encoder,self.projector = encoder,projector
-    def forward(self,x): return F.normalize(self.projector(self.encoder(x)), dim=1)
+    def __init__(self,encoder,projector):
+        self.encoder,self.projector = encoder,projector
+
+    def forward(self,x):
+        return F.normalize(self.projector(self.encoder(x)), dim=1)
 
 # Cell
 def create_moco_model(encoder, n_in=3, hidden_size=256, projection_size=128):
@@ -33,7 +37,7 @@ class MOCO(Callback):
         if print_augs: print(self.aug1), print(self.aug2)
 
 
-    def before_train(self):
+    def before_fit(self):
         "Create key encoder and init queue"
         if (not hasattr(self, "encoder_k")) and (not hasattr(self, "queue")):
             # init key encoder
@@ -41,7 +45,7 @@ class MOCO(Callback):
             for param_k in self.encoder_k.parameters(): param_k.requires_grad = False
             # init queue
             nf = self.learn.model.projector[-1].out_features
-            self.queue = torch.randn(self.K, nf)
+            self.queue = torch.randn(self.K, nf).to(self.dls.device)
             self.queue = nn.functional.normalize(self.queue, dim=1)
             self.queue_ptr = 0
         else: raise Exception("Key encoder and queue is already defined")
@@ -59,7 +63,7 @@ class MOCO(Callback):
     def lf(self, pred, *yb):
         q,k = pred,yb[0]
         logits = q @ torch.cat([k, self.queue]).T / self.temp # Nx(N+K) instead of original Nx(1+K)
-        labels = torch.arange(len(q))
+        labels = torch.arange(len(q)).to(self.dls.device)
         return F.cross_entropy(logits, labels)
 
 
