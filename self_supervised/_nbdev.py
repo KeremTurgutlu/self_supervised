@@ -37,7 +37,7 @@ modules = ["augmentations.py",
            "vision/simclr.py",
            "vision/byol.py",
            "swav.py",
-           "moco.py"]
+           "vision/moco.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 

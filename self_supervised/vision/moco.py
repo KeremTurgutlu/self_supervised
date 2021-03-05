@@ -4,8 +4,8 @@ __all__ = ['MoCoModel', 'create_moco_model', 'MOCO']
 
 # Cell
 from fastai.vision.all import *
-from .augmentations import *
-from .layers import *
+from ..augmentations import *
+from ..layers import *
 
 # Cell
 class MoCoModel(Module):
@@ -26,7 +26,7 @@ def create_moco_model(encoder, n_in=3, hidden_size=256, projection_size=128):
     return MoCoModel(encoder, projector)
 
 # Cell
-import copy
+from copy import deepcopy
 
 class MOCO(Callback):
     order,run_valid = 9,True
@@ -41,7 +41,7 @@ class MOCO(Callback):
         "Create key encoder and init queue"
         if (not hasattr(self, "encoder_k")) and (not hasattr(self, "queue")):
             # init key encoder
-            self.encoder_k = copy.deepcopy(self.learn.model).to(self.dls.device)
+            self.encoder_k = deepcopy(self.learn.model).to(self.dls.device)
             for param_k in self.encoder_k.parameters(): param_k.requires_grad = False
             # init queue
             nf = self.learn.model.projector[-1].out_features
