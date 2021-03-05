@@ -65,6 +65,8 @@ class SimCLR(Callback):
         show_images(images, nrows=n)
 
 # Cell
+from ..dist import GatherLayer
+
 class DistributedSimCLR(Callback):
     order,run_valid = 9,True
     def __init__(self, size, aug_func=get_batch_augs, temp=0.07, print_augs=False, **aug_kwargs):
