@@ -143,7 +143,8 @@ class SWAV(Callback):
         embedding, output = self.pred
 
         # Update - no need to store all assignment crops, e.g. just 0 from [0,1]
-        if self.K is not None:  self._dequeue_and_enqueue(embedding[:self.bs])
+        # Update queue only during training
+        if (self.K is not None) and (self.learn.training):  self._dequeue_and_enqueue(embedding[:self.bs])
 
         # Compute codes
         qs = self._compute_codes(output)
