@@ -24,8 +24,6 @@ index = {"GaussianBlur": "01-augmentations.ipynb",
          "BYOL": "11-byol.ipynb",
          "SwAVModel": "12-swav.ipynb",
          "create_swav_model": "12-swav.ipynb",
-         "sinkhorn_knopp": "12-swav.ipynb",
-         "SWAVLoss": "12-swav.ipynb",
          "SWAV": "12-swav.ipynb",
          "MoCoModel": "13-moco.ipynb",
          "create_moco_model": "13-moco.ipynb",
@@ -36,7 +34,7 @@ modules = ["augmentations.py",
            "dist.py",
            "vision/simclr.py",
            "vision/byol.py",
-           "swav.py",
+           "vision/swav.py",
            "vision/moco.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
