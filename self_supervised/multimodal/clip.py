@@ -533,33 +533,37 @@ class CLIPTrainer(Callback):
         self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
 
 # Cell
-from ..dist import GatherLayer
 
 class DistributedCLIPTrainer(Callback):
     "Allows gathered InfoNCE loss while using multiple GPUs"
-    run_valid=True
+    order,run_valid = 9,True
 
     def before_fit(self):
         self.learn.loss_func = self.lf
 
     def lf(self, pred, *yb):
+
         image_features, text_features = pred
         logit_scale = self.model.module.logit_scale.exp()
 
+        bs, rank = image_features.size(0), rank_distrib()
+
         # image loss
-        all_text_features = list(GatherLayer.apply(text_features))
-        all_text_features.pop(rank_distrib())
-        all_text_features = torch.cat([text_features]+all_text_features)
+#         all_text_features = torch.cat(list(GatherLayer.apply(text_features)))
+        all_text_features = [torch.zeros_like(text_features) for _ in range(dist.get_world_size())]
+        dist.all_gather(all_text_features, text_features)
+        all_text_features = torch.cat(all_text_features)
         logits_per_image = logit_scale * image_features @ all_text_features.t()
-        labels = torch.arange(len(logits_per_image)).to(logits_per_image.device)
+        labels = torch.arange(rank*bs, (rank+1)*bs).to(logits_per_image.device)
         image_loss = F.cross_entropy(logits_per_image, labels)
 
         # text loss
-        all_image_features = list(GatherLayer.apply(image_features))
-        all_image_features.pop(rank_distrib())
-        all_image_features = torch.cat([image_features]+all_image_features)
+#         all_image_features = torch.cat(list(GatherLayer.apply(image_features)))
+        all_image_features = [torch.zeros_like(image_features) for _ in range(dist.get_world_size())]
+        dist.all_gather(all_image_features, image_features)
+        all_image_features = torch.cat(all_image_features)
         logits_per_text = logit_scale * text_features @ all_image_features.t()
-        labels = torch.arange(len(logits_per_text)).to(logits_per_text.device)
+        labels = torch.arange(rank*bs, (rank+1)*bs).to(logits_per_text.device)
         text_loss  = F.cross_entropy(logits_per_text, labels)
 
         return (image_loss+text_loss)/2
