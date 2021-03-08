@@ -1,19 +1,21 @@
-# ### Dataset
+# csv file with image and text pair information
 title_df = pd.read_csv("XXX.csv")
-cid2title = dict(zip(title_df['cid'], title_df['title']))
-cids = title_df['cid'].values
+
+# dict from content id: title of that content (image)
+cid2title = dict(zip(title_df['content_id'], title_df['title']))
+content_ids = title_df['content_id'].values
+
+# dict from content id: filepath of that content (image)
 datapath = Path("XXX")
-image_files = get_image_files(datapath)
-cid2file = {int(o.stem.split("_")[2]):o for o in image_files}
+cid2file = dict(zip(title_df['content_id'], title_df['filepath']))
 
-
+# content ids, and validation content ids
+cids = title_df['content_id'].values
+valid_cids = cids[:10000]
 
 def read_image(cid): return PILImage.create(cid2file[cid])
 def read_text(cid): return cid2title[cid]
-
-
-def dummy_targ(o): return 0 # loss func is not called without this
-
+def dummy_targ(o): return 0 # loss func is not called without it
 
 
 def get_dls(cids,valid_cids,size,bs):
@@ -32,31 +34,22 @@ def get_dls(cids,valid_cids,size,bs):
 
 
 
-
-sample_cids = pd.read_pickle("XXX.pkl")
-sample_valid_cids = pd.read_pickle("XXX.pkl")
-
-
-# In[52]:
-
-
-len(sample_cids), len(sample_valid_cids)
-
-
-# ### Train
-
 import wandb
 from fastai.callback.wandb import WandbCallback
-from custom_clip.model import CLIP as CustomCLIP
 from fastai.distributed import *
+
+from self_supervised.multimodal.clip import *
 torch.backends.cudnn.benchmark = True
 
 @call_parse
 def main(
-    size:      Param("Image resolution", int)=224,    
-    bs:        Param("Batch Size", int)=128,
-    epochs:    Param("Number of epochs for training", int)=1,    
-    lr:        Param("Learning rate for training", float)=5e-5):
+    size:               Param("Image resolution", int)=224,    
+    bs:                 Param("Batch Size", int)=128,
+    epochs:             Param("Number of epochs for training", int)=1,    
+    lr:                 Param("Learning rate for training", float)=5e-5,
+    use_grad_check:     Param("Learning rate for training", float)=True,
+    grad_check_nchunks: Param("Number of chunks for gradient checkpoint", int)=2,
+):
     
     WANDB = True
         
@@ -70,7 +63,7 @@ def main(
                              "Training":"From Scratch"});
 
     # dataloaders
-    dls, clip_tokenizer = get_dls(cids, sample_valid_cids[:10000], size, bs)
+    dls, clip_tokenizer = get_dls(cids, valid_cids, size, bs)
     if rank_distrib() == 0: print(len(dls.train_ds), len(dls.valid_ds))
         
     # callbacks
@@ -89,7 +82,7 @@ def main(
 
     # model
     vitb32_config_dict = vitb32_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
-    clip_model = CustomCLIP(**vitb32_config_dict)
+    clip_model = CLIP(**vitb32_config_dict, )
     learner = Learner(dls, clip_model, loss_func=noop, cbs=cbs,
                   metrics=[RetrievalAtK(k=5), 
                            RetrievalAtK(k=20), 
