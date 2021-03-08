@@ -94,7 +94,7 @@ class DistributedSimCLR(Callback):
 
     def lf(self, pred, *yb):
         # collect all embeddings from other GPUs
-        all_preds = GatherLayer.apply(pred)
+        all_preds = list(GatherLayer.apply(pred))
         # put current rank embeddings to index 0 for loss calc
         all_preds.pop(rank_distrib())
         all_preds = torch.cat([pred]+all_preds)

@@ -47,7 +47,7 @@ def main(
     bs:                 Param("Batch Size", int)=128,
     epochs:             Param("Number of epochs for training", int)=1,    
     lr:                 Param("Learning rate for training", float)=5e-5,
-    use_grad_check:     Param("Learning rate for training", float)=True,
+    use_grad_check:     Param("Learning rate for training", store_true)=True,
     grad_check_nchunks: Param("Number of chunks for gradient checkpoint", int)=2,
 ):
     
@@ -82,7 +82,7 @@ def main(
 
     # model
     vitb32_config_dict = vitb32_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
-    clip_model = CLIP(**vitb32_config_dict, )
+    clip_model = CLIP(**vitb32_config_dict, checkpoint=use_grad_check, checkpoint_nchunks=grad_check_nchunks)
     learner = Learner(dls, clip_model, loss_func=noop, cbs=cbs,
                   metrics=[RetrievalAtK(k=5), 
                            RetrievalAtK(k=20), 
