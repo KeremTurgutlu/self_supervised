@@ -11,7 +11,6 @@ from ..layers import *
 
 # Cell
 try:
-    import clip
     from clip.simple_tokenizer import SimpleTokenizer
 except:
     raise ImportError("""
@@ -496,7 +495,8 @@ class RetrievalAtK(AccumMetric):
 
         image_features = torch.cat(list(L(self.preds).itemgot(0)))
         text_features = torch.cat(list(L(self.preds).itemgot(1)))
-        ranking = torch.argsort(to_detach(image_features.to(default_device()) @ text_features.T.to(default_device())), descending=True)
+        ranking = torch.argsort(to_detach(image_features.to(default_device()) @ text_features.T.to(default_device()), gather=False),
+                                descending=True)
         preds = array(torch.where(ranking == torch.arange(len(image_features)).view(-1,1))[1])
 
         if self.k == "mean":     return preds.mean() + 1
