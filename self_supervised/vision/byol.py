@@ -73,7 +73,7 @@ class BYOL(Callback):
             for param_k, param_q in zip(self.target_model.parameters(), self.model.parameters()):
                 param_k.data = param_k.data * self.T + param_q.data * (1. - self.T)
 
-
+    @torch.no_grad()
     def show(self, n=1):
         x1,x2  = self.learn.xb
         bs = x1.size(0)

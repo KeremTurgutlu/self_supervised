@@ -104,7 +104,7 @@ class DistributedSimCLR(Callback):
         targ = self._remove_diag(torch.eye(targ.shape[0], device=self.dls.device)[targ]).nonzero()[:,-1]
         return F.cross_entropy(sim, targ)
 
-
+    @torch.no_grad()
     def show(self, n=1):
         bs = self.learn.x.size(0)//2
         x1,x2  = torch.split(self.learn.x, [bs,bs])

@@ -87,7 +87,7 @@ class MOCO(Callback):
         self._momentum_update_key_encoder()
         self._dequeue_and_enqueue()
 
-
+    @torch.no_grad()
     def show(self, n=1):
         x1,x2  = self.aug1(self.x), self.aug2(self.x.clone())
         bs = x1.size(0)

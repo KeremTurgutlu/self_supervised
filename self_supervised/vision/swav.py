@@ -165,7 +165,7 @@ class SWAV(Callback):
         for i, ti in enumerate(t): loss -= (ti.sum() - ti[i])/(len(ti)-1)/len(t)
         return loss
 
-
+    @torch.no_grad()
     def show_one(self):
         xb = self.learn.xb[0]
         i = np.random.choice(self.bs)
