@@ -1,3 +1,11 @@
+from fastai.vision.learner import *
+from fastai.distributed import *
+from fastai.callback.wandb import WandbCallback
+import wandb
+
+from self_supervised.multimodal.clip import *
+torch.backends.cudnn.benchmark = True
+
 # csv file with image and text pair information
 title_df = pd.read_csv("XXX.csv")
 
@@ -33,13 +41,6 @@ def get_dls(cids,valid_cids,size,bs):
     return dls, clip_tokenizer
 
 
-
-import wandb
-from fastai.callback.wandb import WandbCallback
-from fastai.distributed import *
-
-from self_supervised.multimodal.clip import *
-torch.backends.cudnn.benchmark = True
 
 @call_parse
 def main(
