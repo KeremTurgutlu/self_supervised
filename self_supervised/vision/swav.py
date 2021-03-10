@@ -31,8 +31,9 @@ class SwAVModel(Module):
         return z, self.prototypes(z)
 
 # Cell
-def create_swav_model(encoder, n_in=3, hidden_size=256, projection_size=128, n_protos=3000):
+def create_swav_model(encoder, hidden_size=256, projection_size=128, n_protos=3000):
     "Create SwAV model"
+    n_in  = in_channels(encoder)
     with torch.no_grad(): representation = encoder(torch.randn((2,n_in,128,128)))
     projector = create_mlp_module(representation.size(1), hidden_size, projection_size, bn=True)
     prototypes = nn.Linear(projection_size, n_protos, bias=False)

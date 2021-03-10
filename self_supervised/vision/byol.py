@@ -20,8 +20,9 @@ class BYOLModel(Module):
         return (q1,q2)
 
 # Cell
-def create_byol_model(encoder, n_in=3, hidden_size=4096, projection_size=256):
+def create_byol_model(encoder, hidden_size=4096, projection_size=256):
     "Create BYOL model"
+    n_in  = in_channels(encoder)
     with torch.no_grad(): representation = encoder(torch.randn((2,n_in,128,128)))
     projector = create_mlp_module(representation.size(1), hidden_size, projection_size, bn=True)
     predictor = create_mlp_module(projection_size, hidden_size, projection_size, bn=True)

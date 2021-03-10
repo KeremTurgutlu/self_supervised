@@ -14,8 +14,9 @@ class SimCLRModel(Module):
     def forward(self,x): return self.projector(self.encoder(x))
 
 # Cell
-def create_simclr_model(encoder, n_in=3, hidden_size=256, projection_size=128, nlayers=2):
+def create_simclr_model(encoder, hidden_size=256, projection_size=128, nlayers=2):
     "Create SimCLR model"
+    n_in  = in_channels(encoder)
     with torch.no_grad(): representation = encoder(torch.randn((2,n_in,128,128)))
     projector = create_mlp_module(representation.size(1), hidden_size, projection_size, nlayers=2)
     apply_init(projector)
