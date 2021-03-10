@@ -55,6 +55,7 @@ class SimCLR(Callback):
         return F.cross_entropy(sim, targ)
 
 
+    @torch.no_grad()
     def show(self, n=1):
         bs = self.learn.x.size(0)//2
         x1,x2  = torch.split(self.learn.x, [bs,bs])
@@ -63,7 +64,7 @@ class SimCLR(Callback):
         x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
         images = []
         for i in range(n): images += [x1[i],x2[i]]
-        show_images(images, nrows=n)
+        return show_batch(x1[0], None, images, max_n=n * n, ncols=None, nrows=n)
 
 # Cell
 from ..dist import GatherLayer
@@ -104,14 +105,3 @@ class DistributedSimCLR(Callback):
         sim = self._remove_diag(pred @ all_preds.T) / self.temp
         targ = self._remove_diag(torch.eye(targ.shape[0], device=self.dls.device)[targ]).nonzero()[:,-1]
         return F.cross_entropy(sim, targ)
-
-    @torch.no_grad()
-    def show(self, n=1):
-        bs = self.learn.x.size(0)//2
-        x1,x2  = torch.split(self.learn.x, [bs,bs])
-        idxs = np.random.choice(range(bs),n,False)
-        x1 = self.aug1.decode(x1[idxs].to('cpu').clone()).clamp(0,1)
-        x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
-        images = []
-        for i in range(n): images += [x1[i],x2[i]]
-        show_images(images, nrows=n)

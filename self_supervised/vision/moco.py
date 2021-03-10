@@ -88,6 +88,7 @@ class MOCO(Callback):
         self._momentum_update_key_encoder()
         self._dequeue_and_enqueue()
 
+
     @torch.no_grad()
     def show(self, n=1):
         x1,x2  = self.aug1(self.x), self.aug2(self.x.clone())
@@ -97,4 +98,4 @@ class MOCO(Callback):
         x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
         images = []
         for i in range(n): images += [x1[i],x2[i]]
-        show_images(images, nrows=n)
+        return show_batch(x1[0], None, images, max_n=n * n, ncols=None, nrows=n)

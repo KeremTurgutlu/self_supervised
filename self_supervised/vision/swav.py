@@ -172,4 +172,4 @@ class SWAV(Callback):
         i = np.random.choice(self.bs)
         images = [aug.decode(b.to('cpu').clone()).clamp(0.1)[i]
                       for b, aug in zip(xb, self.augs)]
-        show_images(images)
+        return show_batch(xb[0], None, images, max_n=1, ncols=len(images), nrows=1)
