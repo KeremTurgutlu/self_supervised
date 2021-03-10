@@ -27,6 +27,8 @@ requirements = ['pip', 'packaging']
 if cfg.get('requirements'): requirements += cfg.get('requirements','').split()
 if cfg.get('pip_requirements'): requirements += cfg.get('pip_requirements','').split()
 dev_requirements = (cfg.get('dev_requirements') or '').split()
+dep_links = cfg.get('dep_links','').split()
+
 
 setuptools.setup(
     name = cfg['lib_name'],
@@ -41,8 +43,8 @@ setuptools.setup(
     packages = setuptools.find_packages(),
     include_package_data = True,
     install_requires = requirements,
-    extras_require={ 'dev': dev_requirements },
-    dependency_links = cfg.get('dep_links','').split(),
+    extras_require={'dev': dev_requirements},
+    dependency_links = dep_links,
     python_requires  = '>=' + cfg['min_python'],
     long_description = open('README.md').read(),
     long_description_content_type = 'text/markdown',
