@@ -302,7 +302,9 @@ class CLIPMOCO(nn.Module):
                  transformer_heads: int,
                  transformer_layers: int,
                  K=4096,
-                 m=0.999):
+                 m=0.999,
+                 **kwargs
+                ):
         super().__init__()
 
         self.context_length = context_length
@@ -324,14 +326,16 @@ class CLIPMOCO(nn.Module):
                 width=vision_width,
                 layers=vision_layers,
                 heads=vision_heads,
-                output_dim=embed_dim
+                output_dim=embed_dim,
+                **kwargs
             )
 
         self.transformer = Transformer(
             width=transformer_width,
             layers=transformer_layers,
             heads=transformer_heads,
-            attn_mask=self.build_attention_mask()
+            attn_mask=self.build_attention_mask(),
+            **kwargs
         )
 
         self.vocab_size = vocab_size
