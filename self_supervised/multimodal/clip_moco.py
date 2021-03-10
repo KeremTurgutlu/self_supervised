@@ -509,11 +509,11 @@ class RetrievalAtK(AccumMetric):
 
 # Cell
 class CLIPMOCOTrainer(Callback):
-    run_valid=True
+    "MoCo Loss for CLIP. Can be used with or without DistributedDataParallel"
+    order,run_valid = 9,True
 
     def before_fit(self):
         self.learn.loss_func = self.lf
-
 
     def before_batch(self):
         "Generate image and text key for the current batch"
@@ -544,7 +544,8 @@ class CLIPMOCOTrainer(Callback):
 
     def after_step(self):
         # logit scaling set as max 100
-        self.learn.model.logit_scale.data = torch.clamp(self.learn.model.logit_scale.data, 0, 4.6052)
+        if num_distrib()>0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
+        else:               self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
 
         # queues update
         key_image_features, key_text_features = self.learn.yb

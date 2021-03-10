@@ -512,14 +512,16 @@ class RetrievalAtK(AccumMetric):
 
 # Cell
 class CLIPTrainer(Callback):
-    run_valid=True
+    "Can be used with or without DistributedDataParallel"
+    order,run_valid = 9,True
 
     def before_fit(self):
         self.learn.loss_func = self.lf
 
     def lf(self, pred, *yb):
         image_features, text_features = pred
-        logit_scale = self.model.logit_scale.exp()
+        if num_distrib()>0: logit_scale = self.model.logit_scale.exp()
+        else:               logit_scale = self.model.module.logit_scale.exp()
         logits_per_image = logit_scale * image_features @ text_features.t()
         logits_per_text = logit_scale * text_features @ image_features.t()
 
@@ -530,12 +532,12 @@ class CLIPTrainer(Callback):
 
     def after_step(self):
         # logit scaling set as max 100
-        self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
+        if num_distrib()>0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
+        else:               self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
 
 # Cell
-
 class DistributedCLIPTrainer(Callback):
-    "Allows gathered InfoNCE loss while using multiple GPUs"
+    "Distributed implementation of InfoNCE loss, should be used with DistributedDataParallel"
     order,run_valid = 9,True
 
     def before_fit(self):
