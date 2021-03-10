@@ -544,7 +544,7 @@ class CLIPMOCOTrainer(Callback):
 
     def after_step(self):
         # logit scaling set as max 100
-        if num_distrib()>0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
+        if num_distrib()==0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
         else:               self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
 
         # queues update

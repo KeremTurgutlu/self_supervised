@@ -520,7 +520,7 @@ class CLIPTrainer(Callback):
 
     def lf(self, pred, *yb):
         image_features, text_features = pred
-        if num_distrib()>0: logit_scale = self.model.logit_scale.exp()
+        if num_distrib()==0: logit_scale = self.model.logit_scale.exp()
         else:               logit_scale = self.model.module.logit_scale.exp()
         logits_per_image = logit_scale * image_features @ text_features.t()
         logits_per_text = logit_scale * text_features @ image_features.t()
@@ -532,7 +532,7 @@ class CLIPTrainer(Callback):
 
     def after_step(self):
         # logit scaling set as max 100
-        if num_distrib()>0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
+        if num_distrib()==0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
         else:               self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
 
 # Cell
