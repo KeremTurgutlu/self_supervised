@@ -29,7 +29,7 @@ def get_simclr_aug_pipelines(size, **kwargs): return get_multi_aug_pipelines(n=2
 # Cell
 class SimCLR(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_pipelines=[], temp=0.07, print_augs=False):
+    def __init__(self, aug_pipelines, temp=0.07, print_augs=False):
         assert_aug_pipelines(aug_pipelines)
         self.aug1, self.aug2 = aug_pipelines
         if print_augs: print(self.aug1), print(self.aug2)
@@ -68,7 +68,7 @@ class SimCLR(Callback):
         x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
         images = []
         for i in range(n): images += [x1[i],x2[i]]
-        return show_batch(x1[0], None, images, nrows=n)
+        return show_batch(x1[0], None, images, max_n=len(images), nrows=n)
 
 # Cell
 from ..dist import GatherLayer
