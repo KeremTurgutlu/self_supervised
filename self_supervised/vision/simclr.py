@@ -29,11 +29,11 @@ def get_simclr_aug_pipelines(size, **kwargs): return get_multi_aug_pipelines(n=2
 # Cell
 class SimCLR(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_pipelines=[], temp=0.07, print_augs=False, **aug_kwargs):
+    def __init__(self, aug_pipelines=[], temp=0.07, print_augs=False):
         assert_aug_pipelines(aug_pipelines)
         self.aug1, self.aug2 = aug_pipelines
-        self.temp = temp
         if print_augs: print(self.aug1), print(self.aug2)
+        store_attr('temp')
 
 
     def before_fit(self):
@@ -75,11 +75,11 @@ from ..dist import GatherLayer
 
 class DistributedSimCLR(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_pipelines=[], temp=0.07, print_augs=False, **aug_kwargs):
+    def __init__(self, aug_pipelines=[], temp=0.07, print_augs=False):
         assert_aug_pipelines(aug_pipelines)
         self.aug1, self.aug2 = aug_pipelines
-        self.temp = temp
         if print_augs: print(self.aug1), print(self.aug2)
+        store_attr('temp')
 
 
     def before_fit(self):
