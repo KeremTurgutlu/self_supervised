@@ -50,7 +50,8 @@ def main(
     lr:                 Param("Learning rate for training", float)=5e-5,
     use_grad_check:     Param("Learning rate for training", store_true)=True,
     grad_check_nchunks: Param("Number of chunks for gradient checkpoint", int)=2,
-):
+    do_finetune:        Param("Whether to do finetuning", store_true)=False,
+    finetune_modelname: Param("CLIP open source model name to load for finetuning", str)='ViT-B/32'):
     
     WANDB = True
         
@@ -73,7 +74,8 @@ def main(
     savemodel_cb =  SaveModelCallback(monitor="retrieval_at_20", comp=np.greater, fname=modelname)
     if num_distrib()>0: 
         print("Distributed training mode")
-        clip_trainer_cb = DistributedCLIPTrainer()
+#         clip_trainer_cb = DistributedCLIPTrainer() # converges slower
+        clip_trainer_cb = CLIPTrainer()
     else:
         print("Single gpu training mode")
         clip_trainer_cb = CLIPTrainer()
@@ -84,6 +86,11 @@ def main(
     # model
     vitb32_config_dict = vitb32_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
     clip_model = CLIP(**vitb32_config_dict, checkpoint=use_grad_check, checkpoint_nchunks=grad_check_nchunks)
+    
+    if do_finetune:
+        clip_pretrained_model, _ = clip.load(finetune_modelname, jit=False)
+        clip_model.load_state_dict(clip_pretrained_model.state_dict())
+    
     learner = Learner(dls, clip_model, loss_func=noop, cbs=cbs,
                   metrics=[RetrievalAtK(k=5), 
                            RetrievalAtK(k=20), 

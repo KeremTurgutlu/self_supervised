@@ -2,7 +2,7 @@
 
 __all__ = ['ClipTokenizer', 'vitb32_config', 'vitl14_config', 'Bottleneck', 'AttentionPool2d', 'ModifiedResNet',
            'LayerNorm', 'QuickGELU', 'ResidualAttentionBlock', 'Transformer', 'VisualTransformer', 'CLIP',
-           'convert_weights', 'build_model', 'RetrievalAtK', 'CLIPTrainer', 'DistributedCLIPTrainer']
+           'RetrievalAtK', 'CLIPTrainer', 'DistributedCLIPTrainer']
 
 # Cell
 from fastai.vision.all import *
@@ -431,70 +431,6 @@ class CLIP(nn.Module):
 
         return image_features, text_features
 
-
-def convert_weights(model: nn.Module):
-    """Convert applicable model parameters to fp16"""
-
-    def _convert_weights_to_fp16(l):
-        if isinstance(l, (nn.Conv1d, nn.Conv2d, nn.Linear)):
-            l.weight.data = l.weight.data.half()
-            if l.bias is not None:
-                l.bias.data = l.bias.data.half()
-
-        if isinstance(l, nn.MultiheadAttention):
-            for attr in [*[f"{s}_proj_weight" for s in ["in", "q", "k", "v"]], "in_proj_bias", "bias_k", "bias_v"]:
-                tensor = getattr(l, attr)
-                if tensor is not None:
-                    tensor.data = tensor.data.half()
-
-        for name in ["text_projection", "proj"]:
-            if hasattr(l, name):
-                attr = getattr(l, name)
-                if attr is not None:
-                    attr.data = attr.data.half()
-
-    model.apply(_convert_weights_to_fp16)
-
-
-def build_model(state_dict: dict):
-    vit = "visual.proj" in state_dict
-
-    if vit:
-        vision_width = state_dict["visual.conv1.weight"].shape[0]
-        vision_layers = len([k for k in state_dict.keys() if k.startswith("visual.") and k.endswith(".attn.in_proj_weight")])
-        vision_patch_size = state_dict["visual.conv1.weight"].shape[-1]
-        grid_size = round((state_dict["visual.positional_embedding"].shape[0] - 1) ** 0.5)
-        image_resolution = vision_patch_size * grid_size
-    else:
-        counts: list = [len(set(k.split(".")[2] for k in state_dict if k.startswith(f"visual.layer{b}"))) for b in [1, 2, 3, 4]]
-        vision_layers = tuple(counts)
-        vision_width = state_dict["visual.layer1.0.conv1.weight"].shape[0]
-        output_width = round((state_dict["visual.attnpool.positional_embedding"].shape[0] - 1) ** 0.5)
-        vision_patch_size = None
-        assert output_width ** 2 + 1 == state_dict["visual.attnpool.positional_embedding"].shape[0]
-        image_resolution = output_width * 32
-
-    embed_dim = state_dict["text_projection"].shape[1]
-    context_length = state_dict["positional_embedding"].shape[0]
-    vocab_size = state_dict["token_embedding.weight"].shape[0]
-    transformer_width = state_dict["ln_final.weight"].shape[0]
-    transformer_heads = transformer_width // 64
-    transformer_layers = len(set(k.split(".")[2] for k in state_dict if k.startswith(f"transformer.resblocks")))
-
-    model = CLIP(
-        embed_dim,
-        image_resolution, vision_layers, vision_width, vision_patch_size,
-        context_length, vocab_size, transformer_width, transformer_heads, transformer_layers
-    )
-
-    for key in ["input_resolution", "context_length", "vocab_size"]:
-        if key in state_dict:
-            del state_dict[key]
-
-    convert_weights(model)
-    model.load_state_dict(state_dict)
-    return model.eval()
-
 # Cell
 class RetrievalAtK(AccumMetric):
 
@@ -535,7 +471,7 @@ class CLIPTrainer(Callback):
     def lf(self, pred, *yb):
         image_features, text_features = pred
         if num_distrib()==0: logit_scale = self.model.logit_scale.exp()
-        else:               logit_scale = self.model.module.logit_scale.exp()
+        else:                logit_scale = self.model.module.logit_scale.exp()
         logits_per_image = logit_scale * image_features @ text_features.t()
         logits_per_text = logit_scale * text_features @ image_features.t()
 
@@ -547,7 +483,7 @@ class CLIPTrainer(Callback):
     def after_step(self):
         # logit scaling set as max 100
         if num_distrib()==0: self.model.logit_scale.data = torch.clamp(self.model.logit_scale.data, 0, 4.6052)
-        else:               self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
+        else:                self.model.module.logit_scale.data = torch.clamp(self.model.module.logit_scale.data, 0, 4.6052)
 
 # Cell
 class DistributedCLIPTrainer(Callback):
@@ -565,7 +501,6 @@ class DistributedCLIPTrainer(Callback):
         bs, rank = image_features.size(0), rank_distrib()
 
         # image loss
-#         all_text_features = torch.cat(list(GatherLayer.apply(text_features)))
         all_text_features = [torch.zeros_like(text_features) for _ in range(dist.get_world_size())]
         dist.all_gather(all_text_features, text_features)
         all_text_features = torch.cat(all_text_features)
@@ -574,7 +509,6 @@ class DistributedCLIPTrainer(Callback):
         image_loss = F.cross_entropy(logits_per_image, labels)
 
         # text loss
-#         all_image_features = torch.cat(list(GatherLayer.apply(image_features)))
         all_image_features = [torch.zeros_like(image_features) for _ in range(dist.get_world_size())]
         dist.all_gather(all_image_features, image_features)
         all_image_features = torch.cat(all_image_features)
