@@ -58,13 +58,13 @@ class SimCLR(Callback):
     @torch.no_grad()
     def show(self, n=1):
         bs = self.learn.x.size(0)//2
-        x1,x2  = torch.split(self.learn.x, [bs,bs])
+        x1,x2  = self.learn.x[:bs], self.learn.x[bs:]
         idxs = np.random.choice(range(bs),n,False)
         x1 = self.aug1.decode(x1[idxs].to('cpu').clone()).clamp(0,1)
         x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
         images = []
         for i in range(n): images += [x1[i],x2[i]]
-        return show_batch(x1[0], None, images, max_n=n * n, ncols=None, nrows=n)
+        return show_batch(x1[0], None, images, nrows=n)
 
 # Cell
 from ..dist import GatherLayer
