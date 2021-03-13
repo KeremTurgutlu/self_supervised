@@ -23,7 +23,7 @@
 	},
     
     "Tutorials":{
-        "Training SimCLR ImageWang": "/training_swav_iwang.html",
+        "Training SimCLR ImageWang": "/training_simclr_iwang.html",
         "Training MOCO ImageWang": "/training_moco_iwang.html",
         "Training BYOL ImageWang": "/training_byol_iwang.html",
         "Training SwAV ImageWang": "/training_swav_iwang.html"
