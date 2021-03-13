@@ -16,18 +16,39 @@ entries:
     title: Getting Started
   - folderitems:
     - output: web,pdf
+      title: Augmentations
+      url: /01 - augmentations.html
+    - output: web,pdf
+      title: Layers
+      url: /02 - layers.html
+    - output: web,pdf
+      title: Distributed
+      url: /03 - distributed.html
+    output: web
+    title: Augmentations and Layers
+  - folderitems:
+    - output: web,pdf
       title: SimCLR
-      url: /10-simclr.html
+      url: /10 - simclr.html
+    - output: web,pdf
+      title: MoCo
+      url: /11 - moco.html
     - output: web,pdf
       title: BYOL
-      url: /20-byol.html
+      url: /12 - byol.html
     - output: web,pdf
       title: SwAV
-      url: /30-swav.html
-    - output: web,pdf
-      title: Utilities
-      url: /00-utils.html
+      url: /13 - swav.html
     output: web
-    title: Algorithms
+    title: Vision
+  - folderitems:
+    - output: web,pdf
+      title: CLIP
+      url: /20 - clip.html
+    - output: web,pdf
+      title: CLIP-MoCo
+      url: /21 - clip-moco.html
+    output: web
+    title: Multimodal
   output: web
   title: Sidebar
