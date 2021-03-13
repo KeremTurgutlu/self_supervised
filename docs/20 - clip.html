@@ -658,7 +658,19 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Training Tip</strong> In my own experiments, using <code>CLIPTrainer()</code> leads to faster convergence then <a href="/self_supervised/20 - clip.html#DistributedCLIPTrainer"><code>DistributedCLIPTrainer</code></a>. You should combine CLIPTrainer, DistributedDataParallel, fp16 and ZeRO optimizer for optimal speed and performance.</p>
+<p><strong>Training Tip:</strong> In my own experiments, using <code>CLIPTrainer()</code> leads to faster convergence than <a href="/self_supervised/20 - clip.html#DistributedCLIPTrainer"><code>DistributedCLIPTrainer</code></a>. You should combine <strong>CLIPTrainer, DistributedDataParallel, fp16 and ZeRO optimizer with maximum batch size that fits to your memory</strong> for optimal speed and performance.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Important">Important<a class="anchor-link" href="#Important"> </a></h4><p>To train with gradient <strong>checkpointing + fp16</strong> you need to add 2 lines of code to pytorch source code, until fastai moves to torch version&gt;=1.8.</p>
+<p><img src="/self_supervised/./images/this_is_the_way.jpg" alt=""></p>
+<ul>
+<li><a href="https://github.com/pytorch/pytorch/issues/49738">https://github.com/pytorch/pytorch/issues/49738</a></li>
+<li><a href="https://github.com/pytorch/pytorch/pull/49757/files">https://github.com/pytorch/pytorch/pull/49757/files</a></li>
+</ul>
 
 </div>
 </div>

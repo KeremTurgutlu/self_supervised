@@ -3,7 +3,16 @@
     "Overview": "/",
     "Introduction": "/00-intro_tutorial.html"
   },
-  "Algorithms": {
+  {}
+ 
+    
+  "Vision": {
+    "SimCLR": "/10-simclr.html",
+    "BYOL": "/20-byol.html",
+    "SwAV": "/30-swav.html",
+    "Utilities": "/00-utils.html"
+   }    
+  "Multimodal": {
     "SimCLR": "/10-simclr.html",
     "BYOL": "/20-byol.html",
     "SwAV": "/30-swav.html",

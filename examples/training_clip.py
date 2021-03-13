@@ -1,25 +1,38 @@
-from fastai.vision.learner import *
+from fastai.vision.all import *
 from fastai.distributed import *
 from fastai.callback.wandb import WandbCallback
 import wandb
-
-from self_supervised.multimodal.clip import *
 torch.backends.cudnn.benchmark = True
 
-# csv file with image and text pair information
-title_df = pd.read_csv("XXX.csv")
+import clip
+from self_supervised.multimodal.clip import *
+from zero_optimizer import ZeroRedundancyOptimizer
 
-# dict from content id: title of that content (image)
-cid2title = dict(zip(title_df['content_id'], title_df['title']))
-content_ids = title_df['content_id'].values
 
-# dict from content id: filepath of that content (image)
-datapath = Path("XXX")
-cid2file = dict(zip(title_df['content_id'], title_df['filepath']))
+### Dataset
+# This section most likely will need modification for your own data
+
+# a CSV file with image content ids, title/text and num_tokens computed by ClipTokenizer()
+title_df = pd.read_csv("<<YOUR_DATASET>>.csv")
+
+# Num tokens needs to be <= 77 for validation metric
+# If you disable validation metric ignore this part
+title_df = title_df.query("num_tokens<=77")
+
+# Extract all content ids
+cid2title = dict(zip(title_df['cid'], title_df['title']))
+cids = title_df['cid'].values
+
+datapath = Path("<<DIRECTORY_FOR_IMAGES>>")
+
+# Create content id to image path mapping
+image_files = get_image_files(datapath)
+cid2file = {int(o.stem.split("_")[2]):o for o in image_files}
+
 
 # content ids, and validation content ids
-cids = title_df['content_id'].values
-valid_cids = cids[:10000]
+sample_valid_cids = pd.read_pickle("sample_valid_cids.pkl")
+valid_cids = sample_valid_cids[:10000]
 
 def read_image(cid): return PILImage.create(cid2file[cid])
 def read_text(cid): return cid2title[cid]
@@ -41,28 +54,48 @@ def get_dls(cids,valid_cids,size,bs):
     return dls, clip_tokenizer
 
 
+# fp16 + grad checkpoint issue fix
+# https://github.com/pytorch/pytorch/issues/49738
+# https://github.com/pytorch/pytorch/pull/49757/files
+
+
+@patch
+def after_batch(self: WandbCallback):
+    "Log hyper-parameters and training loss"
+    if self.training:
+        self._wandb_step += 1
+        self._wandb_epoch += 1/self.n_iter
+        hypers = {f'{k}_{i}':v for i,h in enumerate(self.opt.hypers) for k,v in h.items()}
+        wandb.log({'epoch': self._wandb_epoch, 
+                   'train_loss': self.smooth_loss.clone().detach().cpu(),
+                   'raw_loss': self.loss.clone().detach().cpu()},
+                    step=self._wandb_step)
+    
+    
 
 @call_parse
 def main(
+    arch:               Param("Arch", str)='vitb32',
     size:               Param("Image resolution", int)=224,    
     bs:                 Param("Batch Size", int)=128,
     epochs:             Param("Number of epochs for training", int)=1,    
     lr:                 Param("Learning rate for training", float)=5e-5,
-    use_grad_check:     Param("Learning rate for training", store_true)=True,
+    opt:                Param("Optimizer", str)='zero',
+    use_grad_check:     Param("Gradient checkpointing", bool_arg)=True,
     grad_check_nchunks: Param("Number of chunks for gradient checkpoint", int)=2,
-    do_finetune:        Param("Whether to do finetuning", store_true)=False,
+    do_finetune:        Param("Whether to do finetuning", bool_arg)=False,
     finetune_modelname: Param("CLIP open source model name to load for finetuning", str)='ViT-B/32'):
     
     WANDB = True
         
     # start wandb
     if rank_distrib() == 0 and WANDB:
-        wandb.init(project="XXX", entity="XXX");
-        wandb.config.update({"Arch":"ViT-B/32", 
+        wandb.init(project="stock-clip", entity="keremturgutlu");
+        wandb.config.update({"Arch":arch, 
+                             "Optimizer": opt,
                              "Size":size,
                              "BS":bs,
-                             "Compute":"Single GPU Non Distributed Loss",
-                             "Training":"From Scratch"});
+                             "Training": "Finetuning" if do_finetune else "From Scratch"});
 
     # dataloaders
     dls, clip_tokenizer = get_dls(cids, valid_cids, size, bs)
@@ -70,11 +103,10 @@ def main(
         
     # callbacks
     ndata = len(dls.train_ds)//1000
-    modelname = f'XX{ndata}K_en_vitb32_bs{bs}_size{size}_epochs{epochs}_lr{lr}'
+    modelname = f'clip_stock_shard16_{ndata}K_en_{arch}_bs{bs}_size{size}_epochs{epochs}_lr{lr}'
     savemodel_cb =  SaveModelCallback(monitor="retrieval_at_20", comp=np.greater, fname=modelname)
     if num_distrib()>0: 
         print("Distributed training mode")
-#         clip_trainer_cb = DistributedCLIPTrainer() # converges slower
         clip_trainer_cb = CLIPTrainer()
     else:
         print("Single gpu training mode")
@@ -82,28 +114,46 @@ def main(
     cbs = [savemodel_cb, clip_trainer_cb]
     if rank_distrib() == 0 and WANDB: cbs += [WandbCallback(log_preds=False, log_model=False)]
         
-
+    
+    # ZeRO
+    def zero(params, lr, **kwargs):
+        return OptimWrapper(ZeroRedundancyOptimizer(params, optimizer_class=torch.optim.Adam, lr=lr))
+    
+    if opt == 'zero':      opt_func = zero
+    elif opt == 'ranger':  opt_func = ranger
+    else:                  opt_func = Adam
+        
+        
     # model
-    vitb32_config_dict = vitb32_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
-    clip_model = CLIP(**vitb32_config_dict, checkpoint=use_grad_check, checkpoint_nchunks=grad_check_nchunks)
+    if arch == 'vitb32':
+        print(arch, use_grad_check, type(use_grad_check), grad_check_nchunks)
+        vitb32_config_dict = vitb32_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
+        clip_model = CLIP(**vitb32_config_dict, checkpoint=use_grad_check, checkpoint_nchunks=grad_check_nchunks)
+        if do_finetune:
+            print("Loading pretrained model..")
+            clip_pretrained_model, _ = clip.load(finetune_modelname, jit=False)
+            clip_model.load_state_dict(clip_pretrained_model.state_dict())
     
-    if do_finetune:
-        clip_pretrained_model, _ = clip.load(finetune_modelname, jit=False)
-        clip_model.load_state_dict(clip_pretrained_model.state_dict())
+    elif arch == 'vitl14':
+        vitl14_config_dict = vitl14_config(size, clip_tokenizer.context_length, clip_tokenizer.vocab_size)
+        clip_model = CLIP(**vitl14_config_dict, checkpoint=use_grad_check, checkpoint_nchunks=grad_check_nchunks)
+        if do_finetune:
+            raise Exception(f"No pretrained model available for arch {arch}")
     
-    learner = Learner(dls, clip_model, loss_func=noop, cbs=cbs,
+    else: raise Exception("No matching arch.")
+    
+    learner = Learner(dls, clip_model, loss_func=noop, cbs=cbs, opt_func=opt_func,
                   metrics=[RetrievalAtK(k=5), 
                            RetrievalAtK(k=20), 
                            RetrievalAtK(k="mean"),
                            RetrievalAtK(k="median")])
     learner.to_fp16()
-    learner.unfreeze()
+
     
     # fit 
     if num_distrib()>0:
         with learner.distrib_ctx():
             print(f"num_distrib(): {num_distrib()}")
-            lr *= math.sqrt(num_distrib())
             learner.fit_flat_cos(epochs, lr, pct_start=0.25)
     else:   learner.fit_flat_cos(epochs, lr, pct_start=0.25)
     
