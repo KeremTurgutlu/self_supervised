@@ -52,7 +52,7 @@ learn.fit_flat_cos(100, 1e-2)
 #### MoCo
 
 ```python
-from self_supervised.vision.moco import **
+from self_supervised.vision.moco import *
 dls = get_dls(resize, bs)
 # encoder = create_encoder("xresnet34", n_in=3, pretrained=False) # a fastai encoder
 encoder = create_encoder("tf_efficientnet_b4_ns", n_in=3, pretrained=False) # a timm encoder

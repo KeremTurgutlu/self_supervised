@@ -20,5 +20,9 @@
 	"Multimodal": {
 		"CLIP": "/20 - clip.html",
 		"CLIP-MoCo": "/21 - clip-moco.html"
-	}
+	},
+    
+    "Tutorials":{
+        "Training SwAV ImageWang": "training_swav_iwang.html"
+    }
 }

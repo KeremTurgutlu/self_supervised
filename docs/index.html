@@ -124,7 +124,7 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.moco</span> <span class="kn">import</span> <span class="o">**</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.moco</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
 <span class="c1"># encoder = create_encoder(&quot;xresnet34&quot;, n_in=3, pretrained=False) # a fastai encoder</span>
 <span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>

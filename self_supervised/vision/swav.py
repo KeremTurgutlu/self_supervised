@@ -55,7 +55,7 @@ def get_swav_aug_pipelines(num_crops=(2,6), crop_sizes=(224,96), min_scales=(0.2
 class SWAV(Callback):
     order,run_valid = 9,True
     def __init__(self, aug_pipelines, crop_assgn_ids,
-                       K=3000, queue_start_pct=0.25, temp=0.07,
+                       K=3000, queue_start_pct=0.25, temp=0.1,
                        eps=0.05,  n_sinkh_iter=3, print_augs=False):
 
         store_attr('K,queue_start_pct,crop_assgn_ids,temp,eps,n_sinkh_iter')
