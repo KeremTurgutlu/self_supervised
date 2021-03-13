@@ -2,25 +2,31 @@
 > Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks.
 
 
-You may find documentation [here](https://keremturgutlu.github.io/self_supervised) and github repo [here](https://github.com/keremturgutlu/self_supervised/tree/master/)
-
 ## Install
 
 `pip install self-supervised`
 
+## Documentation
+
+Please read the documentation [here](https://keremturgutlu.github.io/self_supervised).
+
+To go back to github repo [here](https://github.com/keremturgutlu/self_supervised/tree/master/).
+
 ## Algorithms
+
+Please read the papers or blog posts before getting started with an algorithm, you may also check out documentation page of each algorithm get a better understanding.
 
 Here are the list of implemented **self_supervised.vision** algorithms:
 
-- [SimCLR]()
-- [MoCo]()
-- [BYOL]()
-- [SwAV]()
+- [SimCLR v1](https://arxiv.org/pdf/2002.05709.pdf) & [SimCLR v2](https://arxiv.org/pdf/2006.10029.pdf) 
+- [MoCo v1](https://arxiv.org/pdf/1911.05722.pdf) & [MoCo v2](https://arxiv.org/pdf/2003.04297.pdf)
+- [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
+- [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
 
 Here are the list of implemented **self_supervised.multimodal** algorithms:
 
-- [CLIP]()
-- [CLIP-MoCo]() (No paper, own idea)
+- [CLIP](https://arxiv.org/pdf/2103.00020.pdf)
+- CLIP-MoCo (No paper, own idea)
 
 For vision algorithms all models from [timm](https://github.com/rwightman/pytorch-image-models) and [fastai](https://github.com/fastai/fastai) can be used as encoders.
 
