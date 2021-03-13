@@ -164,9 +164,10 @@ class SWAV(Callback):
         return loss
 
     @torch.no_grad()
-    def show_one(self):
-        xb = self.learn.xb[0]
-        i = np.random.choice(self.bs)
-        images = [aug.decode(b.to('cpu').clone()).clamp(0.1)[i]
-                      for b, aug in zip(xb, self.augs)]
-        return show_batch(xb[0], None, images, max_n=len(images), ncols=len(images), nrows=1)
+    def show(self, n=1):
+        xbs = self.learn.xb[0]
+        idxs = np.random.choice(range(self.bs), n, False)
+        images = [aug.decode(xb.to('cpu').clone()).clamp(0, 1)[i]
+                  for i in idxs
+                  for xb, aug in zip(xbs, self.augs)]
+        return show_batch(images[0], None, images, max_n=len(images), nrows=n)

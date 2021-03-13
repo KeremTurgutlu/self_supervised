@@ -10,11 +10,11 @@
 
 Please read the documentation [here](https://keremturgutlu.github.io/self_supervised).
 
-To go back to github repo [here](https://github.com/keremturgutlu/self_supervised/tree/master/).
+To go back to github repo please click [here](https://github.com/keremturgutlu/self_supervised/tree/master/).
 
 ## Algorithms
 
-Please read the papers or blog posts before getting started with an algorithm, you may also check out documentation page of each algorithm get a better understanding.
+Please read the papers or blog posts before getting started with an algorithm, you may also check out documentation page of each algorithm to get a better understanding.
 
 Here are the list of implemented **self_supervised.vision** algorithms:
 

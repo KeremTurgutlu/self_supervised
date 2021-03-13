@@ -1,9 +1,7 @@
 .ONESHELL:
 SHELL := /bin/bash
 SRC = $(wildcard nbs/*.ipynb)
-
-all: self_supervised docs
-
+    
 self_supervised: $(SRC)
 	nbdev_build_lib
 	touch self_supervised
