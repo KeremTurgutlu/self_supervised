@@ -1,3 +1,6 @@
+# example cmd for distributed training:
+# python -m fastai.launch training_clip.py --arch vitb32 --size 224 --bs 360 --epochs 24 --lr 1e-4 --do_finetune True --use_grad_check True --grad_check_nchunks 2
+
 from fastai.vision.all import *
 from fastai.distributed import *
 from fastai.callback.wandb import WandbCallback
@@ -31,7 +34,7 @@ cid2file = {int(o.stem.split("_")[2]):o for o in image_files}
 
 
 # content ids, and validation content ids
-sample_valid_cids = pd.read_pickle("sample_valid_cids.pkl")
+sample_valid_cids = pd.read_pickle("<<YOUR_VALIDATION_CONTENT_IDS>>>.pkl")
 valid_cids = sample_valid_cids[:10000]
 
 def read_image(cid): return PILImage.create(cid2file[cid])
@@ -90,7 +93,7 @@ def main(
         
     # start wandb
     if rank_distrib() == 0 and WANDB:
-        wandb.init(project="stock-clip", entity="keremturgutlu");
+        wandb.init(project="XXX", entity="XXX");
         wandb.config.update({"Arch":arch, 
                              "Optimizer": opt,
                              "Size":size,
@@ -103,7 +106,7 @@ def main(
         
     # callbacks
     ndata = len(dls.train_ds)//1000
-    modelname = f'clip_stock_shard16_{ndata}K_en_{arch}_bs{bs}_size{size}_epochs{epochs}_lr{lr}'
+    modelname = f'XXX_shard16_{ndata}K_en_{arch}_bs{bs}_size{size}_epochs{epochs}_lr{lr}'
     savemodel_cb =  SaveModelCallback(monitor="retrieval_at_20", comp=np.greater, fname=modelname)
     if num_distrib()>0: 
         print("Distributed training mode")
