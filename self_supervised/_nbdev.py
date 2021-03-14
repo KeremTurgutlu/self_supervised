@@ -67,6 +67,6 @@ modules = ["augmentations.py",
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
-git_url = "https://github.com/keremturgutlu/self_supervised/tree/master/"
+git_url = "https://github.com/keremturgutlu/self_supervised/tree/main/"
 
 def custom_doc_links(name): return None
