@@ -31,13 +31,6 @@ nb_path: "nbs/index.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>You may find documentation <a href="https://keremturgutlu.github.io/self_supervised">here</a> and github repo <a href="https://github.com/keremturgutlu/self_supervised/tree/master/">here</a></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Install">Install<a class="anchor-link" href="#Install"> </a></h2>
 </div>
 </div>
@@ -51,18 +44,41 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Documentation">Documentation<a class="anchor-link" href="#Documentation"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Please read the documentation <a href="https://keremturgutlu.github.io/self_supervised">here</a>.</p>
+<p>To go back to github repo please click <a href="https://github.com/keremturgutlu/self_supervised/tree/master/">here</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="Algorithms">Algorithms<a class="anchor-link" href="#Algorithms"> </a></h2>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Here are the list of implemented algorithms:</p>
+<p>Please read the papers or blog posts before getting started with an algorithm, you may also check out documentation page of each algorithm to get a better understanding.</p>
+<p>Here are the list of implemented <strong>self_supervised.vision</strong> algorithms:</p>
 <ul>
-<li><a href="https://arxiv.org/pdf/2002.05709.pdf">SimCLR</a></li>
+<li><a href="https://arxiv.org/pdf/2002.05709.pdf">SimCLR v1</a> &amp; <a href="https://arxiv.org/pdf/2006.10029.pdf">SimCLR v2</a> </li>
+<li><a href="https://arxiv.org/pdf/1911.05722.pdf">MoCo v1</a> &amp; <a href="https://arxiv.org/pdf/2003.04297.pdf">MoCo v2</a></li>
 <li><a href="https://arxiv.org/pdf/2006.07733.pdf">BYOL</a></li>
 <li><a href="https://arxiv.org/pdf/2006.09882.pdf">SwAV</a></li>
 </ul>
+<p>Here are the list of implemented <strong>self_supervised.multimodal</strong> algorithms:</p>
+<ul>
+<li><a href="https://arxiv.org/pdf/2103.00020.pdf">CLIP</a></li>
+<li>CLIP-MoCo (No paper, own idea)</li>
+</ul>
+<p>For vision algorithms all models from <a href="https://github.com/rwightman/pytorch-image-models">timm</a> and <a href="https://github.com/fastai/fastai">fastai</a> can be used as encoders.</p>
+<p>For multimodal training currently CLIP supports ViT-B/32 and ViT-L/14, following best architectures from the paper.</p>
 
 </div>
 </div>
@@ -75,10 +91,25 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.simclr</span> <span class="kn">import</span> <span class="o">*</span>
+<h3 id="Vision">Vision<a class="anchor-link" href="#Vision"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="SimCLR">SimCLR<a class="anchor-link" href="#SimCLR"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.simclr</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_simclr_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">xresnet34</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">SimCLRLoss</span><span class="p">(</span><span class="n">temp</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span> <span class="n">opt_func</span><span class="o">=</span><span class="n">opt_func</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">SimCLR</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)])</span>
+<span class="c1"># encoder = create_encoder(&quot;xresnet34&quot;, n_in=3, pretrained=False) # a fastai encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_simclr_model</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">projection_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">aug_pipelines</span> <span class="o">=</span> <span class="n">get_simclr_aug_pipelines</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">SimCLR</span><span class="p">(</span><span class="n">aug_pipelines</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="mf">0.07</span><span class="p">)])</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
 </pre></div>
 
@@ -87,10 +118,19 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.byol</span> <span class="kn">import</span> <span class="o">*</span>
+<h4 id="MoCo">MoCo<a class="anchor-link" href="#MoCo"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.moco</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_byol_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">xresnet34</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">byol_loss</span><span class="p">,</span> <span class="n">opt_func</span><span class="o">=</span><span class="n">opt_func</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">BYOL</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">T</span><span class="o">=</span><span class="mf">0.99</span><span class="p">)])</span>
+<span class="c1"># encoder = create_encoder(&quot;xresnet34&quot;, n_in=3, pretrained=False) # a fastai encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_moco_model</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">projection_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">aug_pipelines</span> <span class="o">=</span> <span class="n">get_moco_aug_pipelines</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span><span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">MOCO</span><span class="p">(</span><span class="n">aug_pipelines</span><span class="o">=</span><span class="n">aug_pipelines</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="mi">128</span><span class="p">)])</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
 </pre></div>
 
@@ -99,13 +139,89 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.swav</span> <span class="kn">import</span> <span class="o">*</span>
+<h4 id="BYOL">BYOL<a class="anchor-link" href="#BYOL"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.byol</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">create_swav_model</span><span class="p">(</span><span class="n">arch</span><span class="o">=</span><span class="n">xresnet34</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">SWAVLoss</span><span class="p">(),</span> <span class="n">opt_func</span><span class="o">=</span><span class="n">opt_func</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">SWAV</span><span class="p">(</span><span class="n">crop_sizes</span><span class="o">=</span><span class="p">[</span><span class="n">size</span><span class="p">,</span><span class="mi">96</span><span class="p">],</span> 
-                          <span class="n">num_crops</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
-                          <span class="n">min_scales</span><span class="o">=</span><span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.2</span><span class="p">],</span>
-                          <span class="n">max_scales</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.35</span><span class="p">])])</span>
+<span class="c1"># encoder = create_encoder(&quot;xresnet34&quot;, n_in=3, pretrained=False) # a fastai encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_byol_model</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">projection_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">aug_pipelines</span> <span class="o">=</span> <span class="n">get_byol_aug_pipelines</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span><span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">BYOL</span><span class="p">(</span><span class="n">aug_pipelines</span><span class="o">=</span><span class="n">aug_pipelines</span><span class="p">)])</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="SWAV">SWAV<a class="anchor-link" href="#SWAV"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.swav</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;xresnet34&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a fastai encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_swav_model</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">projection_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">aug_pipelines</span> <span class="o">=</span> <span class="n">get_swav_aug_pipelines</span><span class="p">(</span><span class="n">num_crops</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
+                                       <span class="n">crop_sizes</span><span class="o">=</span><span class="p">[</span><span class="mi">128</span><span class="p">,</span><span class="mi">96</span><span class="p">],</span> 
+                                       <span class="n">min_scales</span><span class="o">=</span><span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.05</span><span class="p">],</span>
+                                       <span class="n">max_scales</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.3</span><span class="p">])</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">SWAV</span><span class="p">(</span><span class="n">aug_pipelines</span><span class="o">=</span><span class="n">aug_pipelines</span><span class="p">,</span> <span class="n">crop_assgn_ids</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">K</span><span class="o">=</span><span class="n">bs</span><span class="o">*</span><span class="mi">2</span><span class="o">**</span><span class="mi">6</span><span class="p">,</span> <span class="n">queue_start_pct</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)])</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Multimodal">Multimodal<a class="anchor-link" href="#Multimodal"> </a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="CLIP">CLIP<a class="anchor-link" href="#CLIP"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.multimodal.clip</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">clip_tokenizer</span> <span class="o">=</span> <span class="n">ClipTokenizer</span><span class="p">()</span>
+<span class="n">vitb32_config_dict</span> <span class="o">=</span> <span class="n">vitb32_config</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="n">clip_tokenizer</span><span class="o">.</span><span class="n">context_length</span><span class="p">,</span> <span class="n">clip_tokenizer</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">clip_model</span> <span class="o">=</span> <span class="n">CLIP</span><span class="p">(</span><span class="o">**</span><span class="n">vitb32_config_dict</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">checkpoint_nchunks</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">clip_model</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">noop</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">CLIPTrainer</span><span class="p">()])</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="CLIP-MoCo">CLIP-MoCo<a class="anchor-link" href="#CLIP-MoCo"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.multimodal.clip_moco</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">clip_tokenizer</span> <span class="o">=</span> <span class="n">ClipTokenizer</span><span class="p">()</span>
+<span class="n">vitb32_config_dict</span> <span class="o">=</span> <span class="n">vitb32_config</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="n">clip_tokenizer</span><span class="o">.</span><span class="n">context_length</span><span class="p">,</span> <span class="n">clip_tokenizer</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">)</span>
+<span class="n">clip_model</span> <span class="o">=</span> <span class="n">CLIPMOCO</span><span class="p">(</span><span class="n">K</span><span class="o">=</span><span class="mi">4096</span><span class="p">,</span><span class="n">m</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span> <span class="o">**</span><span class="n">vitb32_config_dict</span><span class="p">,</span> <span class="n">checkpoint</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">checkpoint_nchunks</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">learner</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span> <span class="n">clip_model</span><span class="p">,</span> <span class="n">loss_func</span><span class="o">=</span><span class="n">noop</span><span class="p">,</span> <span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">CLIPMOCOTrainer</span><span class="p">()])</span>
 <span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
 </pre></div>
 
@@ -121,7 +237,7 @@ nb_path: "nbs/index.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>All of the algorithms implemented in this library have been evaluated in <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a>.</p>
-<p>In overall superiority of the algorithms are as follows <code>SwAV &gt; BYOL &gt; SimCLR</code> in most of the benchmarks. For details you may inspect the history of <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a> through github.</p>
+<p>In overall superiority of the algorithms are as follows <code>SwAV &gt; MoCo &gt; BYOL &gt; SimCLR</code> in most of the benchmarks. For details you may inspect the history of <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a> through github.</p>
 <p>It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using <code>learn.lr_find()</code> or making sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.</p>
 
 </div>

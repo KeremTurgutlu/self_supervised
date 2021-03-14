@@ -1,12 +1,32 @@
 {
-  "Getting Started": {
-    "Overview": "/",
-    "Introduction": "/00-intro_tutorial.html"
-  },
-  "Algorithms": {
-    "SimCLR": "/10-simclr.html",
-    "BYOL": "/20-byol.html",
-    "SwAV": "/30-swav.html",
-    "Utilities": "/00-utils.html"
-   } 
+	"Getting Started": {
+		"Overview": "/",
+		"Introduction": "/intro_tutorial.html"
+	},
+
+	"Augmentations and Layers": {
+		"Augmentations": "/01 - augmentations.html",
+		"Layers": "/02 - layers.html",
+		"Distributed": "/03 - distributed.html"
+	},
+
+	"Vision": {
+		"SimCLR": "/10 - simclr.html",
+		"MoCo": "/11 - moco.html",
+		"BYOL": "/12 - byol.html",
+		"SwAV": "/13 - swav.html"
+	},
+
+	"Multimodal": {
+		"CLIP": "/20 - clip.html",
+		"CLIP-MoCo": "/21 - clip-moco.html"
+	},
+    
+    "Tutorials":{
+        "Training SimCLR ImageWang": "/training_simclr_iwang.html",
+        "Training MOCO ImageWang": "/training_moco_iwang.html",
+        "Training BYOL ImageWang": "/training_byol_iwang.html",
+        "Training SwAV ImageWang": "/training_swav_iwang.html"
+
+    }
 }
