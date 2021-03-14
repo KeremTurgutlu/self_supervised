@@ -2,7 +2,7 @@ topnav:
 - title: Topnav
   items:
     - title: github
-      external_url: https://github.com/self_supervised/tree/main/
+      external_url: https://github.com/KeremTurgutlu/self_supervised/tree/main
 
 #Topnav dropdowns
 topnav_dropdowns:
