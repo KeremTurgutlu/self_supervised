@@ -2,7 +2,7 @@ topnav:
 - title: Topnav
   items:
     - title: github
-      external_url: https://github.com/fastai/self_supervised/tree/master/
+      external_url: https://github.com/fastai/self_supervised/tree/main/
 
 #Topnav dropdowns
 topnav_dropdowns:
