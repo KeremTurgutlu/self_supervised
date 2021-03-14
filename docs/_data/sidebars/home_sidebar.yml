@@ -50,5 +50,20 @@ entries:
       url: /21 - clip-moco.html
     output: web
     title: Multimodal
+  - folderitems:
+    - output: web,pdf
+      title: Training SimCLR ImageWang
+      url: /training_simclr_iwang.html
+    - output: web,pdf
+      title: Training MOCO ImageWang
+      url: /training_moco_iwang.html
+    - output: web,pdf
+      title: Training BYOL ImageWang
+      url: /training_byol_iwang.html
+    - output: web,pdf
+      title: Training SwAV ImageWang
+      url: /training_swav_iwang.html
+    output: web
+    title: Tutorials
   output: web
   title: Sidebar
