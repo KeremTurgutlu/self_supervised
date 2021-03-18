@@ -71,6 +71,7 @@ nb_path: "nbs/index.ipynb"
 <li><a href="https://arxiv.org/pdf/1911.05722.pdf">MoCo v1</a> &amp; <a href="https://arxiv.org/pdf/2003.04297.pdf">MoCo v2</a></li>
 <li><a href="https://arxiv.org/pdf/2006.07733.pdf">BYOL</a></li>
 <li><a href="https://arxiv.org/pdf/2006.09882.pdf">SwAV</a></li>
+<li><a href="https://arxiv.org/pdf/2103.03230.pdf">Barlow Twins</a></li>
 </ul>
 <p>Here are the list of implemented <strong>self_supervised.multimodal</strong> algorithms:</p>
 <ul>
@@ -184,6 +185,27 @@ nb_path: "nbs/index.ipynb"
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Barlow-Twins">Barlow Twins<a class="anchor-link" href="#Barlow-Twins"> </a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">self_supervised.vision.simclr</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">dls</span> <span class="o">=</span> <span class="n">get_dls</span><span class="p">(</span><span class="n">resize</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
+<span class="c1"># encoder = create_encoder(&quot;xresnet34&quot;, n_in=3, pretrained=False) # a fastai encoder</span>
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">create_encoder</span><span class="p">(</span><span class="s2">&quot;tf_efficientnet_b4_ns&quot;</span><span class="p">,</span> <span class="n">n_in</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pretrained</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># a timm encoder</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">create_barlow_twins_model</span><span class="p">(</span><span class="n">encoder</span><span class="p">,</span> <span class="n">hidden_size</span><span class="o">=</span><span class="mi">2048</span><span class="p">,</span> <span class="n">projection_size</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">aug_pipelines</span> <span class="o">=</span> <span class="n">get_barlow_twins_aug_pipelines</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+<span class="n">learn</span> <span class="o">=</span> <span class="n">Learner</span><span class="p">(</span><span class="n">dls</span><span class="p">,</span><span class="n">model</span><span class="p">,</span><span class="n">cbs</span><span class="o">=</span><span class="p">[</span><span class="n">BarlowTwins</span><span class="p">(</span><span class="n">aug_pipelines</span><span class="p">,</span> <span class="n">lmb</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">)])</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit_flat_cos</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Multimodal">Multimodal<a class="anchor-link" href="#Multimodal"> </a></h3>
 </div>
 </div>
@@ -238,7 +260,9 @@ nb_path: "nbs/index.ipynb"
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>All of the algorithms implemented in this library have been evaluated in <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a>.</p>
 <p>In overall superiority of the algorithms are as follows <code>SwAV &gt; MoCo &gt; BYOL &gt; SimCLR</code> in most of the benchmarks. For details you may inspect the history of <a href="https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard">ImageWang Leaderboard</a> through github.</p>
-<p>It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using <code>learn.lr_find()</code> or making sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.</p>
+<p><a href="/self_supervised/14 - barlow_twins.html#BarlowTwins"><code>BarlowTwins</code></a> is still under testing on ImageWang.</p>
+<p>It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using <code>learn.lr_find()</code> or making 
+sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.</p>
 
 </div>
 </div>

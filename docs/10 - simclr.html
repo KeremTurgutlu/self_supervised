@@ -112,7 +112,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SimCLRModel" class="doc_header"><code>class</code> <code>SimCLRModel</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/vision/simclr.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLRModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>) :: <code>Module</code></p>
+<h2 id="SimCLRModel" class="doc_header"><code>class</code> <code>SimCLRModel</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/vision/simclr.py#L11" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLRModel</code>(<strong><code>encoder</code></strong>, <strong><code>projector</code></strong>) :: <code>Module</code></p>
 </blockquote>
 <p>Compute predictions of concatenated xi and xj</p>
 
@@ -151,7 +151,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_simclr_model" class="doc_header"><code>create_simclr_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/vision/simclr.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_simclr_model</code>(<strong><code>encoder</code></strong>, <strong><code>hidden_size</code></strong>=<em><code>256</code></em>, <strong><code>projection_size</code></strong>=<em><code>128</code></em>, <strong><code>nlayers</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="create_simclr_model" class="doc_header"><code>create_simclr_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/vision/simclr.py#L17" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_simclr_model</code>(<strong><code>encoder</code></strong>, <strong><code>hidden_size</code></strong>=<em><code>256</code></em>, <strong><code>projection_size</code></strong>=<em><code>128</code></em>, <strong><code>bn</code></strong>=<em><code>False</code></em>, <strong><code>nlayers</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 <p>Create SimCLR model</p>
 
@@ -226,7 +226,6 @@ nb_path: "nbs/10 - simclr.ipynb"
 <p>The following parameters can be passed;</p>
 <ul>
 <li><strong>aug_pipelines</strong> list of augmentation pipelines List[Pipeline] created using functions from <code>self_supervised.augmentations</code> module. Each <code>Pipeline</code> should be set to <code>split_idx=0</code>. You can simply use <a href="/self_supervised/10 - simclr.html#get_simclr_aug_pipelines"><code>get_simclr_aug_pipelines</code></a> utility to get aug_pipelines.</li>
-<li><strong>aug_kwargs</strong> for any keyword arguments to be passed to <code>aug_func</code></li>
 <li><strong>temp</strong> temperature scaling for cross entropy loss (defaults to paper's best value)</li>
 </ul>
 
@@ -236,7 +235,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>SimCLR algorithm uses 2 views of a given image, and <a href="/self_supervised/10 - simclr.html#SimCLR"><code>SimCLR</code></a> callback expects a list of 2 augmentation pipelines in <code>aug_pipelines</code>.</p>
-<p>You can simply use helper function <code>get_simclr_aug_pipelines()</code> which will only except augmentation related arguments such as size, rotate, jitter...and will return a list of 2 pipelines, which we can be passed to the callback. This function uses <a href="/self_supervised/01 - augmentations.html#get_multi_aug_pipelines"><code>get_multi_aug_pipelines</code></a> which then <a href="/self_supervised/01 - augmentations.html#get_batch_augs"><code>get_batch_augs</code></a>. For more information you may refer to <code>self_supervised.augmentations</code> module.</p>
+<p>You can simply use helper function <code>get_simclr_aug_pipelines()</code> which will allow augmentation related arguments such as size, rotate, jitter...and will return a list of 2 pipelines, which we can be passed to the callback. This function uses <a href="/self_supervised/01 - augmentations.html#get_multi_aug_pipelines"><code>get_multi_aug_pipelines</code></a> which then <a href="/self_supervised/01 - augmentations.html#get_batch_augs"><code>get_batch_augs</code></a>. For more information you may refer to <code>self_supervised.augmentations</code> module.</p>
 <p>Also, you may choose to pass your own list of aug_pipelines which needs to be List[Pipeline, Pipeline] where Pipeline(..., split_idx=0). Here, <code>split_idx=0</code> forces augmentations to be applied in training mode.</p>
 
 </div>
@@ -253,7 +252,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_simclr_aug_pipelines" class="doc_header"><code>get_simclr_aug_pipelines</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/vision/simclr.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_simclr_aug_pipelines</code>(<strong><code>size</code></strong>, <strong><code>rotate</code></strong>=<em><code>True</code></em>, <strong><code>jitter</code></strong>=<em><code>True</code></em>, <strong><code>bw</code></strong>=<em><code>True</code></em>, <strong><code>blur</code></strong>=<em><code>True</code></em>, <strong><code>resize_scale</code></strong>=<em><code>(0.2, 1.0)</code></em>, <strong><code>resize_ratio</code></strong>=<em><code>(0.75, 1.3333333333333333)</code></em>, <strong><code>rotate_deg</code></strong>=<em><code>30</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>blur_s</code></strong>=<em><code>(4, 32)</code></em>, <strong><code>same_on_batch</code></strong>=<em><code>False</code></em>, <strong><code>flip_p</code></strong>=<em><code>0.5</code></em>, <strong><code>rotate_p</code></strong>=<em><code>0.3</code></em>, <strong><code>jitter_p</code></strong>=<em><code>0.3</code></em>, <strong><code>bw_p</code></strong>=<em><code>0.3</code></em>, <strong><code>blur_p</code></strong>=<em><code>0.3</code></em>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>cuda</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
+<h4 id="get_simclr_aug_pipelines" class="doc_header"><code>get_simclr_aug_pipelines</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/vision/simclr.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_simclr_aug_pipelines</code>(<strong><code>size</code></strong>, <strong><code>rotate</code></strong>=<em><code>True</code></em>, <strong><code>jitter</code></strong>=<em><code>True</code></em>, <strong><code>bw</code></strong>=<em><code>True</code></em>, <strong><code>blur</code></strong>=<em><code>True</code></em>, <strong><code>resize_scale</code></strong>=<em><code>(0.2, 1.0)</code></em>, <strong><code>resize_ratio</code></strong>=<em><code>(0.75, 1.3333333333333333)</code></em>, <strong><code>rotate_deg</code></strong>=<em><code>30</code></em>, <strong><code>s</code></strong>=<em><code>0.6</code></em>, <strong><code>blur_s</code></strong>=<em><code>(4, 32)</code></em>, <strong><code>same_on_batch</code></strong>=<em><code>False</code></em>, <strong><code>flip_p</code></strong>=<em><code>0.5</code></em>, <strong><code>rotate_p</code></strong>=<em><code>0.3</code></em>, <strong><code>jitter_p</code></strong>=<em><code>0.3</code></em>, <strong><code>bw_p</code></strong>=<em><code>0.3</code></em>, <strong><code>blur_p</code></strong>=<em><code>0.3</code></em>, <strong><code>stats</code></strong>=<em><code>([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])</code></em>, <strong><code>cuda</code></strong>=<em><code>True</code></em>, <strong><code>xtra_tfms</code></strong>=<em><code>[]</code></em>)</p>
 </blockquote>
 
 </div>
@@ -319,7 +318,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/vision/simclr.py#L30" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>aug_pipelines</code></strong>, <strong><code>temp</code></strong>=<em><code>0.07</code></em>, <strong><code>print_augs</code></strong>=<em><code>False</code></em>) :: <code>Callback</code></p>
+<h2 id="SimCLR" class="doc_header"><code>class</code> <code>SimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/vision/simclr.py#L30" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SimCLR</code>(<strong><code>aug_pipelines</code></strong>, <strong><code>temp</code></strong>=<em><code>0.07</code></em>, <strong><code>print_augs</code></strong>=<em><code>False</code></em>) :: <code>Callback</code></p>
 </blockquote>
 <p>Basic class handling tweaks of the training loop by changing a <code>Learner</code> in various events</p>
 
@@ -376,7 +375,7 @@ nb_path: "nbs/10 - simclr.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DistributedSimCLR" class="doc_header"><code>class</code> <code>DistributedSimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/vision/simclr.py#L76" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DistributedSimCLR</code>(<strong><code>aug_pipelines</code></strong>=<em><code>[]</code></em>, <strong><code>temp</code></strong>=<em><code>0.07</code></em>, <strong><code>print_augs</code></strong>=<em><code>False</code></em>) :: <code>Callback</code></p>
+<h2 id="DistributedSimCLR" class="doc_header"><code>class</code> <code>DistributedSimCLR</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/vision/simclr.py#L76" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DistributedSimCLR</code>(<strong><code>aug_pipelines</code></strong>=<em><code>[]</code></em>, <strong><code>temp</code></strong>=<em><code>0.07</code></em>, <strong><code>print_augs</code></strong>=<em><code>False</code></em>) :: <code>Callback</code></p>
 </blockquote>
 <p>Basic class handling tweaks of the training loop by changing a <code>Learner</code> in various events</p>
 
