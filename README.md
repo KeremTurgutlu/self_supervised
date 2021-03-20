@@ -1,6 +1,7 @@
 # Self Supervised Learning Fastai Extension
 > Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks.
 
+[![DOI](https://zenodo.org/badge/295835009.svg)](https://zenodo.org/badge/latestdoi/295835009) 
 
 ## Install
 
