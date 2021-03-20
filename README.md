@@ -4,6 +4,7 @@
 
 ![CI](https://github.com/KeremTurgutlu/self_supervised/actions/workflows/main.yml/badge.svg)
 [![PyPI](https://img.shields.io/pypi/v/self-supervised?color=blue&label=pypi%20version)](https://pypi.org/project/self-supervised/#description)
+![docs](https://github.com/KeremTurgutlu/self_supervised/actions/workflows/docs/badge.svg)
 [![DOI](https://zenodo.org/badge/295835009.svg)](https://zenodo.org/badge/latestdoi/295835009) 
 ## Install
 
