@@ -1,8 +1,12 @@
 # Self Supervised Learning Fastai Extension
 > Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks.
 
-[![DOI](https://zenodo.org/badge/295835009.svg)](https://zenodo.org/badge/latestdoi/295835009) 
 
+![CI](https://github.com/KeremTurgutlu/self_supervised/actions/workflows/main.yml/badge.svg)
+
+[![PyPI](https://img.shields.io/pypi/v/self-supervised?color=blue&label=pypi%20version)](https://pypi.org/project/self-supervised/#description)
+
+[![DOI](https://zenodo.org/badge/295835009.svg)](https://zenodo.org/badge/latestdoi/295835009) 
 ## Install
 
 `pip install self-supervised`
