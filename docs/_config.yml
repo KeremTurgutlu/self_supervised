@@ -3,7 +3,7 @@ output: web
 topnav_title: self_supervised
 site_title: self_supervised
 company_name: Kerem Turgutlu
-description: Self Supervised Learning Algorithms Extension to Fastai
+description: Self Supervised Learning Algorithms with Fastai
 # Set to false to disable KaTeX math
 use_math: true
 # Add Google analytics id if you have one and want to use it here
