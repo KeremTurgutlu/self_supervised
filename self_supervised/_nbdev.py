@@ -56,7 +56,8 @@ index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "CLIPTrainer": "20 - clip.ipynb",
          "DistributedCLIPTrainer": "20 - clip.ipynb",
          "CLIPMOCO": "21 - clip-moco.ipynb",
-         "CLIPMOCOTrainer": "21 - clip-moco.ipynb"}
+         "CLIPMOCOTrainer": "21 - clip-moco.ipynb",
+         "KNNProxyMetric": "70 - vision.metrics.ipynb"}
 
 modules = ["augmentations.py",
            "layers.py",
@@ -67,7 +68,8 @@ modules = ["augmentations.py",
            "vision/swav.py",
            "vision/barlow_twins.py",
            "multimodal/clip.py",
-           "multimodal/clip_moco.py"]
+           "multimodal/clip_moco.py",
+           "vision/metrics.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
