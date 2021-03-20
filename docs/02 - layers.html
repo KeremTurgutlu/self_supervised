@@ -61,7 +61,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_fastai_encoder" class="doc_header"><code>create_fastai_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L20" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_fastai_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
+<h4 id="create_fastai_encoder" class="doc_header"><code>create_fastai_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L20" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_fastai_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
 </blockquote>
 <p>Create timm encoder from a given arch backbone</p>
 
@@ -86,7 +86,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_timm_encoder" class="doc_header"><code>create_timm_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_timm_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
+<h4 id="create_timm_encoder" class="doc_header"><code>create_timm_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L26" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_timm_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
 </blockquote>
 <p>Creates a body from any model in the <code>timm</code> library. If pool_type is None then it uses timm default</p>
 
@@ -111,7 +111,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
+<h4 id="create_encoder" class="doc_header"><code>create_encoder</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L34" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_encoder</code>(<strong><code>arch</code></strong>:<code>str</code>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>)</p>
 </blockquote>
 <p>A utility for creating encoder without specifying the package</p>
 
@@ -413,7 +413,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_mlp_module" class="doc_header"><code>create_mlp_module</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_mlp_module</code>(<strong><code>dim</code></strong>, <strong><code>hidden_size</code></strong>, <strong><code>projection_size</code></strong>, <strong><code>bn</code></strong>=<em><code>False</code></em>, <strong><code>nlayers</code></strong>=<em><code>2</code></em>)</p>
+<h4 id="create_mlp_module" class="doc_header"><code>create_mlp_module</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L40" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_mlp_module</code>(<strong><code>dim</code></strong>, <strong><code>hidden_size</code></strong>, <strong><code>projection_size</code></strong>, <strong><code>bn</code></strong>=<em><code>False</code></em>, <strong><code>nlayers</code></strong>=<em><code>2</code></em>)</p>
 </blockquote>
 <p>MLP module as described in papers, used as projection layer</p>
 
@@ -600,7 +600,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_cls_module" class="doc_header"><code>create_cls_module</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_cls_module</code>(<strong><code>nf</code></strong>, <strong><code>n_out</code></strong>, <strong><code>lin_ftrs</code></strong>=<em><code>None</code></em>, <strong><code>ps</code></strong>=<em><code>0.5</code></em>, <strong><code>use_bn</code></strong>=<em><code>True</code></em>, <strong><code>first_bn</code></strong>=<em><code>True</code></em>, <strong><code>bn_final</code></strong>=<em><code>False</code></em>, <strong><code>lin_first</code></strong>=<em><code>False</code></em>, <strong><code>y_range</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="create_cls_module" class="doc_header"><code>create_cls_module</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L51" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_cls_module</code>(<strong><code>nf</code></strong>, <strong><code>n_out</code></strong>, <strong><code>lin_ftrs</code></strong>=<em><code>None</code></em>, <strong><code>ps</code></strong>=<em><code>0.5</code></em>, <strong><code>use_bn</code></strong>=<em><code>True</code></em>, <strong><code>first_bn</code></strong>=<em><code>True</code></em>, <strong><code>bn_final</code></strong>=<em><code>False</code></em>, <strong><code>lin_first</code></strong>=<em><code>False</code></em>, <strong><code>y_range</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Creates classification layer which takes nf flatten features and outputs n_out logits</p>
 
@@ -760,7 +760,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="create_model" class="doc_header"><code>create_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_model</code>(<strong><code>arch</code></strong>, <strong><code>n_out</code></strong>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>, <strong><code>lin_ftrs</code></strong>=<em><code>None</code></em>, <strong><code>ps</code></strong>=<em><code>0.5</code></em>, <strong><code>use_bn</code></strong>=<em><code>True</code></em>, <strong><code>first_bn</code></strong>=<em><code>True</code></em>, <strong><code>bn_final</code></strong>=<em><code>False</code></em>, <strong><code>lin_first</code></strong>=<em><code>False</code></em>, <strong><code>y_range</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="create_model" class="doc_header"><code>create_model</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>create_model</code>(<strong><code>arch</code></strong>, <strong><code>n_out</code></strong>, <strong><code>pretrained</code></strong>=<em><code>True</code></em>, <strong><code>n_in</code></strong>=<em><code>3</code></em>, <strong><code>pool_type</code></strong>=<em><code>'catavgmax'</code></em>, <strong><code>lin_ftrs</code></strong>=<em><code>None</code></em>, <strong><code>ps</code></strong>=<em><code>0.5</code></em>, <strong><code>use_bn</code></strong>=<em><code>True</code></em>, <strong><code>first_bn</code></strong>=<em><code>True</code></em>, <strong><code>bn_final</code></strong>=<em><code>False</code></em>, <strong><code>lin_first</code></strong>=<em><code>False</code></em>, <strong><code>y_range</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -969,7 +969,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CheckpointResNet" class="doc_header"><code>class</code> <code>CheckpointResNet</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L84" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointResNet</code>(<strong><code>resnet_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
+<h2 id="CheckpointResNet" class="doc_header"><code>class</code> <code>CheckpointResNet</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L84" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointResNet</code>(<strong><code>resnet_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -994,7 +994,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CheckpointEfficientNet" class="doc_header"><code>class</code> <code>CheckpointEfficientNet</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L110" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointEfficientNet</code>(<strong><code>effnet_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
+<h2 id="CheckpointEfficientNet" class="doc_header"><code>class</code> <code>CheckpointEfficientNet</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L110" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointEfficientNet</code>(<strong><code>effnet_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
@@ -1019,7 +1019,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CheckpointSequential" class="doc_header"><code>class</code> <code>CheckpointSequential</code><a href="https://github.com/keremturgutlu/self_supervised/tree/master/self_supervised/layers.py#L132" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointSequential</code>(<strong><code>fastai_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
+<h2 id="CheckpointSequential" class="doc_header"><code>class</code> <code>CheckpointSequential</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L132" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointSequential</code>(<strong><code>fastai_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 

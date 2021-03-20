@@ -2,8 +2,7 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"GaussianBlur": "01 - augmentations.ipynb",
-         "RandomGaussianBlur": "01 - augmentations.ipynb",
+index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "get_kornia_batch_augs": "01 - augmentations.ipynb",
          "get_torchvision_batch_augs": "01 - augmentations.ipynb",
          "get_fastai_batch_augs": "01 - augmentations.ipynb",
@@ -37,6 +36,10 @@ index = {"GaussianBlur": "01 - augmentations.ipynb",
          "create_swav_model": "13 - swav.ipynb",
          "get_swav_aug_pipelines": "13 - swav.ipynb",
          "SWAV": "13 - swav.ipynb",
+         "BarlowTwinsModel": "14 - barlow_twins.ipynb",
+         "create_barlow_twins_model": "14 - barlow_twins.ipynb",
+         "get_barlow_twins_aug_pipelines": "14 - barlow_twins.ipynb",
+         "BarlowTwins": "14 - barlow_twins.ipynb",
          "ClipTokenizer": "21 - clip-moco.ipynb",
          "vitb32_config": "21 - clip-moco.ipynb",
          "vitl14_config": "21 - clip-moco.ipynb",
@@ -62,6 +65,7 @@ modules = ["augmentations.py",
            "vision/moco.py",
            "vision/byol.py",
            "vision/swav.py",
+           "vision/barlow_twins.py",
            "multimodal/clip.py",
            "multimodal/clip_moco.py"]
 

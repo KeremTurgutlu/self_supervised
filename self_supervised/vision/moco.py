@@ -18,11 +18,11 @@ class MoCoModel(Module):
         return F.normalize(self.projector(self.encoder(x)), dim=1)
 
 # Cell
-def create_moco_model(encoder, hidden_size=256, projection_size=128):
+def create_moco_model(encoder, hidden_size=256, projection_size=128, bn=False, nlayers=2):
     "Create MoCo model"
     n_in  = in_channels(encoder)
     with torch.no_grad(): representation = encoder(torch.randn((2,n_in,128,128)))
-    projector = create_mlp_module(representation.size(1), hidden_size, projection_size)
+    projector = create_mlp_module(representation.size(1), hidden_size, projection_size, bn=bn, nlayers=nlayers)
     apply_init(projector)
     return MoCoModel(encoder, projector)
 

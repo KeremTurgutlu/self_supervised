@@ -1,7 +1,6 @@
 # Self Supervised Learning Fastai Extension
 > Implementation of popular SOTA self-supervised learning algorithms as Fastai Callbacks.
 
-[![DOI](https://zenodo.org/badge/295835009.svg)](https://zenodo.org/badge/latestdoi/295835009)
 
 ## Install
 
@@ -23,6 +22,7 @@ Here are the list of implemented **self_supervised.vision** algorithms:
 - [MoCo v1](https://arxiv.org/pdf/1911.05722.pdf) & [MoCo v2](https://arxiv.org/pdf/2003.04297.pdf)
 - [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
+- [Barlow Twins](https://arxiv.org/pdf/2103.03230.pdf)
 
 Here are the list of implemented **self_supervised.multimodal** algorithms:
 
@@ -92,6 +92,19 @@ learn = Learner(dls, model, cbs=[SWAV(aug_pipelines=aug_pipelines, crop_assgn_id
 learn.fit_flat_cos(100, 1e-2)
 ```
 
+#### Barlow Twins
+
+```python
+from self_supervised.vision.simclr import *
+dls = get_dls(resize, bs)
+# encoder = create_encoder("xresnet34", n_in=3, pretrained=False) # a fastai encoder
+encoder = create_encoder("tf_efficientnet_b4_ns", n_in=3, pretrained=False) # a timm encoder
+model = create_barlow_twins_model(encoder, hidden_size=2048, projection_size=128)
+aug_pipelines = get_barlow_twins_aug_pipelines(size=size)
+learn = Learner(dls,model,cbs=[BarlowTwins(aug_pipelines, lmb=5e-3)])
+learn.fit_flat_cos(100, 1e-2)
+```
+
 ### Multimodal
 
 #### CLIP
@@ -124,7 +137,12 @@ All of the algorithms implemented in this library have been evaluated in [ImageW
 
 In overall superiority of the algorithms are as follows `SwAV > MoCo > BYOL > SimCLR` in most of the benchmarks. For details you may inspect the history of [ImageWang Leaderboard](https://github.com/fastai/imagenette#image%E7%BD%91-leaderboard) through github. 
 
-It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using `learn.lr_find()` or making sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.
+`BarlowTwins` is still under testing on ImageWang.
+
+It should be noted that during these experiments no hyperparameter selection/tuning was made beyond using `learn.lr_find()` or making 
+sanity checks over data augmentations by visualizing batches. So, there is still space for improvement and overall rankings of the alogrithms may change based on your setup. Yet, the overall rankings are on par with the papers.
+
+
 
 ## Contributing
 
