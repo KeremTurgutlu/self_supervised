@@ -7,7 +7,7 @@ from fastai.vision.all import *
 
 # Cell
 class KNNProxyMetric(Callback):
-    "knn@1 accuracy for validation"
+    "A metric which calculates knn-1 accuracy. Use with a labeled validation set."
     order,run_train,run_valid=8,False,True
 
     def before_batch(self):
