@@ -2,7 +2,7 @@
 
 __all__ = ['PoolingType', '_splitter', 'create_fastai_encoder', 'create_timm_encoder', 'create_encoder',
            'create_mlp_module', 'create_cls_module', 'create_model', 'CheckpointResNet', 'CheckpointEfficientNet',
-           'CheckpointSequential']
+           'CheckpointVisionTransformer', 'CheckpointSequential']
 
 # Cell
 from fastai.vision.all import *
@@ -83,7 +83,7 @@ from torch.utils.checkpoint import checkpoint_sequential
 
 class CheckpointResNet(Module):
     def __init__(self, resnet_model, checkpoint_nchunks=2):
-        "Up to 4 chunks"
+        "A gradient checkpoint wrapper for timm ResNet"
         self.checkpoint_nchunks = checkpoint_nchunks
         self.resnet_model = resnet_model
         self.forward_layers = nn.Sequential(*[
@@ -109,6 +109,7 @@ class CheckpointResNet(Module):
 
 class CheckpointEfficientNet(Module):
     def __init__(self, effnet_model, checkpoint_nchunks=2):
+        "A gradient checkpoint wrapper for timm EfficientNet"
         self.checkpoint_nchunks = checkpoint_nchunks
         self.effnet_model = effnet_model
 
@@ -129,9 +130,33 @@ class CheckpointEfficientNet(Module):
             x = F.dropout(x, p=self.effnet_model.drop_rate, training=self.effnet_model.training)
         return self.effnet_model.classifier(x)
 
+class CheckpointVisionTransformer(Module):
+    def __init__(self, vit_model, checkpoint_nchunks=2):
+        "A gradient checkpoint wrapper for timm VisionTransformer"
+        self.checkpoint_nchunks = checkpoint_nchunks
+        self.vit_model = vit_model
+
+    def forward_features(self, x):
+        B = x.shape[0]
+        x = self.vit_model.patch_embed(x)
+
+        cls_tokens = self.vit_model.cls_token.expand(B, -1, -1)  # stole cls_tokens impl from Phil Wang, thanks
+        x = torch.cat((cls_tokens, x), dim=1)
+        x = x + self.vit_model.pos_embed
+        x = self.vit_model.pos_drop(x)
+        x = checkpoint_sequential(self.vit_model.blocks, self.checkpoint_nchunks, x)
+        x = self.vit_model.norm(x)[:, 0]
+        x = self.vit_model.pre_logits(x)
+        return x
+
+    def forward(self, x):
+        x = self.forward_features(x)
+        x = self.vit_model.head(x)
+        return x
+
 class CheckpointSequential(Module):
     def __init__(self, fastai_model, checkpoint_nchunks=2):
-        "This can be used for checkpointing fastai encoders which are sequential models"
+        "A gradient checkpoint wrapper for nn.Sequential"
         self.checkpoint_nchunks = checkpoint_nchunks
         self.fastai_model = fastai_model
 
