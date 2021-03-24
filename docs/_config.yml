@@ -59,7 +59,6 @@ defaults:
 sidebars:
 - home_sidebar
 
-
 theme: jekyll-theme-cayman
 baseurl: /self_supervised/
 default_badges:
