@@ -1,4 +1,4 @@
-repository: fastai/self_supervised
+repository: KeremTurgutlu/self_supervised
 output: web
 topnav_title: self_supervised
 site_title: self_supervised
