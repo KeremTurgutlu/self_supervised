@@ -41,7 +41,7 @@ entries:
       url: /13 - swav.html
     - output: web,pdf
       title: Metrics
-      url: 70/ - vision.metrics.html
+      url: 70 - vision.metrics.html
     output: web
     title: Vision
   - folderitems:
