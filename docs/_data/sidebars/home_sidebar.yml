@@ -39,6 +39,9 @@ entries:
     - output: web,pdf
       title: SwAV
       url: /13 - swav.html
+    - output: web,pdf
+      title: Metrics
+      url: 70/ - vision.metrics.html
     output: web
     title: Vision
   - folderitems:
