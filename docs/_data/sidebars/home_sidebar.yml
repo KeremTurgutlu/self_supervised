@@ -53,16 +53,19 @@ entries:
   - folderitems:
     - output: web,pdf
       title: Training SimCLR ImageWang
-      url: /training_simclr_iwang.html
+      url: /01 - training_simclr_iwang.html
     - output: web,pdf
       title: Training MOCO ImageWang
-      url: /training_moco_iwang.html
+      url: /02 - training_moco_iwang.html
     - output: web,pdf
       title: Training BYOL ImageWang
-      url: /training_byol_iwang.html
+      url: /03 - training_byol_iwang.html
     - output: web,pdf
       title: Training SwAV ImageWang
-      url: /training_swav_iwang.html
+      url: /04 - training_swav_iwang.html
+    - output: web,pdf
+      title: Training CLIP COCO (Dummy)
+      url: /01 - training_clip_coco.html
     output: web
     title: Tutorials
   output: web
