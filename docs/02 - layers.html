@@ -946,7 +946,7 @@ nb_path: "nbs/02 - layers.ipynb"
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Gradient-Checkpointing">Gradient Checkpointing<a class="anchor-link" href="#Gradient-Checkpointing"> </a></h3><p>For memory conservation, to train with larger image resolution and/or batch size. For now it's compatible with <strong>timm</strong> EfficientNet and ResNet models, and <strong>fastai</strong> models. But it should be easy to implement for any encoder model that you are using.</p>
+<h3 id="Gradient-Checkpointing">Gradient Checkpointing<a class="anchor-link" href="#Gradient-Checkpointing"> </a></h3><p>For memory conservation, to train with larger image resolution and/or batch size. It's compatible with all <strong>timm</strong> <code>ResNet</code>, <code>EfficientNet</code> and <code>VisionTransformer</code> models, and <strong>fastai</strong> models. But it should be easy to implement for any encoder model that you are using.</p>
 
 </div>
 </div>
@@ -1019,7 +1019,32 @@ nb_path: "nbs/02 - layers.ipynb"
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CheckpointSequential" class="doc_header"><code>class</code> <code>CheckpointSequential</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L132" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointSequential</code>(<strong><code>fastai_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
+<h2 id="CheckpointVisionTransformer" class="doc_header"><code>class</code> <code>CheckpointVisionTransformer</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L133" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointVisionTransformer</code>(<strong><code>vit_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
+</blockquote>
+<p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="CheckpointSequential" class="doc_header"><code>class</code> <code>CheckpointSequential</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/layers.py#L157" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CheckpointSequential</code>(<strong><code>fastai_model</code></strong>, <strong><code>checkpoint_nchunks</code></strong>=<em><code>2</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>Same as <code>nn.Module</code>, but no need for subclasses to call <code>super().__init__</code></p>
 
