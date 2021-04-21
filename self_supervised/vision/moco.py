@@ -53,11 +53,12 @@ class MOCO(Callback):
             self.queue = torch.randn(self.K, nf).to(self.dls.device)
             self.queue = nn.functional.normalize(self.queue, dim=1)
             self.queue_ptr = 0
-        else: raise Exception("Key encoder and queue is already defined")
+        else:warnings.warn("Key encoder and queue are already defined, keeping them.")
 
         self.learn.loss_func = self.lf
 
-
+    def before_train(self):    self.encoder_k.train()
+    def before_validate(self): self.encoder_k.eval()
     def before_batch(self):
         "Generate query and key for the current batch"
         q_img,k_img = self.aug1(self.x), self.aug2(self.x.clone())

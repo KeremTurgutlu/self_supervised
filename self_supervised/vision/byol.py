@@ -51,6 +51,8 @@ class BYOL(Callback):
         for param_k in self.target_model.parameters(): param_k.requires_grad = False
         self.learn.loss_func = self.lf
 
+    def before_train(self):    self.target_model.train()
+    def before_validate(self): self.target_model.eval()
     def before_batch(self):
         "Generate 2 views of the same image and calculate target projections for these views"
         v1,v2 = self.aug1(self.x), self.aug2(self.x.clone())
