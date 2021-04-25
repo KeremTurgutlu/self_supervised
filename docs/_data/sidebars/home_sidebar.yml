@@ -58,6 +58,9 @@ entries:
       title: Training SimCLR ImageWang
       url: /01 - training_simclr_iwang.html
     - output: web,pdf
+      title: Training SimCLR STL-10
+      url: /01 - training_simclr_stl10.html
+    - output: web,pdf
       title: Training MOCO ImageWang
       url: /02 - training_moco_iwang.html
     - output: web,pdf
