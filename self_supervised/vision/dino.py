@@ -62,7 +62,7 @@ class DINO(Callback):
     order,run_valid = 9,True
     def __init__(self, aug_pipelines, large_crop_ids=[0,1],
                          cmom=0.9, tmom=0.996,
-                         tpt_warmup=0.04, tpt_warmup_pct=0.3, tpt_sched=sched_lin, tpt=0.07,
+                         tpt_start=0.04, tpt_warmup_pct=0.3, tpt_sched=SchedLin, tpt_end=0.07,
                          tps=0.1,
                          print_augs=False):
         """
@@ -72,17 +72,17 @@ class DINO(Callback):
             tmom:           Teacher update momentum. Set larger, e.g. 0.9995, for small batches.
             tpt_warmup:     Warm up starting temperature
             tpt_warmup_pct: Percentage of training for warmup
-            tpt_sched:      Warm up scheduler, e.g. sched_lin, sched_cos, sched_exp
+            tpt_sched:      Warm up scheduler, e.g. SchedLin, SchedCos, SchedExp
             tpt:            Teacher temperature after warm up. Decrease if training loss does not decrease.
                             Smaller temperature means more sharpening.
             tps:            Student temperature.
         """
-        store_attr('K,large_crop_ids,cmom,tmom,tpt,tps')
+        store_attr('large_crop_ids,cmom,tmom,tps')
         self.augs = aug_pipelines
+        self.tpt_scheduler = combine_scheds([tpt_warmup_pct,1-tpt_warmup_pct],
+                                            [tpt_sched(tpt_start,tpt_end),SchedNo(tpt_end,tpt_end)])
         if print_augs:
             for aug in self.augs: print(aug)
-        self.C = torch.zeros(1,K)
-
 
     def before_fit(self):
         "Create teacher model as a copy of student"
@@ -90,7 +90,7 @@ class DINO(Callback):
         for param_t in self.teacher_model.parameters(): param_t.requires_grad = False
         self.learn.loss_func = self.lf
         self.C = torch.zeros(1,num_features_model(self.learn.model))
-
+        self.tpt = self.tpt_scheduler(0.)
 
     def before_train(self):    self.teacher_model.train()
     def before_validate(self): self.teacher_model.eval()
@@ -117,15 +117,20 @@ class DINO(Callback):
         self._momentum_update_center()
         self._momentum_update_teacher()
 
+    def after_epoch(self):
+        "Update tpt at the end of each epoch"
+        self.tpt = self.tpt_scheduler(self.pct_train)
+
 
     def lf(self, pred, *yb):
         "Multi crop cross entropy loss: -qlog(p)"
-        pred = F.log_softmax(pred / tps, dim=-1)
-        yb = F.softmax(yb - C / tpt, dim=-1)
+        pred = F.log_softmax(pred / self.tps, dim=-1)
+        yb   = F.softmax(yb - self.C / self.tpt, dim=-1)
+
         n_targs, n_preds = yb.size(0)//bs, pred.size(0)//bs
         yb,pred = yb.chunk(n_targs), pred.chunk(n_preds)
-        npairs = len(targs)*(len(preds)-1)
-        loss = 0
+
+        loss, npairs = 0, len(targs)*(len(preds)-1)
         for ti in range(len(targs)):
             for pi in range(len(preds)):
                 if ti != pi:
