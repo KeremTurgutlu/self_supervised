@@ -11,6 +11,10 @@ from ..models.vision_transformer import *
 # Cell
 class DINOHead(nn.Module):
     '''
+    copy.deepcopy:
+    RuntimeError: Only Tensors created explicitly by the user (graph leaves)
+    support the deepcopy protocol at the moment
+
     https://pytorch.org/docs/stable/generated/torch.nn.utils.weight_norm.html
     https://pytorch.org/docs/stable/generated/torch.nn.GELU.html
     '''
@@ -60,9 +64,10 @@ def get_dino_aug_pipelines(num_crops=(2,4), crop_sizes=(224,96), min_scales=(0.4
 # Cell
 class DINO(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_pipelines, large_crop_ids=[0,1],
-                         cmom=0.9, tmom=0.996,
-                         tpt_start=0.04, tpt_warmup_pct=0.3, tpt_sched=SchedLin, tpt_end=0.07,
+    def __init__(self, aug_pipelines, teacher_model, large_crop_ids=[0,1],
+                         cmom=0.9,
+                         tmom_start=0.9995, tmom_end=1., tmom_sched=SchedCos,
+                         tpt_start=0.04, tpt_end=0.07, tpt_warmup_pct=0.3, tpt_sched=SchedLin,
                          tps=0.1,
                          print_augs=False):
         """
@@ -70,7 +75,7 @@ class DINO(Callback):
         Refer to original repo:
         https://github.com/facebookresearch/dino/blob/0be6e112dd579203caaa1d0f066e29ca536f76dd/main_dino.py#L41
             cmom:           Center update momentum.
-            tmom:           Teacher update momentum. Set larger, e.g. 0.9995, for small batches.
+            tmom:           Teacher update momentum. Set larger, e.g. 0.9995, for small batches or 0.996 for large batches (256+).
             tpt_warmup:     Warm up starting temperature
             tpt_warmup_pct: Percentage of training for warmup
             tpt_sched:      Warm up scheduler, e.g. SchedLin, SchedCos, SchedExp
@@ -78,20 +83,27 @@ class DINO(Callback):
                             Smaller temperature means more sharpening.
             tps:            Student temperature.
         """
-        store_attr('large_crop_ids,cmom,tmom,tps')
+        store_attr('teacher_model,large_crop_ids,cmom,tps,teacher_model')
         self.augs = aug_pipelines
-        self.tpt_scheduler = combine_scheds([tpt_warmup_pct,1-tpt_warmup_pct],
-                                            [tpt_sched(tpt_start,tpt_end),SchedNo(tpt_end,tpt_end)])
+        self.tpt_scheduler  = combine_scheds([tpt_warmup_pct,1-tpt_warmup_pct],
+                                             [tpt_sched(tpt_start,tpt_end),SchedNo(tpt_end,tpt_end)])
+        self.tmom_scheduler = tmom_sched(tmom_start, tmom_end)
         if print_augs:
             for aug in self.augs: print(aug)
 
     def before_fit(self):
         "Create teacher model as a copy of student"
-        self.teacher_model = deepcopy(self.learn.model).to(self.dls.device)
+#         https://github.com/pytorch/pytorch/issues/28594
+#         self.teacher_model = deepcopy(self.learn.model).to(self.dls.device)
+
+        self.teacher_model.to(self.dls.device)
+        self.teacher_model.load_state_dict(self.learn.model.state_dict())
         for param_t in self.teacher_model.parameters(): param_t.requires_grad = False
+
         self.learn.loss_func = self.lf
         self.C = torch.zeros(1,num_features_model(self.learn.model))
-        self.tpt = self.tpt_scheduler(0.)
+        self.tpt  = self.tpt_scheduler(0.)
+        self.tmom = self.tmom_scheduler(0.)
 
     def before_train(self):    self.teacher_model.train()
     def before_validate(self): self.teacher_model.eval()
@@ -100,8 +112,11 @@ class DINO(Callback):
         self.bs = self.x.size(0)
         self.learn.xb = ([aug(self.x) for aug in self.augs],)
         x_large = [self.learn.xb[0][i] for i in self.large_crop_ids]
-        self.cb = torch.cat(x_large).mean(0)
-        with torch.no_grad(): self.yb = (self.teacher_model(x_large),)
+        # TODO: Do we need to put the teacher in eval(), not it original repo?
+        with torch.no_grad():
+            targs = self.teacher_model(x_large)
+            self.learn.yb = (targs,)
+            self.cb = targs.mean(0)
 
 
     def _momentum_update_teacher(self):
@@ -121,7 +136,8 @@ class DINO(Callback):
 
     def after_epoch(self):
         "Update tpt at the end of each epoch"
-        self.tpt = self.tpt_scheduler(self.pct_train)
+        self.tpt  = self.tpt_scheduler(self.pct_train)
+        self.tmom = self.tmom_scheduler(self.pct_train)
 
 
     def lf(self, pred, *yb):
