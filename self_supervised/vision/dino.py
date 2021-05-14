@@ -69,6 +69,7 @@ class DINO(Callback):
                          tmom_start=0.9995, tmom_end=1., tmom_sched=SchedCos,
                          tpt_start=0.04, tpt_end=0.07, tpt_warmup_pct=0.3, tpt_sched=SchedLin,
                          tps=0.1,
+                         freeze_last_layer=5,
                          print_augs=False):
         """
         DINO teacher student training with distillation.
@@ -82,8 +83,9 @@ class DINO(Callback):
             tpt:            Teacher temperature after warm up. Decrease if training loss does not decrease.
                             Smaller temperature means more sharpening.
             tps:            Student temperature.
+            freeze_last_layer: How many epochs to freeze the last layer
         """
-        store_attr('teacher_model,large_crop_ids,cmom,tps,teacher_model')
+        store_attr('teacher_model,large_crop_ids,cmom,tps,teacher_model,freeze_last_layer')
         self.augs = aug_pipelines
         self.tpt_scheduler  = combine_scheds([tpt_warmup_pct,1-tpt_warmup_pct],
                                              [tpt_sched(tpt_start,tpt_end),SchedNo(tpt_end,tpt_end)])
@@ -105,8 +107,11 @@ class DINO(Callback):
         self.tpt  = self.tpt_scheduler(0.)
         self.tmom = self.tmom_scheduler(0.)
 
-    def before_train(self):    self.teacher_model.train()
-    def before_validate(self): self.teacher_model.eval()
+        for n,p in self.learn.model[1].last_layer.named_parameters():
+            if n == 'weight_v' : p.requires_grad = False
+
+    def before_train(self):    self.teacher_model.train() # learn.summary()
+    def before_validate(self): self.teacher_model.eval()  # learn.summary()
     def before_batch(self):
         "Augment multi crop views"
         self.bs = self.x.size(0)
@@ -138,6 +143,12 @@ class DINO(Callback):
         "Update tpt at the end of each epoch"
         self.tpt  = self.tpt_scheduler(self.pct_train)
         self.tmom = self.tmom_scheduler(self.pct_train)
+
+        if self.epoch == self.freeze_last_layer:
+            print("Setting last layer to trainable")
+            for n,p in self.learn.model[1].last_layer.named_parameters():
+                if n == 'weight_v' : p.requires_grad = True
+
 
 
     def lf(self, pred, *yb):
