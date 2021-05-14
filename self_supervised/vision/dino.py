@@ -101,7 +101,7 @@ class DINO(Callback):
         for param_t in self.teacher_model.parameters(): param_t.requires_grad = False
 
         self.learn.loss_func = self.lf
-        self.C = torch.zeros(1,num_features_model(self.learn.model))
+        self.C = torch.zeros(1,num_features_model(self.learn.model)).to(self.dls.device)
         self.tpt  = self.tpt_scheduler(0.)
         self.tmom = self.tmom_scheduler(0.)
 
@@ -142,6 +142,7 @@ class DINO(Callback):
 
     def lf(self, pred, *yb):
         "Multi crop cross entropy loss: -qlog(p)"
+        yb = yb[0]
         pred = F.log_softmax(pred / self.tps, dim=-1)
         yb   = F.softmax(yb - self.C / self.tpt, dim=-1)
 
