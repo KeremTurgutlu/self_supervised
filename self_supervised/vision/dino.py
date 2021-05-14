@@ -66,6 +66,7 @@ class DINO(Callback):
                          tps=0.1,
                          print_augs=False):
         """
+        DINO teacher student training with distillation.
         Refer to original repo:
         https://github.com/facebookresearch/dino/blob/0be6e112dd579203caaa1d0f066e29ca536f76dd/main_dino.py#L41
             cmom:           Center update momentum.
@@ -117,6 +118,7 @@ class DINO(Callback):
         self._momentum_update_center()
         self._momentum_update_teacher()
 
+
     def after_epoch(self):
         "Update tpt at the end of each epoch"
         self.tpt = self.tpt_scheduler(self.pct_train)
@@ -127,16 +129,15 @@ class DINO(Callback):
         pred = F.log_softmax(pred / self.tps, dim=-1)
         yb   = F.softmax(yb - self.C / self.tpt, dim=-1)
 
-        n_targs, n_preds = yb.size(0)//bs, pred.size(0)//bs
-        yb,pred = yb.chunk(n_targs), pred.chunk(n_preds)
+        n_targs, n_preds = yb.size(0)//self.bs, pred.size(0)//self.bs
+        yb, pred = yb.chunk(n_targs), pred.chunk(n_preds)
 
-        loss, npairs = 0, len(targs)*(len(preds)-1)
-        for ti in range(len(targs)):
-            for pi in range(len(preds)):
+        loss, npairs = 0, n_targs*(n_preds-1)
+        for ti in range(n_targs):
+            for pi in range(n_preds):
                 if ti != pi:
-                    loss += (-targs[ti]*preds[pi]).sum(-1).mean() / npairs
+                    loss += (-yb[ti]*pred[pi]).sum(-1).mean() / npairs
         return loss
-
 
 
     @torch.no_grad()
