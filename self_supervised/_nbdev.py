@@ -41,6 +41,9 @@ index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "create_barlow_twins_model": "14 - barlow_twins.ipynb",
          "get_barlow_twins_aug_pipelines": "14 - barlow_twins.ipynb",
          "BarlowTwins": "14 - barlow_twins.ipynb",
+         "DINOHead": "15 - dino.ipynb",
+         "get_dino_aug_pipelines": "15 - dino.ipynb",
+         "DINO": "15 - dino.ipynb",
          "ClipTokenizer": "21 - clip-moco.ipynb",
          "vitb32_config": "21 - clip-moco.ipynb",
          "vitl14_config": "21 - clip-moco.ipynb",
@@ -58,7 +61,19 @@ index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "DistributedCLIPTrainer": "20 - clip.ipynb",
          "CLIPMOCO": "21 - clip-moco.ipynb",
          "CLIPMOCOTrainer": "21 - clip-moco.ipynb",
-         "KNNProxyMetric": "70 - vision.metrics.ipynb"}
+         "KNNProxyMetric": "70 - vision.metrics.ipynb",
+         "trunc_normal_": "90 - models.vision_transformer.ipynb",
+         "drop_path": "90 - models.vision_transformer.ipynb",
+         "DropPath": "90 - models.vision_transformer.ipynb",
+         "Mlp": "90 - models.vision_transformer.ipynb",
+         "Attention": "90 - models.vision_transformer.ipynb",
+         "Block": "90 - models.vision_transformer.ipynb",
+         "PatchEmbed": "90 - models.vision_transformer.ipynb",
+         "VisionTransformer": "90 - models.vision_transformer.ipynb",
+         "MultiCropWrapper": "90 - models.vision_transformer.ipynb",
+         "deit_tiny": "90 - models.vision_transformer.ipynb",
+         "deit_small": "90 - models.vision_transformer.ipynb",
+         "vit_base": "90 - models.vision_transformer.ipynb"}
 
 modules = ["augmentations.py",
            "layers.py",
@@ -68,9 +83,11 @@ modules = ["augmentations.py",
            "vision/byol.py",
            "vision/swav.py",
            "vision/barlow_twins.py",
+           "vision/dino.py",
            "multimodal/clip.py",
            "multimodal/clip_moco.py",
-           "vision/metrics.py"]
+           "vision/metrics.py",
+           "models/vision_transformer.py"]
 
 doc_url = "https://keremturgutlu.github.io/self_supervised/"
 
