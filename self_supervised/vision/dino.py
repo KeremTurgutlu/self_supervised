@@ -66,10 +66,10 @@ class DINO(Callback):
     order,run_valid = 9,True
     def __init__(self, aug_pipelines, teacher_model, large_crop_ids=[0,1],
                          cmom=0.9,
-                         tmom_start=0.9995, tmom_end=1., tmom_sched=SchedCos,
-                         tpt_start=0.04, tpt_end=0.07, tpt_warmup_pct=0.3, tpt_sched=SchedLin,
+                         tmom_start=0.996, tmom_end=1., tmom_sched=SchedCos,
+                         tpt_start=0.04, tpt_end=0.04, tpt_warmup_pct=0., tpt_sched=SchedLin,
                          tps=0.1,
-                         freeze_last_layer=5,
+                         freeze_last_layer=1,
                          print_augs=False):
         """
         DINO teacher student training with distillation.
@@ -125,8 +125,8 @@ class DINO(Callback):
 
 
     def _momentum_update_teacher(self):
-        for param_q, param_t in zip(self.learn.model.parameters(), self.teacher_model.parameters()):
-            param_t.data = param_t.data * self.tmom + param_t.data * (1. - self.tmom)
+        for param_s, param_t in zip(self.learn.model.parameters(), self.teacher_model.parameters()):
+            param_t.data = param_t.data * self.tmom + param_s.data * (1. - self.tmom)
 
 
     def _momentum_update_center(self):
@@ -135,8 +135,8 @@ class DINO(Callback):
 
     def after_step(self):
         "Center and teacher updates"
-        self._momentum_update_center()
         self._momentum_update_teacher()
+        self._momentum_update_center()
 
 
     def after_epoch(self):
