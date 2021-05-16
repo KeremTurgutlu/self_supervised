@@ -93,35 +93,37 @@ class DINO(Callback):
         if print_augs:
             for aug in self.augs: print(aug)
 
+
     def before_fit(self):
         "Create teacher model as a copy of student"
 #         https://github.com/pytorch/pytorch/issues/28594
 #         self.teacher_model = deepcopy(self.learn.model).to(self.dls.device)
 
-        self.teacher_model.to(self.dls.device)
-        self.teacher_model.load_state_dict(self.learn.model.state_dict())
+        self.teacher_model.to(self.dls.device).load_state_dict(self.learn.model.state_dict())
         for param_t in self.teacher_model.parameters(): param_t.requires_grad = False
 
         self.learn.loss_func = self.lf
-        self.C = torch.zeros(1,num_features_model(self.learn.model)).to(self.dls.device)
+        self.C    = torch.zeros(1,num_features_model(self.learn.model)).to(self.dls.device)
         self.tpt  = self.tpt_scheduler(0.)
         self.tmom = self.tmom_scheduler(0.)
 
         for n,p in self.learn.model[1].last_layer.named_parameters():
             if n == 'weight_v' : p.requires_grad = False
 
-    def before_train(self):    self.teacher_model.train() # learn.summary()
-    def before_validate(self): self.teacher_model.eval()  # learn.summary()
+
+#     def before_train(self):    self.teacher_model.train() # learn.summary()
+#     def before_validate(self): self.teacher_model.eval()  # learn.summary()
     def before_batch(self):
         "Augment multi crop views"
         self.bs = self.x.size(0)
         self.learn.xb = ([aug(self.x) for aug in self.augs],)
         x_large = [self.learn.xb[0][i] for i in self.large_crop_ids]
+
         # TODO: Do we need to put the teacher in eval(), not it original repo?
         with torch.no_grad():
-            targs = self.teacher_model(x_large)
+            targs = self.teacher_model(x_large).detach()
             self.learn.yb = (targs,)
-            self.cb = targs.mean(0)
+            self.cb = targs.mean(0, keepdim=True)
 
 
     def _momentum_update_teacher(self):
@@ -150,12 +152,11 @@ class DINO(Callback):
                 if n == 'weight_v' : p.requires_grad = True
 
 
-
     def lf(self, pred, *yb):
         "Multi crop cross entropy loss: -qlog(p)"
         yb = yb[0]
         pred = F.log_softmax(pred / self.tps, dim=-1)
-        yb   = F.softmax(yb - self.C / self.tpt, dim=-1)
+        yb   = F.softmax((yb - self.C) / self.tpt, dim=-1)
 
         n_targs, n_preds = yb.size(0)//self.bs, pred.size(0)//self.bs
         yb, pred = yb.chunk(n_targs), pred.chunk(n_preds)
