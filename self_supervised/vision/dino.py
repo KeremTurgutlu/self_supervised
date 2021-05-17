@@ -64,7 +64,7 @@ def get_dino_aug_pipelines(num_crops=(2,4), crop_sizes=(224,96), min_scales=(0.4
 # Cell
 class DINO(Callback):
     order,run_valid = 9,True
-    def __init__(self, aug_pipelines, teacher_model, large_crop_ids=[0,1],
+    def __init__(self, aug_pipelines, large_crop_ids=[0,1],
                          cmom=0.9,
                          tmom_start=0.996, tmom_end=1., tmom_sched=SchedCos,
                          tpt_start=0.04, tpt_end=0.04, tpt_warmup_pct=0., tpt_sched=SchedLin,
@@ -85,7 +85,7 @@ class DINO(Callback):
             tps:            Student temperature.
             freeze_last_layer: How many epochs to freeze the last layer
         """
-        store_attr('teacher_model,large_crop_ids,cmom,tps,teacher_model,freeze_last_layer')
+        store_attr('large_crop_ids,cmom,freeze_last_layer,tps')
         self.augs = aug_pipelines
         self.tpt_scheduler  = combine_scheds([tpt_warmup_pct,1-tpt_warmup_pct],
                                              [tpt_sched(tpt_start,tpt_end),SchedNo(tpt_end,tpt_end)])
@@ -96,23 +96,15 @@ class DINO(Callback):
 
     def before_fit(self):
         "Create teacher model as a copy of student"
-#         https://github.com/pytorch/pytorch/issues/28594
-#         self.teacher_model = deepcopy(self.learn.model).to(self.dls.device)
-
-        self.teacher_model.to(self.dls.device).load_state_dict(self.learn.model.state_dict())
-        for param_t in self.teacher_model.parameters(): param_t.requires_grad = False
-
         self.learn.loss_func = self.lf
-        self.C    = torch.zeros(1,num_features_model(self.learn.model)).to(self.dls.device)
         self.tpt  = self.tpt_scheduler(0.)
         self.tmom = self.tmom_scheduler(0.)
+        self.model.teacher.eval()
 
-        for n,p in self.learn.model[1].last_layer.named_parameters():
+        for n,p in self.learn.model.student[1].last_layer.named_parameters():
             if n == 'weight_v' : p.requires_grad = False
 
 
-#     def before_train(self):    self.teacher_model.train() # learn.summary()
-#     def before_validate(self): self.teacher_model.eval()  # learn.summary()
     def before_batch(self):
         "Augment multi crop views"
         self.bs = self.x.size(0)
@@ -121,24 +113,23 @@ class DINO(Callback):
 
         # TODO: Do we need to put the teacher in eval(), not it original repo?
         with torch.no_grad():
-            targs = self.teacher_model(x_large).detach()
+            targs = self.model.teacher(x_large)
             self.learn.yb = (targs,)
-            self.cb = targs.mean(0, keepdim=True)
+            self.cb       = targs.mean(0, keepdim=True)
 
 
     def _momentum_update_teacher(self):
-        for param_s, param_t in zip(self.learn.model.parameters(), self.teacher_model.parameters()):
+        for param_s, param_t in zip(self.learn.model.student.parameters(), self.model.teacher.parameters()):
             param_t.data = param_t.data * self.tmom + param_s.data * (1. - self.tmom)
 
 
     def _momentum_update_center(self):
-        self.C = self.C*self.cmom + self.cb*(1-self.cmom)
+        self.model.C = self.model.C*self.cmom + self.cb*(1-self.cmom)
 
 
     def after_step(self):
         "Center and teacher updates"
-        self._momentum_update_teacher()
-        self._momentum_update_center()
+        self._momentum_update_teacher(); self._momentum_update_center()
 
 
     def after_epoch(self):
@@ -148,7 +139,7 @@ class DINO(Callback):
 
         if self.epoch == self.freeze_last_layer:
             print("Setting last layer to trainable")
-            for n,p in self.learn.model[1].last_layer.named_parameters():
+            for n,p in self.learn.model.student[1].last_layer.named_parameters():
                 if n == 'weight_v' : p.requires_grad = True
 
 
@@ -156,7 +147,7 @@ class DINO(Callback):
         "Multi crop cross entropy loss: -qlog(p)"
         yb = yb[0]
         pred = F.log_softmax(pred / self.tps, dim=-1)
-        yb   = F.softmax((yb - self.C) / self.tpt, dim=-1)
+        yb   = F.softmax((yb - self.model.C) / self.tpt, dim=-1)
 
         n_targs, n_preds = yb.size(0)//self.bs, pred.size(0)//self.bs
         yb, pred = yb.chunk(n_targs), pred.chunk(n_preds)
@@ -167,6 +158,7 @@ class DINO(Callback):
                 if ti != pi:
                     loss += (-yb[ti]*pred[pi]).sum(-1).mean() / npairs
         return loss
+
 
 
     @torch.no_grad()
