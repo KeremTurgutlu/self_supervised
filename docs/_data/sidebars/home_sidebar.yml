@@ -67,6 +67,9 @@ entries:
       title: Training SwAV ImageWang
       url: /04 - training_swav_iwang.html
     - output: web,pdf
+      title: Training DINO ImageWang
+      url: /06 - training_dino_iwang.html
+    - output: web,pdf
       title: Training CLIP COCO (Dummy)
       url: /01 - training_clip_coco.html
     output: web
