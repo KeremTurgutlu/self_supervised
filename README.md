@@ -27,6 +27,7 @@ Here are the list of implemented **self_supervised.vision** algorithms:
 - [BYOL](https://arxiv.org/pdf/2006.07733.pdf)
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
 - [Barlow Twins](https://arxiv.org/pdf/2103.03230.pdf)
+- [DINO](https://arxiv.org/pdf/2104.14294.pdf)
 
 Here are the list of implemented **self_supervised.multimodal** algorithms:
 
@@ -106,6 +107,30 @@ encoder = create_encoder("tf_efficientnet_b4_ns", n_in=3, pretrained=False) # a 
 model = create_barlow_twins_model(encoder, hidden_size=2048, projection_size=128)
 aug_pipelines = get_barlow_twins_aug_pipelines(size=size)
 learn = Learner(dls,model,cbs=[BarlowTwins(aug_pipelines, lmb=5e-3)])
+learn.fit_flat_cos(100, 1e-2)
+```
+
+#### DINO
+
+```python
+from self_supervised.models.vision_transformer import *
+from self_supervised.vision.dino import *
+dls = get_dls(resize, bs)
+
+deits16 = MultiCropWrapper(deit_small(patch_size=16, drop_path_rate=0.1))
+dino_head = DINOHead(deits16.encoder.embed_dim, 2**16, norm_last_layer=True)
+student_model = nn.Sequential(deits16,dino_head)
+
+deits16 = MultiCropWrapper(deit_small(patch_size=16))
+dino_head = DINOHead(deits16.encoder.embed_dim, 2**16, norm_last_layer=True)
+teacher_model = nn.Sequential(deits16,dino_head)
+
+dino_model = DINOModel(student_model, teacher_model)
+aug_pipelines = get_dino_aug_pipelines(num_crops=[2,6],
+                                       crop_sizes=[128,96], 
+                                       min_scales=[0.25,0.05],
+                                       max_scales=[1.0,0.3])
+ learn = Learner(dls,model,cbs=[DINO(aug_pipelines=aug_pipelines)])
 learn.fit_flat_cos(100, 1e-2)
 ```
 
