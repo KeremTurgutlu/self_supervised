@@ -28,6 +28,12 @@ entries:
     title: Augmentations and Layers
   - folderitems:
     - output: web,pdf
+      title: Vision Transformers
+      url: /90 - models.vision_transformer.html
+    output: web
+    title: Models
+  - folderitems:
+    - output: web,pdf
       title: SimCLR
       url: /10 - simclr.html
     - output: web,pdf
@@ -39,6 +45,12 @@ entries:
     - output: web,pdf
       title: SwAV
       url: /13 - swav.html
+    - output: web,pdf
+      title: Barlow Twins
+      url: /14 - barlow_twins.html
+    - output: web,pdf
+      title: DINO
+      url: /15 - dino.html
     - output: web,pdf
       title: Metrics
       url: 70 - vision.metrics.html
