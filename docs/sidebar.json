@@ -9,12 +9,18 @@
 		"Layers": "/02 - layers.html",
 		"Distributed": "/03 - distributed.html"
 	},
+    
+    "Models": {
+		"Vision Transformers": "/90 - models.vision_transformer.html"
+	},
 
 	"Vision": {
 		"SimCLR": "/10 - simclr.html",
 		"MoCo": "/11 - moco.html",
 		"BYOL": "/12 - byol.html",
 		"SwAV": "/13 - swav.html",
+        "Barlow Twins": "/14 - barlow_twins.html",
+        "DINO": "/15 - dino.html",
 		"Metrics": "70 - vision.metrics.html"
 	},
 
@@ -28,6 +34,7 @@
         "Training MOCO ImageWang": "/02 - training_moco_iwang.html",
         "Training BYOL ImageWang": "/03 - training_byol_iwang.html",
         "Training SwAV ImageWang": "/04 - training_swav_iwang.html",
+        "Training DINO ImageWang": "/06 - training_dino_iwang.html",
 		"Training CLIP COCO (Dummy)": "/01 - training_clip_coco.html"
     }
 }
