@@ -43,6 +43,7 @@ index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "BarlowTwins": "14 - barlow_twins.ipynb",
          "DINOHead": "15 - dino.ipynb",
          "get_dino_aug_pipelines": "15 - dino.ipynb",
+         "DINOModel": "15 - dino.ipynb",
          "DINO": "15 - dino.ipynb",
          "ClipTokenizer": "21 - clip-moco.ipynb",
          "vitb32_config": "21 - clip-moco.ipynb",
@@ -73,7 +74,8 @@ index = {"RandomGaussianBlur": "01 - augmentations.ipynb",
          "MultiCropWrapper": "90 - models.vision_transformer.ipynb",
          "deit_tiny": "90 - models.vision_transformer.ipynb",
          "deit_small": "90 - models.vision_transformer.ipynb",
-         "vit_base": "90 - models.vision_transformer.ipynb"}
+         "vit_base": "90 - models.vision_transformer.ipynb",
+         "but": "90 - models.vision_transformer.ipynb"}
 
 modules = ["augmentations.py",
            "layers.py",
