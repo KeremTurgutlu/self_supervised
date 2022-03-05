@@ -5,7 +5,7 @@ __all__ = ['RandomGaussianBlur', 'get_kornia_batch_augs', 'get_torchvision_batch
 
 # Cell
 from fastai.vision.all import *
-from kornia.augmentation import augmentation as korniatfm
+import kornia.augmentation as korniatfm
 import torchvision.transforms as tvtfm
 import kornia
 
@@ -22,7 +22,7 @@ class RandomGaussianBlur(RandTransform):
         if isinstance(self.s, list):  s = np.random.randint(*self.s)
         if isinstance(self.s, int):   s = self.s
         s2 = int(s/4)*2+1
-        tfm = korniatfm.GaussianBlur((s2,s2),(s,s),same_on_batch=self.same_on_batch,p=1.)
+        tfm = korniatfm.RandomGaussianBlur((s2,s2),(s,s),same_on_batch=self.same_on_batch,p=1.)
         return tfm(x)
 
 # Cell
