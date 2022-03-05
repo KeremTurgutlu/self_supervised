@@ -327,7 +327,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="LayerNorm" class="doc_header"><code>class</code> <code>LayerNorm</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/multimodal/clip_moco.py#L215" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LayerNorm</code>(<strong><code>normalized_shape</code></strong>:<code>Union</code>[<code>int</code>, <code>List</code>[<code>int</code>], <code>Size</code>], <strong><code>eps</code></strong>:<code>float</code>=<em><code>1e-05</code></em>, <strong><code>elementwise_affine</code></strong>:<code>bool</code>=<em><code>True</code></em>) :: <a href="/self_supervised/21 - clip-moco.html#LayerNorm"><code>LayerNorm</code></a></p>
+<h2 id="LayerNorm" class="doc_header"><code>class</code> <code>LayerNorm</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/multimodal/clip_moco.py#L215" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>LayerNorm</code>(<strong><code>normalized_shape</code></strong>:<code>Union</code>[<code>int</code>, List[int]<code>,</code>Size<code>\], **</code>eps<code>**:</code>float<code>=*</code>1e-05<code>*, **</code>elementwise_affine<code>**:</code>bool<code>=*</code>True<code>*, **</code>device<code>**=*</code>None<code>*, **</code>dtype<code>**=*</code>None<code>*) :: [</code>LayerNorm`](/self_supervised/21 - clip-moco.html#LayerNorm)</p>
 </blockquote>
 <p>Subclass torch's LayerNorm to handle fp16.</p>
 
@@ -544,7 +544,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CLIPMOCO" class="doc_header"><code>class</code> <code>CLIPMOCO</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/multimodal/clip_moco.py#L304" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CLIPMOCO</code>(<strong><code>embed_dim</code></strong>:<code>int</code>, <strong><code>image_resolution</code></strong>:<code>int</code>, <strong><code>vision_layers</code></strong>:<code>Union</code>[<code>Tuple</code>[<code>int</code>, <code>int</code>, <code>int</code>, <code>int</code>], <code>int</code>], <strong><code>vision_width</code></strong>:<code>int</code>, <strong><code>vision_patch_size</code></strong>:<code>int</code>, <strong><code>context_length</code></strong>:<code>int</code>, <strong><code>vocab_size</code></strong>:<code>int</code>, <strong><code>transformer_width</code></strong>:<code>int</code>, <strong><code>transformer_heads</code></strong>:<code>int</code>, <strong><code>transformer_layers</code></strong>:<code>int</code>, <strong><code>K</code></strong>=<em><code>4096</code></em>, <strong><code>m</code></strong>=<em><code>0.999</code></em>, <strong>**<code>kwargs</code></strong>) :: <code>Module</code></p>
+<h2 id="CLIPMOCO" class="doc_header"><code>class</code> <code>CLIPMOCO</code><a href="https://github.com/keremturgutlu/self_supervised/tree/main/self_supervised/multimodal/clip_moco.py#L304" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CLIPMOCO</code>(<strong><code>embed_dim</code></strong>:<code>int</code>, <strong><code>image_resolution</code></strong>:<code>int</code>, <strong><code>vision_layers</code></strong>:<code>Union</code>[Tuple[int, int, int, int]<code>,</code>int<code>\], **</code>vision_width<code>**:</code>int<code>, **</code>vision_patch_size<code>**:</code>int<code>, **</code>context_length<code>**:</code>int<code>, **</code>vocab_size<code>**:</code>int<code>, **</code>transformer_width<code>**:</code>int<code>, **</code>transformer_heads<code>**:</code>int<code>, **</code>transformer_layers<code>**:</code>int<code>, **</code>K<code>**=*</code>4096<code>*, **</code>m<code>**=*</code>0.999<code>*, **\*\*</code>kwargs<code>**) ::</code>Module`</p>
 </blockquote>
 <p>Base class for all neural network modules.</p>
 <p>Your models should also subclass this class.</p>
@@ -570,6 +570,95 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 <p>:ivar training: Boolean represents whether this module is in training or
                 evaluation mode.
 :vartype training: bool</p>
+<table>
+<thead><tr>
+<th></th>
+<th>Type</th>
+<th>Default</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>embed_dim</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>image_resolution</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td>vision</td>
+</tr>
+<tr>
+<td><strong><code>vision_layers</code></strong></td>
+<td><code>Tuple[int, int, int, int], int]</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>vision_width</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>vision_patch_size</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>context_length</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td>text</td>
+</tr>
+<tr>
+<td><strong><code>vocab_size</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>transformer_width</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>transformer_heads</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>transformer_layers</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>K</code></strong></td>
+<td><code>int</code></td>
+<td><code>4096</code></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>m</code></strong></td>
+<td><code>float</code></td>
+<td><code>999</code></td>
+<td><em>No Content</em></td>
+</tr>
+<tr>
+<td><strong><code>kwargs</code></strong></td>
+<td></td>
+<td></td>
+<td><em>No Content</em></td>
+</tr>
+</tbody>
+</table>
 
 </div>
 
@@ -760,9 +849,7 @@ parameters converted too when you call :meth:<code>to</code>, etc.</p>
 <div class="output_area">
 
 
-<div class="output_html rendered_html output_subarea ">
-
-</div>
+<div class="output_html rendered_html output_subarea "></div>
 
 </div>
 
