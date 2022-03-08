@@ -25,6 +25,7 @@ class KNNProxyMetric(Callback):
         self.embs = F.normalize(self.embs)
         sim = self.embs @ self.embs.T
         nearest_neighbor = sim.argsort(dim=1, descending=True)[:,2]
+        self.targs = TensorBase(self.targs)
         return (self.targs == self.targs[nearest_neighbor]).float().mean()
 
     def after_fit(self):

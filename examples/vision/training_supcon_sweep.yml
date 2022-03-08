@@ -1,0 +1,27 @@
+program: training_supcon_iwang.py
+method: bayes
+description: sweep for SupCon on imagewang dataset
+metric:
+  goal: maximize
+  name: knn_accuracy
+parameters:
+  arch:
+    values: ["xresnet34", "resnet34d"]
+  lr:
+    values: [0.001, 0.005, 0.01]
+  wd:
+    values: [0.00001, 0.0001, 0.001, 0.01]
+  opt_func:
+    values: ["adam", "lamb"]
+  reg_lambda:
+    values: [0.25, 0.5, 0, 1, 2, 4]
+  temp:
+    values: [0.05, 0.07, 0.1]
+  unsup_method:
+    values: ["all", "only"]
+
+early_terminate:
+  type: hyperband
+  s: 2
+  eta: 3
+  max_iter: 27
