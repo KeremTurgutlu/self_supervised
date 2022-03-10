@@ -127,3 +127,137 @@ class SupCon(Callback):
 # Cell
 class SupConMOCO(Callback):
     order,run_valid = 9,True
+    def __init__(self, aug_pipelines, unsup_class_id, unsup_method=UnsupMethod.All,
+                 K=4096,
+                 m=0.999,
+                 reg_lambda=1.,
+                 temp=0.07,
+                 print_augs=False):
+        assert_aug_pipelines(aug_pipelines)
+        self.aug1, self.aug2 = aug_pipelines
+        if print_augs: print(self.aug1), print(self.aug2)
+        store_attr('unsup_class_id,unsup_method,K,m,reg_lambda,temp')
+
+
+    def before_fit(self):
+        "Create key encoder and init queue"
+        if (not hasattr(self, "encoder_k")) and (not hasattr(self, "queue")):
+            # init key encoder
+            self.encoder_k = deepcopy(self.learn.model).to(self.dls.device)
+            for param_k in self.encoder_k.parameters(): param_k.requires_grad = False
+
+            # init queue
+            nf = self.learn.model.projector[-1].out_features
+            self.emb_queue = torch.randn(self.K, nf).to(self.dls.device)
+            self.emb_queue = nn.functional.normalize(self.emb_queue, dim=1)
+            self.label_queue = torch.zeros(self.K).to(self.dls.device) + self.unsup_class_id
+            self.queue_ptr = 0
+        else:
+            warnings.warn("Key encoder and queue are already defined, keeping them.")
+
+        self.learn.loss_func = self.lf
+
+
+    def before_train(self):    self.encoder_k.train()
+    def before_validate(self): self.encoder_k.eval()
+
+
+    def before_batch(self):
+        "Generate query and key for the current batch"
+        q_img,k_img = self.aug1(self.x), self.aug2(self.x.clone())
+        self.learn.xb = (q_img,)
+        with torch.no_grad():
+            self.learn.yb = (F.normalize(self.encoder_k(k_img)), self.y) # query and labels
+
+
+    @torch.no_grad()
+    def _momentum_update_key_encoder(self):
+        for param_q, param_k in zip(self.learn.model.parameters(), self.encoder_k.parameters()):
+            param_k.data = param_k.data * self.m + param_q.data * (1. - self.m)
+
+
+    @torch.no_grad()
+    def _dequeue_and_enqueue(self):
+        bs = self.x.size(0)
+        key_embs, key_labels = self.yb
+        assert self.K % bs == 0  # for simplicity
+        self.emb_queue[self.queue_ptr:self.queue_ptr+bs, :] = key_embs
+        self.label_queue[self.queue_ptr:self.queue_ptr+bs] = key_labels
+        self.queue_ptr = (self.queue_ptr + bs) % self.K  # move pointer
+
+
+    def unsup_lf(self, pred, key_embs, key_labels):
+        "Self-Supervised contrasitve loss with all or only unlabelled batch samples"
+        query_embs = F.normalize(pred, dim=1)
+        queue_embs, queue_labels = self.emb_queue, self.label_queue
+
+        if self.unsup_method == UnsupMethod.All:
+            key_embs = torch.cat([key_embs, queue_embs])
+
+        elif self.unsup_method == UnsupMethod.Only:
+            query_embs = query_embs[(key_labels == self.unsup_class_id)]
+            key_embs   = key_embs[(key_labels == self.unsup_class_id)]
+            queue_embs = queue_embs[(queue_labels == self.unsup_class_id)]
+
+            key_embs   = torch.cat([key_embs, queue_embs])
+
+        else:
+            raise Exception(f"{self.unsup_method} is not a valid UnsupMethod")
+
+        if len(query_embs) == 0: return 0
+
+        labels = torch.arange(len(query_embs), device=pred.device)
+        sim  = query_embs @ key_embs.T / self.temp
+        return F.cross_entropy(sim, labels)
+
+
+    def sup_lf(self, pred, key_embs, key_labels):
+        "Supervised contrasitve loss with labelled batch samples"
+        query_embs = F.normalize(pred, dim=1)
+        queue_embs, queue_labels = self.emb_queue,  self.label_queue
+
+        query_embs = query_embs[(key_labels != self.unsup_class_id)]
+        key_embs   = key_embs[(key_labels != self.unsup_class_id)]
+        queue_embs = queue_embs[(queue_labels != self.unsup_class_id)]
+
+        key_embs   = torch.cat([key_embs, queue_embs])
+
+        key_labels   = key_labels[(key_labels != self.unsup_class_id)]
+        queue_labels = queue_labels[(queue_labels != self.unsup_class_id)]
+
+        labels   = torch.cat([key_labels, queue_labels])
+
+        if len(query_embs) == 0: return 0
+
+        # create sup targs, all views from same class
+        ohe_targ = torch.zeros((query_embs.shape[0], labels.shape[0]), device=pred.device) # N x (N + K)
+        for i, l in enumerate(to_np(key_labels)):
+            ohe_targ[i][(labels == l).bool()] = 1
+
+        # exclude anchor from loss calc
+        sim  = query_embs @ key_embs.T / self.temp
+        return (F.cross_entropy(sim, ohe_targ, reduction='none')/ohe_targ.sum(1)).mean()
+
+
+    def lf(self, pred, *yb):
+        unsup_loss = self.unsup_lf(pred, *yb)
+        sup_loss   = self.sup_lf(pred, *yb)
+        return unsup_loss + self.reg_lambda*sup_loss
+
+
+    def after_step(self):
+        "Update momentum (key) encoder and queue"
+        self._momentum_update_key_encoder()
+        self._dequeue_and_enqueue()
+
+
+    @torch.no_grad()
+    def show(self, n=1):
+        bs = self.learn.x.size(0)//2
+        x1,x2  = self.learn.x[:bs], self.learn.x[bs:]
+        idxs = np.random.choice(range(bs),n,False)
+        x1 = self.aug1.decode(x1[idxs].to('cpu').clone()).clamp(0,1)
+        x2 = self.aug2.decode(x2[idxs].to('cpu').clone()).clamp(0,1)
+        images = []
+        for i in range(n): images += [x1[i],x2[i]]
+        return show_batch(x1[0], None, images, max_n=len(images), nrows=n)
