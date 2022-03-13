@@ -90,19 +90,11 @@ class SupCon(Callback):
 
         if len(pred) == 0: return 0
 
-        targ2idx = defaultdict(list)
-        for i, c in enumerate(to_np(targ)):
-            targ2idx[c].append(i)
-
-        # create sup targs, all views from same class
-        ohe_targ = torch.zeros((targ.shape[0], targ.shape[0]), device=pred.device)
-        for i, c in enumerate(to_np(targ)):
-            ohe_targ[i][targ2idx[c]] = 1
-
         # exclude anchor from loss calc
+        ohe_labels = (targ[...,None] == targ[None, ...]).float()
         pred = F.normalize(pred, dim=1)
         sim  = self._remove_diag(pred @ pred.T) / self.temp
-        targ = self._remove_diag(ohe_targ)
+        targ = self._remove_diag(ohe_labels)
 
         return (F.cross_entropy(sim, targ, reduction='none')/targ.sum(1)).mean()
 
@@ -158,15 +150,12 @@ class SupConMOCO(Callback):
         self.learn.loss_func = self.lf
 
 
-    def before_train(self):    self.encoder_k.train()
-    def before_validate(self): self.encoder_k.eval()
-
-
     def before_batch(self):
         "Generate query and key for the current batch"
         q_img,k_img = self.aug1(self.x), self.aug2(self.x.clone())
         self.learn.xb = (q_img,)
         with torch.no_grad():
+            self.encoder_k.eval()
             self.learn.yb = (F.normalize(self.encoder_k(k_img)), self.y) # query and labels
 
 
@@ -229,14 +218,10 @@ class SupConMOCO(Callback):
 
         if len(query_embs) == 0: return 0
 
-        # create sup targs, all views from same class
-        ohe_targ = torch.zeros((query_embs.shape[0], labels.shape[0]), device=pred.device) # N x (N + K)
-        for i, l in enumerate(to_np(key_labels)):
-            ohe_targ[i][(labels == l).bool()] = 1
-
         # exclude anchor from loss calc
+        ohe_labels = (key_labels[...,None] == labels[None, ...]).float()
         sim  = query_embs @ key_embs.T / self.temp
-        return (F.cross_entropy(sim, ohe_targ, reduction='none')/ohe_targ.sum(1)).mean()
+        return (F.cross_entropy(sim, ohe_labels, reduction='none')/ohe_labels.sum(1)).mean()
 
 
     def lf(self, pred, *yb):
