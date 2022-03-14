@@ -28,6 +28,7 @@ Here are the list of implemented **self_supervised.vision** algorithms:
 - [SwAV](https://arxiv.org/pdf/2006.09882.pdf)
 - [Barlow Twins](https://arxiv.org/pdf/2103.03230.pdf)
 - [DINO](https://arxiv.org/pdf/2104.14294.pdf)
+- [SupCon](https://arxiv.org/pdf/2004.11362.pdf)
 
 Here are the list of implemented **self_supervised.multimodal** algorithms:
 
@@ -131,6 +132,19 @@ aug_pipelines = get_dino_aug_pipelines(num_crops=[2,6],
                                        min_scales=[0.25,0.05],
                                        max_scales=[1.0,0.3])
  learn = Learner(dls,model,cbs=[DINO(aug_pipelines=aug_pipelines)])
+learn.fit_flat_cos(100, 1e-2)
+```
+
+#### SupCon
+
+```python
+from self_supervised.vision.supcon import *
+dls = get_dls(resize, bs)
+# encoder = create_encoder("xresnet34", n_in=3, pretrained=False) # a fastai encoder
+encoder = create_encoder("tf_efficientnet_b4_ns", n_in=3, pretrained=False) # a timm encoder
+model = create_supcon_model(encoder, hidden_size=2048, projection_size=128)
+aug_pipelines = get_supcon_aug_pipelines(size=size)
+learn = Learner(dls,model,cbs=[SupCon(aug_pipelines, unsup_class_id, unsup_method=UnsupMethod.All,                                               reg_lambda=1.0, temp=0.07)])
 learn.fit_flat_cos(100, 1e-2)
 ```
 
