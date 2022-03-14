@@ -52,6 +52,9 @@ entries:
       title: DINO
       url: /15 - dino.html
     - output: web,pdf
+      title: SupCon
+      url: /16 - supcon.html
+    - output: web,pdf
       title: Metrics
       url: 70 - vision.metrics.html
     output: web
@@ -81,6 +84,9 @@ entries:
     - output: web,pdf
       title: Training DINO ImageWang
       url: /06 - training_dino_iwang.html
+    - output: web,pdf
+      title: Training SupCon ImageWang
+      url: /07 - training_supcon_iwang.html
     - output: web,pdf
       title: Training CLIP COCO (Dummy)
       url: /01 - training_clip_coco.html
