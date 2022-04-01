@@ -101,7 +101,7 @@ learn.fit_flat_cos(100, 1e-2)
 #### Barlow Twins
 
 ```python
-from self_supervised.vision.simclr import *
+from self_supervised.vision.barlow_twins import *
 dls = get_dls(resize, bs)
 # encoder = create_encoder("xresnet34", n_in=3, pretrained=False) # a fastai encoder
 encoder = create_encoder("tf_efficientnet_b4_ns", n_in=3, pretrained=False) # a timm encoder
